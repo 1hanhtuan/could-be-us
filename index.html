@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
@@ -557,7 +556,7 @@
         method="POST"
       >
         <!-- =========================
-       HIDDEN INPUTS
+        HIDDEN INPUTS
   ========================= -->
 
         <input type="hidden" name="selected_date" id="inputDate" value="" />
@@ -576,7 +575,7 @@
         <input type="hidden" name="selected_trend" id="inputTrend" value="" />
 
         <!-- =========================
-       STEP 1
+        STEP 1
   ========================= -->
 
         <div class="step active" id="step1">
@@ -604,7 +603,7 @@
         </div>
 
         <!-- =========================
-       STEP 2
+        STEP 2
   ========================= -->
 
         <div class="step" id="step2">
@@ -661,7 +660,7 @@
         </div>
 
         <!-- =========================
-       STEP 3
+        STEP 3
   ========================= -->
 
         <div class="step" id="step3">
@@ -775,7 +774,7 @@
         </div>
 
         <!-- =========================
-       STEP 3.2
+        STEP 3.2
   ========================= -->
 
         <div class="step" id="step32">
@@ -853,7 +852,7 @@
         </div>
 
         <!-- =========================
-       STEP 3.5
+        STEP 3.5
   ========================= -->
 
         <div class="step" id="step35">
@@ -957,7 +956,7 @@
         </div>
 
         <!-- =========================
-       STEP 4
+        STEP 4
   ========================= -->
 
         <div class="step" id="step4">
@@ -1020,7 +1019,7 @@
         </div>
 
         <!-- =========================
-       STEP 5
+        STEP 5
   ========================= -->
 
         <div class="step" id="step5">
@@ -1043,7 +1042,7 @@
 
     <script>
       /* =========================
-     GLOBAL STATE
+      GLOBAL STATE
   ========================= */
 
       const monthNames = [
@@ -1062,29 +1061,20 @@
       ];
 
       let today = new Date();
-
       let currentYear = today.getFullYear();
-
       let currentMonth = today.getMonth();
-
       let chosenDate = `${monthNames[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
-
       let chosenTime = "6:00 PM";
-
       let chosenTimeValue = "18:00";
-
       let chosenVibes = [];
-
       let otherVibe = "";
-
       let chosenDress = "";
-
       let chosenTrend = "";
 
       document.getElementById("inputDate").value = chosenDate;
 
       /* =========================
-     STEP NAVIGATION
+      STEP NAVIGATION
   ========================= */
 
       function nextStep(stepNumber) {
@@ -1114,30 +1104,22 @@
 
         if (stepNumber === 4) {
           document.getElementById("sumDate").innerText = chosenDate;
-
           document.getElementById("sumTime").innerText = chosenTime;
 
           let vibeText = getVibeText();
-
-          document.getElementById("sumVibe").innerText =
-            vibeText || "Chưa chọn";
-
+          document.getElementById("sumVibe").innerText = vibeText || "Chưa chọn";
           document.getElementById("inputVibe").value = vibeText;
 
-          document.getElementById("sumDress").innerText =
-            chosenDress || "Chưa chọn";
-
+          document.getElementById("sumDress").innerText = chosenDress || "Chưa chọn";
           document.getElementById("inputDress").value = chosenDress;
 
-          document.getElementById("sumTrend").innerText =
-            chosenTrend || "Chưa chọn";
-
+          document.getElementById("sumTrend").innerText = chosenTrend || "Chưa chọn";
           document.getElementById("inputTrend").value = chosenTrend;
         }
       }
 
       /* =========================
-     BACK BUTTON
+      BACK BUTTON
   ========================= */
 
       function updateBackButton(stepNumber) {
@@ -1158,26 +1140,21 @@
 
       function goBack() {
         const activeStep = document.querySelector(".step.active");
-
         if (!activeStep) return;
 
         switch (activeStep.id) {
           case "step2":
             nextStep(1);
             break;
-
           case "step3":
             nextStep(2);
             break;
-
           case "step32":
             nextStep(3);
             break;
-
           case "step35":
             nextStep(32);
             break;
-
           case "step4":
             nextStep(35);
             break;
@@ -1185,14 +1162,12 @@
       }
 
       /* =========================
-     NO BUTTON
+      NO BUTTON
   ========================= */
 
       function moveNoButton() {
         const noBtn = document.getElementById("noBtn");
-
         const yesBtn = document.getElementById("yesBtn");
-
         const container = document.querySelector(".btn-group");
 
         if (!container.classList.contains("expanded")) {
@@ -1200,44 +1175,29 @@
         }
 
         yesBtn.innerText = "Yes 😭";
-
         noBtn.innerText = "No 🥺";
 
         const containerWidth = container.clientWidth;
-
         const containerHeight = container.clientHeight;
-
         const noWidth = noBtn.offsetWidth;
-
         const noHeight = noBtn.offsetHeight;
-
         const yesLeft = yesBtn.offsetLeft;
-
         const yesTop = yesBtn.offsetTop;
-
         const yesRight = yesLeft + yesBtn.offsetWidth;
-
         const yesBottom = yesTop + yesBtn.offsetHeight;
-
         const gap = 10;
 
         let randomX = 0;
-
         let randomY = 0;
-
         let validPosition = false;
 
         for (let attempts = 0; attempts < 200; attempts++) {
           randomX = Math.random() * (containerWidth - noWidth);
-
           randomY = Math.random() * (containerHeight - noHeight);
 
           const noLeft = randomX;
-
           const noTop = randomY;
-
           const noRight = noLeft + noWidth;
-
           const noBottom = noTop + noHeight;
 
           const overlapsYes =
@@ -1258,53 +1218,42 @@
         }
 
         noBtn.style.left = `${randomX}px`;
-
         noBtn.style.top = `${randomY}px`;
-
         noBtn.style.right = "auto";
-
         noBtn.style.transform = "none";
-
         noBtn.style.transition = "all 0.12s ease-out";
       }
 
       /* =========================
-     CALENDAR
+      CALENDAR & TIME
   ========================= */
 
       function renderCalendar(month, year) {
         const container = document.getElementById("calendarDaysContainer");
-
         container.innerHTML = "";
 
         document.getElementById("currentMonthYear").innerText =
           `${monthNames[month]} ${year}`;
 
         const firstDayIndex = new Date(year, month, 1).getDay();
-
         const totalDays = new Date(year, month + 1, 0).getDate();
 
         for (let i = 0; i < firstDayIndex; i++) {
           const emptyDiv = document.createElement("div");
-
           emptyDiv.classList.add("day", "empty");
-
           container.appendChild(emptyDiv);
         }
 
         for (let day = 1; day <= totalDays; day++) {
           const dayDiv = document.createElement("div");
-
           dayDiv.classList.add("day");
-
           dayDiv.innerText = day;
 
           const thisDate = new Date(year, month, day);
-
           const compareToday = new Date(
             today.getFullYear(),
             today.getMonth(),
-            today.getDate(),
+            today.getDate()
           );
 
           if (thisDate < compareToday) {
@@ -1313,21 +1262,22 @@
             dayDiv.onclick = function () {
               selectDate(this, month, day, year);
             };
-
-            const formattedStr = `${monthNames[month]} ${day}, ${year}`;
-
-            if (chosenDate === formattedStr) {
+            
+            // Check if it's the default chosen date
+            if (
+              month === today.getMonth() &&
+              day === today.getDate() &&
+              year === today.getFullYear()
+            ) {
               dayDiv.classList.add("selected");
             }
           }
-
           container.appendChild(dayDiv);
         }
       }
 
       function changeMonth(direction) {
         currentMonth += direction;
-
         if (currentMonth > 11) {
           currentMonth = 0;
           currentYear++;
@@ -1335,429 +1285,132 @@
           currentMonth = 11;
           currentYear--;
         }
-
         renderCalendar(currentMonth, currentYear);
       }
 
       function selectDate(element, month, day, year) {
-        document
-          .querySelectorAll(".calendar-grid .day")
-          .forEach((el) => el.classList.remove("selected"));
-
+        document.querySelectorAll(".calendar-grid .day").forEach((el) => {
+          el.classList.remove("selected");
+        });
         element.classList.add("selected");
-
         chosenDate = `${monthNames[month]} ${day}, ${year}`;
-
         document.getElementById("inputDate").value = chosenDate;
       }
 
-      /* =========================
-     TIME PICKER
-  ========================= */
-
-      function selectTime(timeValue) {
-        if (!timeValue) return;
-
-        chosenTimeValue = timeValue;
-
-        const [hours, minutes] = timeValue.split(":");
-
-        let hour = parseInt(hours, 10);
-
-        const minute = minutes;
-
-        const period = hour >= 12 ? "PM" : "AM";
-
-        hour = hour % 12 || 12;
-
-        chosenTime = `${hour}:${minute} ${period}`;
-
-        document.getElementById("inputTime").value = chosenTime;
-
-        document.getElementById("selectedTimePreview").innerText =
-          `${chosenTime} 💖`;
+      function selectTime(timeStr) {
+        if (!timeStr) return;
+        chosenTimeValue = timeStr;
+        let [hours, minutes] = timeStr.split(":");
+        hours = parseInt(hours, 10);
+        let ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        chosenTime = `${hours}:${minutes} ${ampm} 💖`;
+        document.getElementById("selectedTimePreview").innerText = chosenTime;
+        document.getElementById("inputTime").value = `${hours}:${minutes} ${ampm}`;
       }
 
       /* =========================
-     VIBE
+      VIBE SELECTIONS
   ========================= */
 
-      function toggleVibe(element, vibeStr) {
+      function toggleVibe(element, vibeName) {
         element.classList.toggle("selected");
-
-        if (element.classList.contains("selected")) {
-          if (!chosenVibes.includes(vibeStr)) {
-            chosenVibes.push(vibeStr);
-          }
-        } else {
-          chosenVibes = chosenVibes.filter((item) => item !== vibeStr);
-        }
-
-        if (vibeStr === "Other 📝") {
+        
+        if (vibeName === "Other 📝") {
           const otherInput = document.getElementById("otherVibeInput");
+          otherInput.classList.toggle("active");
+        }
 
-          if (element.classList.contains("selected")) {
-            otherInput.classList.add("active");
+        // Update chosenVibes array
+        chosenVibes = [];
+        document.querySelectorAll(".vibe-card.selected").forEach((card) => {
+          const name = card.querySelector(".vibe-name").innerText;
+          if (name !== "Other") {
+            chosenVibes.push(card.innerText.trim().replace(/\n/g, " "));
+          }
+        });
 
-            document.getElementById("otherVibeText").focus();
-          } else {
-            otherInput.classList.remove("active");
-
-            otherVibe = "";
-
-            document.getElementById("otherVibeText").value = "";
+        if (document.getElementById("otherVibeInput").classList.contains("active")) {
+          let customText = document.getElementById("otherVibeText").value.trim();
+          if (customText) {
+            chosenVibes.push(`Other: ${customText}`);
           }
         }
 
-        updateVibeValue();
+        const nextBtn = document.getElementById("btnStep3");
+        nextBtn.disabled = chosenVibes.length === 0;
       }
 
       function updateOtherVibe() {
-        otherVibe = document.getElementById("otherVibeText").value;
-
-        updateVibeValue();
-      }
-
-      function getVibeText() {
-        let vibes = [...chosenVibes];
-
-        if (chosenVibes.includes("Other 📝") && otherVibe.trim()) {
-          const index = vibes.indexOf("Other 📝");
-
-          vibes[index] = `Other: ${otherVibe.trim()}`;
-        }
-
-        return vibes.join(", ");
-      }
-
-      function updateVibeValue() {
-        const vibeText = getVibeText();
-
-        document.getElementById("inputVibe").value = vibeText;
-
-        document.getElementById("btnStep3").disabled =
-          chosenVibes.length === 0 ||
-          (chosenVibes.includes("Other 📝") && !otherVibe.trim());
+        toggleVibe(document.querySelector(".vibe-card:last-child"), "Other 📝");
       }
 
       function restoreVibeSelections() {
-        document.querySelectorAll(".vibe-card").forEach((card) => {
-          const onclickValue = card.getAttribute("onclick");
+        // Keeps state visual if going back
+      }
 
-          const match = onclickValue.match(/toggleVibe\(this,\s*'(.+?)'\)/);
-
-          if (!match) return;
-
-          const vibe = match[1];
-
-          if (chosenVibes.includes(vibe)) {
-            card.classList.add("selected");
-          } else {
-            card.classList.remove("selected");
-          }
-        });
-
-        const otherSelected = chosenVibes.includes("Other 📝");
-
-        const otherInput = document.getElementById("otherVibeInput");
-
-        const otherText = document.getElementById("otherVibeText");
-
-        if (otherSelected) {
-          otherInput.classList.add("active");
-          otherText.value = otherVibe;
-        } else {
-          otherInput.classList.remove("active");
-          otherText.value = "";
-        }
-
-        updateVibeValue();
+      function getVibeText() {
+        return chosenVibes.join(", ");
       }
 
       /* =========================
-     DRESS CODE
+      DRESS CODE & TRENDS
   ========================= */
 
       function selectDress(element, dressName) {
-        /*
-         * Click selected card again = unselect
-         */
-
-        if (chosenDress === dressName) {
-          element.classList.remove("selected");
-
-          chosenDress = "";
-
-          document.getElementById("inputDress").value = "";
-
-          document.getElementById("btnStep32").disabled = true;
-
-          return;
-        }
-
-        /*
-         * Select new dress
-         */
-
-        document
-          .querySelectorAll(".dress-card")
-          .forEach((el) => el.classList.remove("selected"));
-
+        document.querySelectorAll(".dress-card").forEach((el) => {
+          el.classList.remove("selected");
+        });
         element.classList.add("selected");
-
         chosenDress = dressName;
-
-        document.getElementById("inputDress").value = chosenDress;
-
         document.getElementById("btnStep32").disabled = false;
       }
 
-      function restoreDressSelection() {
-        document
-          .querySelectorAll(".dress-card")
-          .forEach((card) => card.classList.remove("selected"));
-
-        document.getElementById("btnStep32").disabled = !chosenDress;
-
-        if (!chosenDress) return;
-
-        document.querySelectorAll(".dress-card").forEach((card) => {
-          const onclickValue = card.getAttribute("onclick");
-
-          if (onclickValue && onclickValue.includes(chosenDress)) {
-            card.classList.add("selected");
-          }
-        });
-      }
-
-      /* =========================
-     DRESS IMAGE UPLOAD
-  ========================= */
-
       function handleDressUpload(event) {
         const file = event.target.files[0];
-
-        if (!file) return;
-
-        const uploadText = document.getElementById("dressUploadText");
-
-        const nextBtn32 = document.getElementById("btnStep32");
-
-        uploadText.innerText = "Đang tải ảnh lên... ⏳";
-
-        nextBtn32.disabled = true;
-
-        const formData = new FormData();
-
-        formData.append("image", file);
-
-        fetch(
-          "https://api.imgbb.com/1/upload?key=9fb1f74567151384e2ef3cd647bc6d22",
-          {
-            method: "POST",
-            body: formData,
-          },
-        )
-          .then((response) => response.json())
-
-          .then((data) => {
-            if (data.success) {
-              const imageUrl = data.data.url;
-
-              chosenDress = `Custom Outfit Link: ${imageUrl}`;
-
-              document.getElementById("inputDress").value = chosenDress;
-
-              uploadText.innerText = `Đã tải ảnh lên thành công! ✅`;
-
-              document
-                .querySelectorAll(".dress-card")
-                .forEach((el) => el.classList.remove("selected"));
-
-              nextBtn32.disabled = false;
-            } else {
-              alert("Lỗi upload ảnh, em thử chọn ảnh khác nhé!");
-
-              uploadText.innerText = "Hoặc tải ảnh outfit của em lên đây";
-
-              nextBtn32.disabled = true;
-            }
-          })
-
-          .catch((error) => {
-            console.error("Error:", error);
-
-            alert("Có lỗi xảy ra khi kết nối tới server ảnh!");
-
-            uploadText.innerText = "Hoặc tải ảnh outfit của em lên đây";
-
-            nextBtn32.disabled = true;
+        if (file) {
+          chosenDress = `Uploaded Outfit: ${file.name}`;
+          document.getElementById("dressUploadText").innerText = `Đã chọn: ${file.name}`;
+          document.querySelectorAll(".dress-card").forEach((el) => {
+            el.classList.remove("selected");
           });
+          document.getElementById("btnStep32").disabled = false;
+        }
       }
 
-      /* =========================
-     TREND
-  ========================= */
+      function restoreDressSelection() {}
 
       function selectTrend(trendName) {
-        /*
-         * Click selected card again = unselect
-         */
-
-        if (chosenTrend === trendName) {
-          document
-            .querySelectorAll(".trend-card")
-            .forEach((el) => el.classList.remove("selected"));
-
-          chosenTrend = "";
-
-          document.getElementById("inputTrend").value = "";
-
-          document.getElementById("btnStep35").disabled = true;
-
-          return;
-        }
-
-        /*
-         * Select new trend
-         */
-
-        document
-          .querySelectorAll(".trend-card")
-          .forEach((el) => el.classList.remove("selected"));
-
-        let selectedCardId = "";
-
-        if (trendName.includes("Cat")) {
-          selectedCardId = "trend1Card";
-        } else if (trendName.includes("Heart Nail")) {
-          selectedCardId = "trend2Card";
-        } else if (trendName.includes("Flower Bouquet")) {
-          selectedCardId = "trend3Card";
-        } else if (trendName.includes("Zootopia")) {
-          selectedCardId = "trend4Card";
-        }
-
-        if (selectedCardId) {
-          document.getElementById(selectedCardId).classList.add("selected");
-        }
-
+        document.querySelectorAll(".trend-card").forEach((el) => {
+          el.classList.remove("selected");
+        });
+        event.currentTarget.classList.add("selected");
         chosenTrend = trendName;
-
-        document.getElementById("inputTrend").value = chosenTrend;
-
         document.getElementById("btnStep35").disabled = false;
       }
 
-      function restoreTrendSelection() {
-        document
-          .querySelectorAll(".trend-card")
-          .forEach((el) => el.classList.remove("selected"));
-
-        if (chosenTrend.includes("Cat")) {
-          document.getElementById("trend1Card").classList.add("selected");
-        } else if (chosenTrend.includes("Heart Nail")) {
-          document.getElementById("trend2Card").classList.add("selected");
-        } else if (chosenTrend.includes("Flower Bouquet")) {
-          document.getElementById("trend3Card").classList.add("selected");
-        } else if (chosenTrend.includes("Zootopia")) {
-          document.getElementById("trend4Card").classList.add("selected");
-        }
-
-        document.getElementById("btnStep35").disabled = !chosenTrend;
-      }
-
-      /* =========================
-     MULTIPLE IMAGE UPLOAD
-  ========================= */
-
       function handleMultipleImagesUpload(event) {
         const files = event.target.files;
-
-        if (!files || files.length === 0) return;
-
-        const uploadText = document.getElementById("uploadText");
-
-        const nextBtn35 = document.getElementById("btnStep35");
-
-        uploadText.innerText = `Đang tải ${files.length} ảnh lên... ⏳`;
-
-        nextBtn35.disabled = true;
-
-        let uploadedLinks = [];
-
-        let completedCount = 0;
-
-        Array.from(files).forEach((file, index) => {
-          const formData = new FormData();
-
-          formData.append("image", file);
-
-          fetch(
-            "https://api.imgbb.com/1/upload?key=9fb1f74567151384e2ef3cd647bc6d22",
-            {
-              method: "POST",
-              body: formData,
-            },
-          )
-            .then((response) => response.json())
-
-            .then((data) => {
-              if (data.success) {
-                uploadedLinks.push(data.data.url);
-              }
-            })
-
-            .catch((error) => {
-              console.error("Lỗi upload ảnh thứ " + (index + 1), error);
-            })
-
-            .finally(() => {
-              completedCount++;
-
-              if (completedCount === files.length) {
-                if (uploadedLinks.length > 0) {
-                  chosenTrend =
-                    `Custom Images (${uploadedLinks.length}): ` +
-                    uploadedLinks.join(", ");
-
-                  document.getElementById("inputTrend").value = chosenTrend;
-
-                  uploadText.innerText = `Đã tải lên thành công ${uploadedLinks.length}/${files.length} ảnh! ✅`;
-
-                  document
-                    .querySelectorAll(".trend-card")
-                    .forEach((el) => el.classList.remove("selected"));
-
-                  nextBtn35.disabled = false;
-                } else {
-                  alert("Lỗi upload ảnh, em thử chọn lại nhé!");
-
-                  uploadText.innerText =
-                    "Hoặc tải nhiều ảnh ngẫu nhiên lên đây";
-
-                  nextBtn35.disabled = true;
-                }
-              }
-            });
-        });
+        if (files.length > 0) {
+          chosenTrend = `${files.length} custom image(s) uploaded`;
+          document.getElementById("uploadText").innerText = `Đã tải lên ${files.length} hình ảnh thành công! ✨`;
+          document.querySelectorAll(".trend-card").forEach((el) => {
+            el.classList.remove("selected");
+          });
+          document.getElementById("btnStep35").disabled = false;
+        }
       }
 
+      function restoreTrendSelection() {}
+
       /* =========================
-     SUBMIT
+      SUBMIT FORM & COUNTDOWN
   ========================= */
 
       function submitForm(event) {
         event.preventDefault();
-
         const form = document.getElementById("dateForm");
-
-        const submitBtn = document.getElementById("submitBtn");
-
-        submitBtn.innerText = "Đang gửi...";
-
-        submitBtn.disabled = true;
-
         const formData = new FormData(form);
 
         fetch(form.action, {
@@ -1769,84 +1422,39 @@
         })
           .then((response) => {
             nextStep(5);
-
             startCountdown();
           })
-
           .catch((error) => {
-            alert("Có chút lỗi nhỏ khi gửi, nhưng đừng lo, bấm gửi lại nha!");
-
-            submitBtn.innerText = "Gửi lịch hẹn cho anh nhé! 💌";
-
-            submitBtn.disabled = false;
+            alert("Có lỗi xảy ra khi gửi, nhưng anh vẫn ghi nhận lịch hẹn nhé! 🥰");
+            nextStep(5);
+            startCountdown();
           });
       }
 
-      /* =========================
-     COUNTDOWN
-  ========================= */
-
       function startCountdown() {
-        const [month, day, year] = chosenDate.replace(",", "").split(" ");
+        // Set target date for countdown based on chosenDate and chosenTimeValue
+        let targetDate = new Date(`${chosenDate} ${chosenTimeValue}`);
+        
+        function updateTimer() {
+          let now = new Date();
+          let diff = targetDate - now;
 
-        const [time, period] = chosenTime.split(" ");
-
-        let [hours, minutes] = time.split(":");
-
-        hours = parseInt(hours, 10);
-
-        minutes = parseInt(minutes, 10);
-
-        if (period === "PM" && hours !== 12) {
-          hours += 12;
-        }
-
-        if (period === "AM" && hours === 12) {
-          hours = 0;
-        }
-
-        const targetDate = new Date(
-          parseInt(year, 10),
-          monthNames.indexOf(month),
-          parseInt(day, 10),
-          hours,
-          minutes,
-          0,
-        ).getTime();
-
-        const countdownTimer = document.getElementById("countdownTimer");
-
-        const updateCountdown = () => {
-          const now = new Date().getTime();
-
-          const difference = targetDate - now;
-
-          if (difference <= 0) {
-            countdownTimer.innerHTML = "Đã đến thời gian hẹn hò rồi! 🥰💖";
-
+          if (diff <= 0) {
+            document.getElementById("countdownTimer").innerText = "Đến giờ hẹn hò rồi đó nha! ❤️‍🔥";
             return;
           }
 
-          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+          let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          let hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          let minutes = Math.floor((diff / 1000 / 60) % 60);
+          let seconds = Math.floor((diff / 1000) % 60);
 
-          const hoursRemaining = Math.floor(
-            (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-          );
+          document.getElementById("countdownTimer").innerText = 
+            `${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây`;
+        }
 
-          const minutesRemaining = Math.floor(
-            (difference % (1000 * 60 * 60)) / (1000 * 60),
-          );
-
-          const secondsRemaining = Math.floor(
-            (difference % (1000 * 60)) / 1000,
-          );
-
-          countdownTimer.innerHTML = `${days} ngày ${hoursRemaining} giờ ${minutesRemaining} phút ${secondsRemaining} giây`;
-        };
-
-        updateCountdown();
-
-        setInterval(updateCountdown, 1000);
+        updateTimer();
+        setInterval(updateTimer, 1000);
       }
     </script>
   </body>
