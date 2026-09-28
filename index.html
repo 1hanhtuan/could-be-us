@@ -865,6 +865,29 @@
 
       document.getElementById("inputDate").value = chosenDate;
 
+      // HÀM TỰ ĐỘNG PHÁT NHẠC KHI CÓ TƯƠNG TÁC ĐẦU TIÊN TRÊN MÀN HÌNH
+      document.addEventListener("DOMContentLoaded", () => {
+        const music = document.getElementById("bgMusic");
+        const btn = document.querySelector(".music-toggle-btn");
+
+        // Cố gắng phát nhạc ngay khi load
+        music.play().then(() => {
+          btn.innerText = "🎵";
+        }).catch(() => {
+          // Nếu bị trình duyệt chặn, tự động bật ngay khi người dùng click/chạm bất kỳ đâu trên màn hình lần đầu tiên
+          const unlockAudio = () => {
+            music.play().then(() => {
+              btn.innerText = "🎵";
+              document.removeEventListener("click", unlockAudio);
+              document.removeEventListener("touchstart", unlockAudio);
+            }).catch(err => console.log("Chờ tương tác:", err));
+          };
+
+          document.addEventListener("click", unlockAudio);
+          document.addEventListener("touchstart", unlockAudio);
+        });
+      });
+
       /* HÀM BẬT/TẮT NHẠC THỦ CÔNG QUA NÚT 🎵 */
       function toggleMusic() {
         const music = document.getElementById("bgMusic");
@@ -884,14 +907,7 @@
         document.getElementById("step" + stepNumber).classList.add("active");
         updateBackButton(stepNumber);
 
-        // KHI BẤM QUA BƯỚC 2 (NGƯỜI DÙNG BẤM YES), TỰ ĐỘNG KÍCH HOẠT NHẠC LUÔN
         if (stepNumber === 2) {
-          const music = document.getElementById("bgMusic");
-          if (music) {
-            music.play().catch(error => {
-              console.log("Trình duyệt chặn autoplay, cần bấm nút 🎵 thủ công:", error);
-            });
-          }
           renderCalendar(currentMonth, currentYear);
         }
 
