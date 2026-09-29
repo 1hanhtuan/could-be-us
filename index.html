@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="vi">
   <head>
@@ -20,7 +21,11 @@
 
       body {
         background-color: #fce4ec;
-        background-image: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+        background-image: linear-gradient(
+          135deg,
+          #fce4ec 0%,
+          #f8bbd0 100%
+        );
         min-height: 100vh;
         display: flex;
         justify-content: center;
@@ -45,6 +50,7 @@
           opacity: 0;
           transform: translateY(10px);
         }
+
         to {
           opacity: 1;
           transform: translateY(0);
@@ -71,7 +77,223 @@
         display: block;
       }
 
-      /* TOP BACK ICON */
+      /* =========================================
+         MUSIC PLAYER
+      ========================================= */
+
+      .music-toggle-btn {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: #fce4ec;
+        color: #d81b60;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 30;
+        transition: 0.2s;
+      }
+
+      .music-toggle-btn:hover {
+        background: #e91e63;
+        color: white;
+      }
+
+      .music-player {
+        position: absolute;
+        top: 55px;
+        left: 15px;
+        width: calc(100% - 30px);
+        background: #fff;
+        border: 2px solid #f8bbd0;
+        border-radius: 16px;
+        padding: 14px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        z-index: 20;
+        display: none;
+        animation: musicPlayerIn 0.2s ease;
+      }
+
+      .music-player.active {
+        display: block;
+      }
+
+      @keyframes musicPlayerIn {
+        from {
+          opacity: 0;
+          transform: translateY(-5px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .music-player-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .music-player-title {
+        color: #d81b60;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .music-close-btn {
+        border: none;
+        background: #fce4ec;
+        color: #d81b60;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .music-now-playing {
+        background: #fff0f5;
+        border-radius: 12px;
+        padding: 10px;
+        margin-bottom: 10px;
+        text-align: left;
+      }
+
+      .music-now-playing-label {
+        font-size: 10px;
+        color: #999;
+        margin-bottom: 3px;
+      }
+
+      .music-now-playing-title {
+        font-size: 13px;
+        color: #d81b60;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .music-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .music-control-btn {
+        border: none;
+        background: #fce4ec;
+        color: #d81b60;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 15px;
+        transition: 0.2s;
+      }
+
+      .music-control-btn:hover {
+        background: #e91e63;
+        color: white;
+        transform: translateY(-1px);
+      }
+
+      .music-control-btn.play {
+        width: 42px;
+        height: 42px;
+        background: #e91e63;
+        color: white;
+        font-size: 17px;
+      }
+
+      .music-control-btn.play:hover {
+        background: #c2185b;
+      }
+
+      .music-control-btn.mode-active {
+        background: #e91e63;
+        color: white;
+      }
+
+      .music-progress {
+        width: 100%;
+        accent-color: #e91e63;
+        cursor: pointer;
+        margin-bottom: 8px;
+      }
+
+      .music-time {
+        display: flex;
+        justify-content: space-between;
+        color: #999;
+        font-size: 10px;
+        margin-bottom: 10px;
+      }
+
+      .playlist {
+        max-height: 160px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .playlist-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+        border-radius: 9px;
+        cursor: pointer;
+        transition: 0.2s;
+        text-align: left;
+      }
+
+      .playlist-item:hover {
+        background: #fce4ec;
+      }
+
+      .playlist-item.active {
+        background: #fce4ec;
+        color: #d81b60;
+      }
+
+      .playlist-number {
+        width: 20px;
+        text-align: center;
+        font-size: 11px;
+        color: #999;
+      }
+
+      .playlist-item.active .playlist-number {
+        color: #d81b60;
+        font-weight: 700;
+      }
+
+      .playlist-song-name {
+        font-size: 12px;
+        font-weight: 600;
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* =========================================
+         TOP BACK BUTTON
+      ========================================= */
+
       .top-back-btn {
         position: absolute;
         top: 15px;
@@ -98,32 +320,10 @@
         transform: translateX(-2px);
       }
 
-      /* MUSIC TOGGLE BUTTON */
-      .music-toggle-btn {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        background: #fce4ec;
-        color: #d81b60;
-        border: none;
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        font-size: 16px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10;
-        transition: 0.2s;
-      }
+      /* =========================================
+         BUTTONS
+      ========================================= */
 
-      .music-toggle-btn:hover {
-        background: #e91e63;
-        color: white;
-      }
-
-      /* BUTTONS */
       .btn {
         background-color: #e91e63;
         color: white;
@@ -151,7 +351,10 @@
         transform: none !important;
       }
 
-      /* STEP 1: YES / NO */
+      /* =========================================
+         STEP 1
+      ========================================= */
+
       .btn-group {
         position: relative;
         height: 80px;
@@ -184,7 +387,10 @@
         background-color: #90a4ae;
       }
 
-      /* CALENDAR */
+      /* =========================================
+         CALENDAR
+      ========================================= */
+
       .calendar-header {
         display: flex;
         justify-content: space-between;
@@ -256,7 +462,10 @@
         cursor: default;
       }
 
-      /* TIME PICKER */
+      /* =========================================
+         TIME PICKER
+      ========================================= */
+
       .time-picker-section {
         margin-bottom: 20px;
       }
@@ -327,7 +536,10 @@
         text-align: right;
       }
 
-      /* VIBE GRID */
+      /* =========================================
+         VIBE
+      ========================================= */
+
       .vibe-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -369,7 +581,6 @@
         color: #444;
       }
 
-      /* OTHER VIBE INPUT */
       .other-vibe-input {
         display: none;
         margin-bottom: 15px;
@@ -396,7 +607,10 @@
         box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.08);
       }
 
-      /* DRESS CODE */
+      /* =========================================
+         DRESS
+      ========================================= */
+
       .dress-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -431,7 +645,10 @@
         color: #444;
       }
 
-      /* TREND */
+      /* =========================================
+         TREND
+      ========================================= */
+
       .trend-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -488,7 +705,10 @@
         border-color: #e91e63;
       }
 
-      /* COUNTDOWN */
+      /* =========================================
+         COUNTDOWN
+      ========================================= */
+
       .countdown-box {
         font-weight: 600;
         color: #d81b60;
@@ -503,26 +723,128 @@
   </head>
 
   <body>
-    <!-- THẺ AUDIO SỬ DỤNG LINK RAW CHÍNH XÁC CỦA GITHUB -->
-    <audio
-      id="bgMusic"
-      src="https://raw.githubusercontent.com/1hanhtuan/dear-love-of-mylife/main/nhac_nen.mp3"
-      loop
-      preload="auto"
-    ></audio>
+    <!-- =========================================
+         AUDIO
+    ========================================= -->
+
+    <audio id="bgMusic" preload="auto"></audio>
 
     <div class="card">
-      <!-- NÚT BẬT TẮT NHẠC Ở GÓC TRÁI -->
+
+      <!-- MUSIC BUTTON -->
       <button
         type="button"
         class="music-toggle-btn"
-        onclick="toggleMusic()"
-        aria-label="Toggle Music"
+        onclick="toggleMusicPlayer()"
+        aria-label="Toggle Music Player"
       >
         🎵
       </button>
 
-      <!-- TOP RIGHT BACK ICON -->
+      <!-- MUSIC PLAYER -->
+      <div class="music-player" id="musicPlayer">
+
+        <div class="music-player-header">
+          <div class="music-player-title">
+            🎵 Our Playlist
+          </div>
+
+          <button
+            type="button"
+            class="music-close-btn"
+            onclick="toggleMusicPlayer()"
+          >
+            ×
+          </button>
+        </div>
+
+        <div class="music-now-playing">
+          <div class="music-now-playing-label">
+            NOW PLAYING
+          </div>
+
+          <div
+            class="music-now-playing-title"
+            id="nowPlayingTitle"
+          >
+            Loading...
+          </div>
+        </div>
+
+        <input
+          type="range"
+          id="musicProgress"
+          class="music-progress"
+          min="0"
+          max="100"
+          value="0"
+          step="0.1"
+        />
+
+        <div class="music-time">
+          <span id="currentMusicTime">0:00</span>
+          <span id="totalMusicTime">0:00</span>
+        </div>
+
+        <div class="music-controls">
+
+          <button
+            type="button"
+            class="music-control-btn"
+            onclick="previousSong()"
+            title="Previous"
+          >
+            ⏮️
+          </button>
+
+          <button
+            type="button"
+            class="music-control-btn"
+            id="shuffleBtn"
+            onclick="toggleShuffle()"
+            title="Shuffle"
+          >
+            🔀
+          </button>
+
+          <button
+            type="button"
+            class="music-control-btn play"
+            id="musicPlayBtn"
+            onclick="toggleMusic()"
+            title="Play / Pause"
+          >
+            ▶️
+          </button>
+
+          <button
+            type="button"
+            class="music-control-btn"
+            onclick="nextSong()"
+            title="Next"
+          >
+            ⏭️
+          </button>
+
+          <button
+            type="button"
+            class="music-control-btn"
+            id="repeatBtn"
+            onclick="toggleRepeat()"
+            title="Repeat"
+          >
+            🔁
+          </button>
+
+        </div>
+
+        <div
+          class="playlist"
+          id="playlistContainer"
+        ></div>
+      </div>
+
+      <!-- TOP RIGHT BACK -->
       <button
         type="button"
         class="top-back-btn"
@@ -539,30 +861,35 @@
         action="https://formspree.io/f/myezjykp"
         method="POST"
       >
+
         <input
           type="hidden"
           name="selected_date"
           id="inputDate"
           value=""
         />
+
         <input
           type="hidden"
           name="selected_time"
           id="inputTime"
           value="6:00 PM"
         />
+
         <input
           type="hidden"
           name="selected_vibe"
           id="inputVibe"
           value=""
         />
+
         <input
           type="hidden"
           name="selected_dress"
           id="inputDress"
           value=""
         />
+
         <input
           type="hidden"
           name="selected_trend"
@@ -570,15 +897,24 @@
           value=""
         />
 
-        <!-- STEP 1 -->
+        <!-- =========================================
+             STEP 1
+        ========================================= -->
+
         <div class="step active" id="step1">
-          <div style="font-size: 40px; margin-bottom: 15px">🌸💌</div>
+
+          <div style="font-size: 40px; margin-bottom: 15px">
+            🌸💌
+          </div>
 
           <h2>WILL YOU GO ON A DATE WITH ME?</h2>
 
-          <p>Chỉ được chọn Yes thôi nha công chúa ✨</p>
+          <p>
+            Chỉ được chọn Yes thôi nha công chúa ✨
+          </p>
 
           <div class="btn-group">
+
             <button
               type="button"
               class="btn"
@@ -597,24 +933,46 @@
             >
               No
             </button>
+
           </div>
         </div>
 
-        <!-- STEP 2 -->
+        <!-- =========================================
+             STEP 2
+        ========================================= -->
+
         <div class="step" id="step2">
+
           <h2>SO... WHEN ARE YOU FREE? 🗓️</h2>
 
-          <p>I knew you'd say yes! Pick a slot below 👇</p>
+          <p>
+            I knew you'd say yes! Pick a slot below 👇
+          </p>
 
           <div class="calendar-header">
-            <button type="button" onclick="changeMonth(-1)">❮</button>
 
-            <div id="currentMonthYear">September 2026</div>
+            <button
+              type="button"
+              onclick="changeMonth(-1)"
+            >
+              ❮
+            </button>
 
-            <button type="button" onclick="changeMonth(1)">❯</button>
+            <div id="currentMonthYear">
+              September 2026
+            </div>
+
+            <button
+              type="button"
+              onclick="changeMonth(1)"
+            >
+              ❯
+            </button>
+
           </div>
 
           <div class="calendar-grid">
+
             <div class="day-name">Su</div>
             <div class="day-name">Mo</div>
             <div class="day-name">Tu</div>
@@ -622,6 +980,7 @@
             <div class="day-name">Th</div>
             <div class="day-name">Fr</div>
             <div class="day-name">Sa</div>
+
           </div>
 
           <div
@@ -630,12 +989,19 @@
           ></div>
 
           <div class="time-picker-section">
-            <div class="time-picker-label">What time? ⏰</div>
+
+            <div class="time-picker-label">
+              What time? ⏰
+            </div>
 
             <div class="time-picker-card">
-              <div class="time-picker-icon">🕐</div>
+
+              <div class="time-picker-icon">
+                🕐
+              </div>
 
               <div class="time-picker-content">
+
                 <div class="time-picker-title">
                   Chọn giờ hẹn của chúng ta
                 </div>
@@ -646,7 +1012,9 @@
                   value="18:00"
                   onchange="selectTime(this.value)"
                 />
+
               </div>
+
             </div>
 
             <div
@@ -655,6 +1023,7 @@
             >
               6:00 PM 💖
             </div>
+
           </div>
 
           <button
@@ -665,10 +1034,15 @@
           >
             Set the date 💖
           </button>
+
         </div>
 
-        <!-- STEP 3 -->
+        <!-- =========================================
+             STEP 3
+        ========================================= -->
+
         <div class="step" id="step3">
+
           <div
             style="
               font-size: 13px;
@@ -679,9 +1053,12 @@
             Yay! Our date has been successfully scheduled! ❤️
           </div>
 
-          <h2>What are we feeling? (Chọn nhiều nha) ✨</h2>
+          <h2>
+            What are we feeling? (Chọn nhiều nha) ✨
+          </h2>
 
           <div class="vibe-grid">
+
             <div
               class="vibe-card"
               onclick="toggleVibe(this, 'Matcha Latte 🍵')"
@@ -801,6 +1178,7 @@
               <div class="vibe-icon">📝</div>
               <div class="vibe-name">Other</div>
             </div>
+
           </div>
 
           <div
@@ -824,10 +1202,15 @@
           >
             Next 💌
           </button>
+
         </div>
 
-        <!-- STEP 3.2 -->
+        <!-- =========================================
+             STEP 3.2
+        ========================================= -->
+
         <div class="step" id="step32">
+
           <h2>Dress Code 👗✨</h2>
 
           <p
@@ -840,6 +1223,7 @@
           </p>
 
           <div class="dress-grid">
+
             <div
               class="dress-card"
               id="dress1"
@@ -879,6 +1263,7 @@
                 Casual & Comfy 🧢
               </div>
             </div>
+
           </div>
 
           <div
@@ -912,6 +1297,7 @@
               style="display: none"
               onchange="handleDressUpload(event)"
             />
+
           </div>
 
           <button
@@ -923,10 +1309,15 @@
           >
             Next 💌
           </button>
+
         </div>
 
-        <!-- STEP 3.5 -->
+        <!-- =========================================
+             STEP 3.5
+        ========================================= -->
+
         <div class="step" id="step35">
+
           <h2>Pick a Trend! 🌟</h2>
 
           <p
@@ -939,10 +1330,11 @@
           </p>
 
           <div class="trend-grid">
+
             <div
               class="trend-card"
               id="trend1Card"
-              onclick="selectTrend('McDonald Cat 🐱')"
+              onclick="selectTrend(this, 'McDonald Cat 🐱')"
             >
               <img
                 src="https://i.ibb.co/zWWSX1KX/images.jpg"
@@ -958,7 +1350,7 @@
             <div
               class="trend-card"
               id="trend2Card"
-              onclick="selectTrend('Heart Nail 💅')"
+              onclick="selectTrend(this, 'Heart Nail 💅')"
             >
               <img
                 src="https://i.ibb.co/214dJS4v/2b348513-43bc-4b11-ac44-ed4b0bacb914.jpg"
@@ -974,7 +1366,7 @@
             <div
               class="trend-card"
               id="trend3Card"
-              onclick="selectTrend('Flower Bouquet 💐')"
+              onclick="selectTrend(this, 'Flower Bouquet 💐')"
             >
               <img
                 src="https://i.ibb.co/kVZM5RJM/image.png"
@@ -990,7 +1382,7 @@
             <div
               class="trend-card"
               id="trend4Card"
-              onclick="selectTrend('Zootopia 🦊')"
+              onclick="selectTrend(this, 'Zootopia 🦊')"
             >
               <img
                 src="https://i.ibb.co/B5DMrMs0/image-2.png"
@@ -1002,12 +1394,14 @@
                 Zootopia 🦊
               </div>
             </div>
+
           </div>
 
           <div
             class="upload-section"
             onclick="document.getElementById('customImageInput').click()"
           >
+
             <div
               style="
                 font-size: 18px;
@@ -1036,6 +1430,7 @@
               style="display: none"
               onchange="handleMultipleImagesUpload(event)"
             />
+
           </div>
 
           <button
@@ -1047,10 +1442,15 @@
           >
             Next 💌
           </button>
+
         </div>
 
-        <!-- STEP 4 -->
+        <!-- =========================================
+             STEP 4
+        ========================================= -->
+
         <div class="step" id="step4">
+
           <h2>YAY!! 💖</h2>
 
           <div
@@ -1065,30 +1465,42 @@
               border: 1px dashed #e91e63;
             "
           >
+
             <p style="margin-bottom: 4px">
               🗓️ <b>Ngày:</b>
-              <span id="sumDate">September 6</span>
+              <span id="sumDate">
+                September 6
+              </span>
             </p>
 
             <p style="margin-bottom: 4px">
               ⏰ <b>Giờ:</b>
-              <span id="sumTime">6:00 PM</span>
+              <span id="sumTime">
+                6:00 PM
+              </span>
             </p>
 
             <p style="margin-bottom: 4px">
               ✨ <b>Hoạt động & Ẩm thực:</b>
-              <span id="sumVibe">Chưa chọn</span>
+              <span id="sumVibe">
+                Chưa chọn
+              </span>
             </p>
 
             <p style="margin-bottom: 4px">
               👗 <b>Dress Code:</b>
-              <span id="sumDress">Chưa chọn</span>
+              <span id="sumDress">
+                Chưa chọn
+              </span>
             </p>
 
             <p style="margin-bottom: 0">
               📸 <b>Trend:</b>
-              <span id="sumTrend">Chưa chọn</span>
+              <span id="sumTrend">
+                Chưa chọn
+              </span>
             </p>
+
           </div>
 
           <p
@@ -1118,10 +1530,15 @@
           >
             Gửi lịch hẹn cho anh nhé! 💌
           </button>
+
         </div>
 
-        <!-- STEP 5 -->
+        <!-- =========================================
+             STEP 5
+        ========================================= -->
+
         <div class="step" id="step5">
+
           <div
             style="
               font-size: 50px;
@@ -1133,7 +1550,9 @@
 
           <h2>Our Date Countdown</h2>
 
-          <p>Buổi hẹn hò của chúng ta sẽ diễn ra sau:</p>
+          <p>
+            Buổi hẹn hò của chúng ta sẽ diễn ra sau:
+          </p>
 
           <div
             class="countdown-box"
@@ -1151,11 +1570,383 @@
           >
             Lịch hẹn đã được gửi thành công cho anh rồi nhé công chúa! 🥰
           </p>
+
         </div>
+
       </form>
     </div>
 
-    <script>
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================= -->
+
+    <script type="module">
+      import { playlist } from "./music/playlist.js";
+
+      /* =========================================
+         MUSIC PLAYER
+      ========================================= */
+
+      const music = document.getElementById("bgMusic");
+
+      let currentSongIndex = 0;
+      let isShuffle = false;
+      let isRepeat = false;
+
+      function loadSong(index, shouldPlay = false) {
+        if (!playlist.length) return;
+
+        currentSongIndex =
+          (index + playlist.length) % playlist.length;
+
+        const song = playlist[currentSongIndex];
+
+        music.src = song.src;
+
+        document.getElementById(
+          "nowPlayingTitle"
+        ).innerText = song.title;
+
+        renderPlaylist();
+
+        if (shouldPlay) {
+          music
+            .play()
+            .then(() => {
+              updatePlayButton();
+            })
+            .catch(() => {
+              updatePlayButton();
+            });
+        }
+      }
+
+      function renderPlaylist() {
+        const container =
+          document.getElementById(
+            "playlistContainer"
+          );
+
+        container.innerHTML = "";
+
+        playlist.forEach((song, index) => {
+          const item =
+            document.createElement("div");
+
+          item.className =
+            "playlist-item";
+
+          if (index === currentSongIndex) {
+            item.classList.add("active");
+          }
+
+          item.innerHTML = `
+            <div class="playlist-number">
+              ${
+                index === currentSongIndex &&
+                !music.paused
+                  ? "▶"
+                  : index + 1
+              }
+            </div>
+
+            <div class="playlist-song-name">
+              ${escapeHtml(song.title)}
+            </div>
+          `;
+
+          item.onclick = () => {
+            loadSong(index, true);
+          };
+
+          container.appendChild(item);
+        });
+      }
+
+      function escapeHtml(text) {
+        const div =
+          document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+      }
+
+      function toggleMusicPlayer() {
+        const player =
+          document.getElementById(
+            "musicPlayer"
+          );
+
+        player.classList.toggle("active");
+      }
+
+      function toggleMusic() {
+        if (!playlist.length) return;
+
+        if (!music.src) {
+          loadSong(currentSongIndex, true);
+          return;
+        }
+
+        if (music.paused) {
+          music
+            .play()
+            .then(() => {
+              updatePlayButton();
+            })
+            .catch(() => {});
+        } else {
+          music.pause();
+          updatePlayButton();
+        }
+      }
+
+      function updatePlayButton() {
+        const button =
+          document.getElementById(
+            "musicPlayBtn"
+          );
+
+        button.innerText =
+          music.paused
+            ? "▶️"
+            : "⏸️";
+
+        renderPlaylist();
+      }
+
+      function nextSong() {
+        if (!playlist.length) return;
+
+        let nextIndex;
+
+        if (isShuffle && playlist.length > 1) {
+          do {
+            nextIndex =
+              Math.floor(
+                Math.random() *
+                  playlist.length
+              );
+          } while (
+            nextIndex ===
+            currentSongIndex
+          );
+        } else {
+          nextIndex =
+            currentSongIndex + 1;
+
+          if (
+            nextIndex >=
+            playlist.length
+          ) {
+            nextIndex = 0;
+          }
+        }
+
+        loadSong(nextIndex, true);
+      }
+
+      function previousSong() {
+        if (!playlist.length) return;
+
+        /*
+         * Nếu bài đã chạy quá 3 giây
+         * thì Previous sẽ restart bài hiện tại.
+         */
+        if (music.currentTime > 3) {
+          music.currentTime = 0;
+          return;
+        }
+
+        let previousIndex =
+          currentSongIndex - 1;
+
+        if (previousIndex < 0) {
+          previousIndex =
+            playlist.length - 1;
+        }
+
+        loadSong(previousIndex, true);
+      }
+
+      function toggleShuffle() {
+        isShuffle = !isShuffle;
+
+        document
+          .getElementById("shuffleBtn")
+          .classList.toggle(
+            "mode-active",
+            isShuffle
+          );
+      }
+
+      function toggleRepeat() {
+        isRepeat = !isRepeat;
+
+        document
+          .getElementById("repeatBtn")
+          .classList.toggle(
+            "mode-active",
+            isRepeat
+          );
+      }
+
+      music.addEventListener(
+        "ended",
+        () => {
+          if (isRepeat) {
+            music.currentTime = 0;
+
+            music
+              .play()
+              .then(() => {
+                updatePlayButton();
+              })
+              .catch(() => {});
+
+            return;
+          }
+
+          nextSong();
+        }
+      );
+
+      music.addEventListener(
+        "play",
+        updatePlayButton
+      );
+
+      music.addEventListener(
+        "pause",
+        updatePlayButton
+      );
+
+      music.addEventListener(
+        "loadedmetadata",
+        () => {
+          document.getElementById(
+            "totalMusicTime"
+          ).innerText =
+            formatMusicTime(
+              music.duration
+            );
+        }
+      );
+
+      music.addEventListener(
+        "timeupdate",
+        () => {
+          if (!music.duration) return;
+
+          const progress =
+            (music.currentTime /
+              music.duration) *
+            100;
+
+          document.getElementById(
+            "musicProgress"
+          ).value = progress;
+
+          document.getElementById(
+            "currentMusicTime"
+          ).innerText =
+            formatMusicTime(
+              music.currentTime
+            );
+        }
+      );
+
+      document
+        .getElementById("musicProgress")
+        .addEventListener(
+          "input",
+          (event) => {
+            if (!music.duration) return;
+
+            music.currentTime =
+              (event.target.value /
+                100) *
+              music.duration;
+          }
+        );
+
+      function formatMusicTime(seconds) {
+        if (
+          !seconds ||
+          Number.isNaN(seconds)
+        ) {
+          return "0:00";
+        }
+
+        const minutes =
+          Math.floor(seconds / 60);
+
+        const remainingSeconds =
+          Math.floor(seconds % 60)
+            .toString()
+            .padStart(2, "0");
+
+        return `${minutes}:${remainingSeconds}`;
+      }
+
+      /*
+       * Browser thường chặn autoplay.
+       *
+       * Ta thử autoplay trước.
+       * Nếu bị block, lần click đầu tiên
+       * trên page sẽ unlock audio.
+       */
+
+      function initializeMusic() {
+        if (!playlist.length) return;
+
+        loadSong(0, false);
+
+        music
+          .play()
+          .then(() => {
+            updatePlayButton();
+          })
+          .catch(() => {
+            const unlockAudio =
+              () => {
+                music
+                  .play()
+                  .then(() => {
+                    updatePlayButton();
+                  })
+                  .catch(() => {});
+
+                document.removeEventListener(
+                  "click",
+                  unlockAudio
+                );
+
+                document.removeEventListener(
+                  "touchstart",
+                  unlockAudio
+                );
+              };
+
+            document.addEventListener(
+              "click",
+              unlockAudio
+            );
+
+            document.addEventListener(
+              "touchstart",
+              unlockAudio
+            );
+          });
+      }
+
+      initializeMusic();
+
+      /* =========================================
+         DATE FORM
+      ========================================= */
+
       const monthNames = [
         "January",
         "February",
@@ -1172,105 +1963,50 @@
       ];
 
       let today = new Date();
-      let currentYear = today.getFullYear();
-      let currentMonth = today.getMonth();
 
-      let chosenDate = `${
-        monthNames[today.getMonth()]
-      } ${today.getDate()}, ${today.getFullYear()}`;
+      let currentYear =
+        today.getFullYear();
+
+      let currentMonth =
+        today.getMonth();
+
+      let chosenDate =
+        `${monthNames[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
 
       let chosenTime = "6:00 PM";
+
       let chosenTimeValue = "18:00";
 
       let chosenVibes = [];
+
       let otherVibe = "";
 
       let chosenDress = "";
+
       let chosenTrend = "";
 
-      document.getElementById("inputDate").value = chosenDate;
-
-      // HÀM TỰ ĐỘNG PHÁT NHẠC KHI CÓ TƯƠNG TÁC ĐẦU TIÊN TRÊN MÀN HÌNH
-      document.addEventListener("DOMContentLoaded", () => {
-        const music = document.getElementById("bgMusic");
-        const btn = document.querySelector(".music-toggle-btn");
-
-        // Cố gắng phát nhạc ngay khi load
-        music
-          .play()
-          .then(() => {
-            btn.innerText = "🎵";
-          })
-          .catch(() => {
-            // Nếu bị trình duyệt chặn, tự động bật ngay khi người dùng click/chạm bất kỳ đâu trên màn hình lần đầu tiên
-            const unlockAudio = () => {
-              music
-                .play()
-                .then(() => {
-                  btn.innerText = "🎵";
-
-                  document.removeEventListener(
-                    "click",
-                    unlockAudio
-                  );
-
-                  document.removeEventListener(
-                    "touchstart",
-                    unlockAudio
-                  );
-                })
-                .catch((err) =>
-                  console.log("Chờ tương tác:", err)
-                );
-            };
-
-            document.addEventListener(
-              "click",
-              unlockAudio
-            );
-
-            document.addEventListener(
-              "touchstart",
-              unlockAudio
-            );
-          });
-      });
-
-      /* HÀM BẬT/TẮT NHẠC THỦ CÔNG QUA NÚT 🎵 */
-      function toggleMusic() {
-        const music = document.getElementById("bgMusic");
-        const btn = document.querySelector(".music-toggle-btn");
-
-        if (music.paused) {
-          music
-            .play()
-            .then(() => {
-              btn.innerText = "🎵";
-            })
-            .catch((e) =>
-              console.log(
-                "Không phát được nhạc:",
-                e
-              )
-            );
-        } else {
-          music.pause();
-          btn.innerText = "🔇";
-        }
-      }
+      document.getElementById(
+        "inputDate"
+      ).value = chosenDate;
 
       function nextStep(stepNumber) {
         document
           .querySelectorAll(".step")
-          .forEach((el) =>
-            el.classList.remove("active")
-          );
+          .forEach((el) => {
+            el.classList.remove(
+              "active"
+            );
+          });
 
         document
-          .getElementById("step" + stepNumber)
+          .getElementById(
+            "step" + stepNumber
+          )
           .classList.add("active");
 
-        updateBackButton(stepNumber);
+        updateBackButton(
+          stepNumber
+        );
 
         if (stepNumber === 2) {
           renderCalendar(
@@ -1292,50 +2028,74 @@
         }
 
         if (stepNumber === 4) {
-          document.getElementById("sumDate").innerText =
-            chosenDate;
+          document.getElementById(
+            "sumDate"
+          ).innerText = chosenDate;
 
-          document.getElementById("sumTime").innerText =
-            chosenTime;
+          document.getElementById(
+            "sumTime"
+          ).innerText = chosenTime;
 
-          let vibeText = getVibeText();
+          const vibeText =
+            getVibeText();
 
-          document.getElementById("sumVibe").innerText =
+          document.getElementById(
+            "sumVibe"
+          ).innerText =
             vibeText || "Chưa chọn";
 
-          document.getElementById("inputVibe").value =
-            vibeText;
+          document.getElementById(
+            "inputVibe"
+          ).value = vibeText;
 
-          document.getElementById("sumDress").innerText =
-            chosenDress || "Chưa chọn";
+          document.getElementById(
+            "sumDress"
+          ).innerText =
+            chosenDress ||
+            "Chưa chọn";
 
-          document.getElementById("inputDress").value =
-            chosenDress;
+          document.getElementById(
+            "inputDress"
+          ).value = chosenDress;
 
-          document.getElementById("sumTrend").innerText =
-            chosenTrend || "Chưa chọn";
+          document.getElementById(
+            "sumTrend"
+          ).innerText =
+            chosenTrend ||
+            "Chưa chọn";
 
-          document.getElementById("inputTrend").value =
-            chosenTrend;
+          document.getElementById(
+            "inputTrend"
+          ).value = chosenTrend;
         }
       }
 
-      function updateBackButton(stepNumber) {
+      function updateBackButton(
+        stepNumber
+      ) {
         const backButton =
-          document.getElementById("topBackBtn");
+          document.getElementById(
+            "topBackBtn"
+          );
 
         if (
-          [2, 3, 32, 35, 4].includes(stepNumber)
+          [2, 3, 32, 35, 4].includes(
+            stepNumber
+          )
         ) {
-          backButton.style.display = "flex";
+          backButton.style.display =
+            "flex";
         } else {
-          backButton.style.display = "none";
+          backButton.style.display =
+            "none";
         }
       }
 
       function goBack() {
         const activeStep =
-          document.querySelector(".step.active");
+          document.querySelector(
+            ".step.active"
+          );
 
         if (!activeStep) return;
 
@@ -1364,20 +2124,35 @@
 
       function moveNoButton() {
         const noBtn =
-          document.getElementById("noBtn");
+          document.getElementById(
+            "noBtn"
+          );
 
         const yesBtn =
-          document.getElementById("yesBtn");
+          document.getElementById(
+            "yesBtn"
+          );
 
         const container =
-          document.querySelector(".btn-group");
+          document.querySelector(
+            ".btn-group"
+          );
 
-        if (!container.classList.contains("expanded")) {
-          container.classList.add("expanded");
+        if (
+          !container.classList.contains(
+            "expanded"
+          )
+        ) {
+          container.classList.add(
+            "expanded"
+          );
         }
 
-        yesBtn.innerText = "Yes 😭";
-        noBtn.innerText = "No 🥺";
+        yesBtn.innerText =
+          "Yes 😭";
+
+        noBtn.innerText =
+          "No 🥺";
 
         const containerWidth =
           container.clientWidth;
@@ -1398,29 +2173,41 @@
           yesBtn.offsetTop;
 
         const yesRight =
-          yesLeft + yesBtn.offsetWidth;
+          yesLeft +
+          yesBtn.offsetWidth;
 
         const yesBottom =
-          yesTop + yesBtn.offsetHeight;
+          yesTop +
+          yesBtn.offsetHeight;
 
         const gap = 10;
 
         let randomX = 0;
+
         let randomY = 0;
 
         let validPosition = false;
 
-        for (let attempts = 0; attempts < 200; attempts++) {
+        for (
+          let attempts = 0;
+          attempts < 200;
+          attempts++
+        ) {
           randomX =
             Math.random() *
-            (containerWidth - noWidth);
+            (containerWidth -
+              noWidth);
 
           randomY =
             Math.random() *
-            (containerHeight - noHeight);
+            (containerHeight -
+              noHeight);
 
-          const noLeft = randomX;
-          const noTop = randomY;
+          const noLeft =
+            randomX;
+
+          const noTop =
+            randomY;
 
           const noRight =
             noLeft + noWidth;
@@ -1429,10 +2216,14 @@
             noTop + noHeight;
 
           const overlapsYes =
-            noLeft < yesRight + gap &&
-            noRight > yesLeft - gap &&
-            noTop < yesBottom + gap &&
-            noBottom > yesTop - gap;
+            noLeft <
+              yesRight + gap &&
+            noRight >
+              yesLeft - gap &&
+            noTop <
+              yesBottom + gap &&
+            noBottom >
+              yesTop - gap;
 
           if (!overlapsYes) {
             validPosition = true;
@@ -1442,21 +2233,38 @@
 
         if (!validPosition) {
           randomX =
-            containerWidth - noWidth;
+            containerWidth -
+            noWidth;
 
           randomY =
-            containerHeight - noHeight;
+            containerHeight -
+            noHeight;
         }
 
-        noBtn.style.left = `${randomX}px`;
-        noBtn.style.top = `${randomY}px`;
-        noBtn.style.right = "auto";
-        noBtn.style.transform = "none";
+        noBtn.style.left =
+          `${randomX}px`;
+
+        noBtn.style.top =
+          `${randomY}px`;
+
+        noBtn.style.right =
+          "auto";
+
+        noBtn.style.transform =
+          "none";
+
         noBtn.style.transition =
           "all 0.12s ease-out";
       }
 
-      function renderCalendar(month, year) {
+      /* =========================================
+         CALENDAR
+      ========================================= */
+
+      function renderCalendar(
+        month,
+        year
+      ) {
         const container =
           document.getElementById(
             "calendarDaysContainer"
@@ -1489,7 +2297,9 @@
           i++
         ) {
           const emptyDiv =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
 
           emptyDiv.classList.add(
             "day",
@@ -1507,9 +2317,13 @@
           day++
         ) {
           const dayDiv =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
 
-          dayDiv.classList.add("day");
+          dayDiv.classList.add(
+            "day"
+          );
 
           dayDiv.innerText = day;
 
@@ -1527,24 +2341,30 @@
               today.getDate()
             );
 
-          if (thisDate < compareToday) {
+          if (
+            thisDate < compareToday
+          ) {
             dayDiv.classList.add(
               "disabled"
             );
           } else {
-            dayDiv.onclick = function () {
-              selectDate(
-                this,
-                month,
-                day,
-                year
-              );
-            };
+            dayDiv.onclick =
+              function () {
+                selectDate(
+                  this,
+                  month,
+                  day,
+                  year
+                );
+              };
 
             if (
-              month === today.getMonth() &&
-              day === today.getDate() &&
-              year === today.getFullYear()
+              month ===
+                today.getMonth() &&
+              day ===
+                today.getDate() &&
+              year ===
+                today.getFullYear()
             ) {
               dayDiv.classList.add(
                 "selected"
@@ -1558,13 +2378,20 @@
         }
       }
 
-      function changeMonth(direction) {
-        currentMonth += direction;
+      function changeMonth(
+        direction
+      ) {
+        currentMonth +=
+          direction;
 
-        if (currentMonth > 11) {
+        if (
+          currentMonth > 11
+        ) {
           currentMonth = 0;
           currentYear++;
-        } else if (currentMonth < 0) {
+        } else if (
+          currentMonth < 0
+        ) {
           currentMonth = 11;
           currentYear--;
         }
@@ -1600,13 +2427,17 @@
 
         document.getElementById(
           "inputDate"
-        ).value = chosenDate;
+        ).value =
+          chosenDate;
       }
 
-      function selectTime(timeStr) {
+      function selectTime(
+        timeStr
+      ) {
         if (!timeStr) return;
 
-        chosenTimeValue = timeStr;
+        chosenTimeValue =
+          timeStr;
 
         let [hours, minutes] =
           timeStr.split(":");
@@ -1616,7 +2447,7 @@
           10
         );
 
-        let ampm =
+        const ampm =
           hours >= 12
             ? "PM"
             : "AM";
@@ -1638,26 +2469,9 @@
           `${hours}:${minutes} ${ampm}`;
       }
 
-      /*
-       * VIBE SELECTION
-       *
-       * FIX:
-       * updateOtherVibe() không còn gọi toggleVibe().
-       *
-       * Trước đây mỗi lần user gõ 1 ký tự:
-       *
-       *   input
-       *     ↓
-       *   updateOtherVibe()
-       *     ↓
-       *   toggleVibe()
-       *     ↓
-       *   classList.toggle("selected")
-       *     ↓
-       *   classList.toggle("active")
-       *
-       * nên Other input bị đóng ngay lập tức.
-       */
+      /* =========================================
+         VIBE
+      ========================================= */
 
       function toggleVibe(
         element,
@@ -1667,9 +2481,9 @@
           "selected"
         );
 
-        // Chỉ show/hide input khi USER CLICK vào Other card
         if (
-          vibeName === "Other 📝"
+          vibeName ===
+          "Other 📝"
         ) {
           const otherInput =
             document.getElementById(
@@ -1701,14 +2515,6 @@
       }
 
       function updateOtherVibe() {
-        /*
-         * QUAN TRỌNG:
-         * Không gọi toggleVibe() ở đây.
-         *
-         * Hàm này chỉ đọc giá trị input
-         * và cập nhật state.
-         */
-
         otherVibe =
           document
             .getElementById(
@@ -1732,7 +2538,9 @@
                 ".vibe-name"
               ).innerText;
 
-            if (name !== "Other") {
+            if (
+              name !== "Other"
+            ) {
               chosenVibes.push(
                 card.innerText
                   .trim()
@@ -1744,8 +2552,6 @@
             }
           });
 
-        // Nếu Other đang được chọn và có text
-        // thì thêm custom value vào chosenVibes
         const otherCard =
           document.querySelector(
             ".vibe-card:last-child"
@@ -1770,12 +2576,66 @@
       }
 
       function restoreVibeSelections() {
-        // Giữ nguyên behavior hiện tại
+        const cards =
+          document.querySelectorAll(
+            ".vibe-card"
+          );
+
+        cards.forEach((card) => {
+          const name =
+            card.querySelector(
+              ".vibe-name"
+            ).innerText;
+
+          const isSelected =
+            chosenVibes.some(
+              (vibe) =>
+                vibe.startsWith(
+                  name
+                )
+            );
+
+          card.classList.toggle(
+            "selected",
+            isSelected
+          );
+        });
+
+        const otherCard =
+          document.querySelector(
+            ".vibe-card:last-child"
+          );
+
+        if (
+          otherCard &&
+          otherCard.classList.contains(
+            "selected"
+          )
+        ) {
+          document
+            .getElementById(
+              "otherVibeInput"
+            )
+            .classList.add(
+              "active"
+            );
+
+          document.getElementById(
+            "otherVibeText"
+          ).value =
+            otherVibe;
+        }
       }
 
       function getVibeText() {
-        return chosenVibes.join(", ");
+        return chosenVibes.join(
+          ", "
+        );
       }
+
+      /* =========================================
+         DRESS
+      ========================================= */
 
       function selectDress(
         element,
@@ -1795,7 +2655,8 @@
           "selected"
         );
 
-        chosenDress = dressName;
+        chosenDress =
+          dressName;
 
         document.getElementById(
           "btnStep32"
@@ -1834,10 +2695,29 @@
       }
 
       function restoreDressSelection() {
-        // Giữ nguyên behavior hiện tại
+        if (!chosenDress) return;
+
+        document
+          .querySelectorAll(
+            ".dress-card"
+          )
+          .forEach((card) => {
+            card.classList.remove(
+              "selected"
+            );
+          });
+
+        document.getElementById(
+          "btnStep32"
+        ).disabled = false;
       }
 
+      /* =========================================
+         TREND
+      ========================================= */
+
       function selectTrend(
+        element,
         trendName
       ) {
         document
@@ -1850,11 +2730,12 @@
             )
           );
 
-        event.currentTarget.classList.add(
+        element.classList.add(
           "selected"
         );
 
-        chosenTrend = trendName;
+        chosenTrend =
+          trendName;
 
         document.getElementById(
           "btnStep35"
@@ -1893,8 +2774,16 @@
       }
 
       function restoreTrendSelection() {
-        // Giữ nguyên behavior hiện tại
+        if (!chosenTrend) return;
+
+        document.getElementById(
+          "btnStep35"
+        ).disabled = false;
       }
+
+      /* =========================================
+         FORM SUBMIT
+      ========================================= */
 
       function submitForm(event) {
         event.preventDefault();
@@ -1925,16 +2814,21 @@
           });
       }
 
+      /* =========================================
+         COUNTDOWN
+      ========================================= */
+
       function startCountdown() {
-        let targetDate =
+        const targetDate =
           new Date(
             `${chosenDate} ${chosenTimeValue}`
           );
 
         function updateTimer() {
-          let now = new Date();
+          const now =
+            new Date();
 
-          let diff =
+          const diff =
             targetDate - now;
 
           if (diff <= 0) {
@@ -1946,7 +2840,7 @@
             return;
           }
 
-          let days =
+          const days =
             Math.floor(
               diff /
                 (1000 *
@@ -1955,7 +2849,7 @@
                   24)
             );
 
-          let hours =
+          const hours =
             Math.floor(
               (diff /
                 (1000 *
@@ -1964,7 +2858,7 @@
                 24
             );
 
-          let minutes =
+          const minutes =
             Math.floor(
               (diff /
                 1000 /
@@ -1972,7 +2866,7 @@
                 60
             );
 
-          let seconds =
+          const seconds =
             Math.floor(
               (diff / 1000) %
                 60
@@ -1994,3 +2888,4 @@
     </script>
   </body>
 </html>
+```
