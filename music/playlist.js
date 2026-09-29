@@ -13,7 +13,7 @@ const playlist = [
   },
   {
     title: "Your last 💖",
-    src: "./music/song3.mp3",
+    src: "./music/song3.mp4",
   },
 ];
 
