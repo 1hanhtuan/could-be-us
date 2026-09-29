@@ -4,12 +4,16 @@
 
 const playlist = [
   {
-    title: "Chờ anh chút thôi <3",
+    title: "Chờ anh chút thôi 💖",
     src: "./music/song1.mp3",
   },
   {
-    title: "Nép vào vai anh <3",
+    title: "Nép vào vai anh 💖",
     src: "./music/song2.mp3",
+  },
+  {
+    title: "Your last 💖",
+    src: "./music/song3.mp3",
   },
 ];
 
