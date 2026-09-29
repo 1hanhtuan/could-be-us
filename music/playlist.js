@@ -4,11 +4,11 @@
 
 const playlist = [
   {
-    title: "Song 1",
+    title: "Chờ anh chút thôi <3",
     src: "./music/song1.mp3",
   },
   {
-    title: "Song 2",
+    title: "Nép vào vai anh <3",
     src: "./music/song2.mp3",
   },
 ];
