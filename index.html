@@ -752,12 +752,78 @@
       border-radius: 12px;
       border: 1px dashed #e91e63;
     }
+
+    /* =========================================
+       SUBMIT SUCCESS HEART SCREEN
+       ========================================= */
+    .heart-success-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: #000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .heart-success-screen.active {
+      display: flex;
+    }
+
+    .heart-success-screen canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .heart-success-message {
+      position: absolute;
+      z-index: 2;
+      color: #ff1744;
+      text-align: center;
+      font-size: 20px;
+      line-height: 1.6;
+      font-family: "Times New Roman", Times, serif;
+      font-weight: 700;
+      text-shadow: 0 0 12px rgba(255, 23, 68, 0.45);
+      animation: heartMessagePulse 1.3s infinite;
+      pointer-events: none;
+    }
+
+    @keyframes heartMessagePulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      30% {
+        transform: scale(.96);
+      }
+
+      60% {
+        transform: scale(1.04);
+      }
+    }
   </style>
 </head>
 
 <body>
   <!-- CONTAINER TRÁI TIM BAY NỀN ĐEN -->
   <div class="hearts-container" id="heartsContainer"></div>
+
+  <!-- =========================================
+       SUBMIT SUCCESS HEART SCREEN
+       Shows for 5 seconds before countdown
+       ========================================= -->
+  <div class="heart-success-screen" id="heartSuccessScreen">
+    <canvas id="heartSuccessCanvas"></canvas>
+    <div class="heart-success-message">
+      
+    </div>
+  </div>
 
   <!-- =========================================
          AUDIO
@@ -839,8 +905,6 @@
 
       <input type="hidden" name="selected_date" id="inputDate" value="" />
 
-      <input type="hidden" name="selected_time" id="inputTime" value="6:00 PM" />
-
       <input type="hidden" name="selected_vibe" id="inputVibe" value="" />
 
       <input type="hidden" name="selected_dress" id="inputDress" value="" />
@@ -881,12 +945,12 @@
         ========================================= -->
 
       <div class="step" id="step2">
+        <h2>
+          Anh bít em sẽ đồng ý màaa 🥰
+        </h2>
 
-        <h2>SO... WHEN ARE YOU FREE? 🗓️</h2>
+        <p>Chọn ngày đi chơi với anh nhaaa~ 🗓️</p>
 
-        <p>
-          I knew you'd say yes! Pick a slot below 👇
-        </p>
 
         <div class="calendar-header">
 
@@ -941,11 +1005,6 @@
             </div>
 
           </div>
-
-          <div class="selected-time-preview" id="selectedTimePreview">
-            6:00 PM 💖
-          </div>
-
         </div>
 
         <button type="button" class="btn" id="btnStep2" onclick="nextStep(3)">
@@ -1405,8 +1464,7 @@
 
     let chosenDate = `${monthNames[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
 
-    let chosenTime = "6:00 PM";
-
+    let chosenTime = "18:00";
     let chosenTimeValue = "18:00";
 
     let chosenVibes = [];
@@ -1675,27 +1733,26 @@
       document.getElementById("inputDate").value = chosenDate;
     }
 
-    function selectTime(timeStr) {
-      if (!timeStr) return;
+  function selectTime(timeStr) {
+    if (!timeStr) return;
 
-      chosenTimeValue = timeStr;
+    chosenTimeValue = timeStr;
 
-      let [hours, minutes] = timeStr.split(":");
+    // Keep the selected time in 24-hour format
+    chosenTime = `${timeStr} 💖`;
 
-      hours = parseInt(hours, 10);
-
-      const ampm = hours >= 12 ? "PM" : "AM";
-
-      hours = hours % 12 || 12;
-
-      chosenTime = `${hours}:${minutes} ${ampm} 💖`;
-
-      document.getElementById("selectedTimePreview").innerText = chosenTime;
-
-      document.getElementById(
-        "inputTime"
-      ).value = `${hours}:${minutes} ${ampm}`;
+    // Optional preview if the element exists
+    const timePreview = document.getElementById("selectedTimePreview");
+    if (timePreview) {
+      timePreview.innerText = chosenTime;
     }
+
+    // Optional hidden input if the element exists
+    const inputTime = document.getElementById("inputTime");
+    if (inputTime) {
+      inputTime.value = timeStr;
+    }
+  }
 
     /* =========================================
        VIBE
@@ -1873,13 +1930,304 @@
         },
       })
         .then(() => {
-          nextStep(5);
-          startCountdown();
+          showHeartSuccessThenCountdown();
         })
         .catch(() => {
-          nextStep(5);
-          startCountdown();
+          // Keep the same UX even if Formspree reports an error.
+          showHeartSuccessThenCountdown();
         });
+    }
+
+
+    /* =========================================
+       SUBMIT SUCCESS HEART SCREEN
+    ========================================= */
+
+    let heartSuccessTimer = null;
+
+    function showHeartSuccessThenCountdown() {
+      const screen = document.getElementById("heartSuccessScreen");
+      if (!screen) {
+        nextStep(5);
+        startCountdown();
+        return;
+      }
+
+      // Hide the form/card and show the full-screen red heart animation.
+      screen.classList.add("active");
+      startHeartSuccessAnimation();
+
+      // Keep the heart screen visible for 5 seconds.
+      clearTimeout(heartSuccessTimer);
+      heartSuccessTimer = setTimeout(() => {
+        screen.classList.remove("active");
+        nextStep(5);
+        startCountdown();
+      }, 5000);
+    }
+
+    function startHeartSuccessAnimation() {
+      const canvas = document.getElementById("heartSuccessCanvas");
+      if (!canvas) return;
+
+      const context = canvas.getContext("2d");
+      if (!context) return;
+
+      const settings = {
+        particles: {
+          length: 2000,
+          duration: 2,
+          velocity: 100,
+          effect: -1.3,
+          size: 13,
+        },
+      };
+
+      function Point(x, y) {
+        this.x = typeof x !== "undefined" ? x : 0;
+        this.y = typeof y !== "undefined" ? y : 0;
+      }
+
+      Point.prototype.clone = function () {
+        return new Point(this.x, this.y);
+      };
+
+      Point.prototype.length = function (length) {
+        if (typeof length === "undefined") {
+          return Math.sqrt(this.x * this.x + this.y * this.y);
+        }
+        this.normalize();
+        this.x *= length;
+        this.y *= length;
+        return this;
+      };
+
+      Point.prototype.normalize = function () {
+        const length = this.length();
+        this.x /= length;
+        this.y /= length;
+        return this;
+      };
+
+      function Particle() {
+        this.position = new Point();
+        this.velocity = new Point();
+        this.acceleration = new Point();
+        this.age = 0;
+      }
+
+      Particle.prototype.initialize = function (x, y, dx, dy) {
+        this.position.x = x;
+        this.position.y = y;
+        this.velocity.x = dx;
+        this.velocity.y = dy;
+        this.acceleration.x = dx * settings.particles.effect;
+        this.acceleration.y = dy * settings.particles.effect;
+        this.age = 0;
+      };
+
+      Particle.prototype.update = function (deltaTime) {
+        this.position.x += this.velocity.x * deltaTime;
+        this.position.y += this.velocity.y * deltaTime;
+        this.velocity.x += this.acceleration.x * deltaTime;
+        this.velocity.y += this.acceleration.y * deltaTime;
+        this.age += deltaTime;
+      };
+
+      Particle.prototype.draw = function (ctx, image) {
+        function ease(t) {
+          return (--t) * t * t + 1;
+        }
+
+        const size =
+          image.width * ease(this.age / settings.particles.duration);
+
+        ctx.globalAlpha = 1 - this.age / settings.particles.duration;
+        ctx.drawImage(
+          image,
+          this.position.x - size / 2,
+          this.position.y - size / 2,
+          size,
+          size
+        );
+      };
+
+      function ParticlePool(length) {
+        this.particles = new Array(length);
+        this.firstActive = 0;
+        this.firstFree = 0;
+        this.duration = settings.particles.duration;
+
+        for (let i = 0; i < this.particles.length; i++) {
+          this.particles[i] = new Particle();
+        }
+      }
+
+      ParticlePool.prototype.add = function (x, y, dx, dy) {
+        this.particles[this.firstFree].initialize(x, y, dx, dy);
+
+        this.firstFree++;
+        if (this.firstFree === this.particles.length) this.firstFree = 0;
+
+        if (this.firstActive === this.firstFree) {
+          this.firstActive++;
+          if (this.firstActive === this.particles.length) this.firstActive = 0;
+        }
+      };
+
+      ParticlePool.prototype.update = function (deltaTime) {
+        let i;
+
+        if (this.firstActive < this.firstFree) {
+          for (i = this.firstActive; i < this.firstFree; i++) {
+            this.particles[i].update(deltaTime);
+          }
+        }
+
+        if (this.firstFree < this.firstActive) {
+          for (i = this.firstActive; i < this.particles.length; i++) {
+            this.particles[i].update(deltaTime);
+          }
+
+          for (i = 0; i < this.firstFree; i++) {
+            this.particles[i].update(deltaTime);
+          }
+        }
+
+        while (
+          this.particles[this.firstActive].age >= this.duration &&
+          this.firstActive !== this.firstFree
+        ) {
+          this.firstActive++;
+          if (this.firstActive === this.particles.length) {
+            this.firstActive = 0;
+          }
+        }
+      };
+
+      ParticlePool.prototype.draw = function (ctx, image) {
+        let i;
+
+        if (this.firstActive < this.firstFree) {
+          for (i = this.firstActive; i < this.firstFree; i++) {
+            this.particles[i].draw(ctx, image);
+          }
+        }
+
+        if (this.firstFree < this.firstActive) {
+          for (i = this.firstActive; i < this.particles.length; i++) {
+            this.particles[i].draw(ctx, image);
+          }
+
+          for (i = 0; i < this.firstFree; i++) {
+            this.particles[i].draw(ctx, image);
+          }
+        }
+      };
+
+      function pointOnHeart(t) {
+        return new Point(
+          160 * Math.pow(Math.sin(t), 3),
+          130 * Math.cos(t) -
+          50 * Math.cos(2 * t) -
+          20 * Math.cos(3 * t) -
+          10 * Math.cos(4 * t) +
+          25
+        );
+      }
+
+      const image = (() => {
+        const particleCanvas = document.createElement("canvas");
+        const particleContext = particleCanvas.getContext("2d");
+
+        particleCanvas.width = settings.particles.size;
+        particleCanvas.height = settings.particles.size;
+
+        function to(t) {
+          const point = pointOnHeart(t);
+          point.x =
+            settings.particles.size / 2 +
+            (point.x * settings.particles.size) / 350;
+          point.y =
+            settings.particles.size / 2 -
+            (point.y * settings.particles.size) / 350;
+          return point;
+        }
+
+        particleContext.beginPath();
+
+        let t = -Math.PI;
+        let point = to(t);
+        particleContext.moveTo(point.x, point.y);
+
+        while (t < Math.PI) {
+          t += 0.01;
+          point = to(t);
+          particleContext.lineTo(point.x, point.y);
+        }
+
+        particleContext.closePath();
+
+        // Changed from the original pink to a vivid red.
+        particleContext.fillStyle = "#ff1744";
+        particleContext.fill();
+
+        const particleImage = new Image();
+        particleImage.src = particleCanvas.toDataURL();
+        return particleImage;
+      })();
+
+      const particles = new ParticlePool(settings.particles.length);
+      const particleRate =
+        settings.particles.length / settings.particles.duration;
+
+      let time;
+      let animationId;
+
+      function render() {
+        // Stop the animation once the screen is hidden.
+        if (!canvas.isConnected || !document.getElementById("heartSuccessScreen").classList.contains("active")) {
+          if (animationId) cancelAnimationFrame(animationId);
+          return;
+        }
+
+        animationId = requestAnimationFrame(render);
+
+        const newTime = new Date().getTime() / 1000;
+        const deltaTime = newTime - (time || newTime);
+        time = newTime;
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        const amount = particleRate * deltaTime;
+
+        for (let i = 0; i < amount; i++) {
+          const pos = pointOnHeart(
+            Math.PI - 2 * Math.PI * Math.random()
+          );
+
+          const dir = pos.clone().length(settings.particles.velocity);
+
+          particles.add(
+            canvas.width / 2 + pos.x,
+            canvas.height / 2 - pos.y,
+            dir.x,
+            -dir.y
+          );
+        }
+
+        particles.update(deltaTime);
+        particles.draw(context, image);
+      }
+
+      function onResize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      onResize();
+      window.addEventListener("resize", onResize, { once: false });
+      render();
     }
 
     /* =========================================
