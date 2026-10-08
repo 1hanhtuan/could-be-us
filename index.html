@@ -1,1459 +1,1243 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Will You Go On A Date With Me? 💖</title>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will You Go On A Date With Me? 💖</title>
 
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: "Quicksand", sans-serif;
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Quicksand", sans-serif;
+    }
+
+    body {
+      background-color: #0b0b0e;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* =========================================
+         BACKGROUND FLOATING HEARTS
+      ========================================= */
+    .hearts-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heart-bg {
+      position: absolute;
+      bottom: -50px;
+      color: #ff4081;
+      opacity: 0.6;
+      font-size: 20px;
+      animation: floatHearts 8s linear infinite;
+    }
+
+    @keyframes floatHearts {
+      0% {
+        transform: translateY(0) scale(0.8) rotate(0deg);
+        opacity: 0;
       }
 
-      body {
-        background-color: #fce4ec;
-        background-image: linear-gradient(
-          135deg,
-          #fce4ec 0%,
-          #f8bbd0 100%
-        );
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow-x: hidden;
+      20% {
+        opacity: 0.6;
       }
 
-      .card {
-        background: #ffffff;
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        width: 100%;
-        max-width: 450px;
-        text-align: center;
-        position: relative;
-        animation: fadeIn 0.5s ease-in-out;
+      100% {
+        transform: translateY(-110vh) scale(1.3) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(255, 105, 180, 0.2);
+      width: 100%;
+      max-width: 450px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
       }
 
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
+    }
 
-      h2 {
-        color: #d81b60;
-        margin-bottom: 10px;
-        font-size: 24px;
-      }
+    h2 {
+      color: #d81b60;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
 
-      p {
-        color: #666;
-        font-size: 14px;
-        margin-bottom: 5px;
-      }
+    p {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
 
-      .step {
-        display: none;
-      }
+    .step {
+      display: none;
+    }
 
-      .step.active {
-        display: block;
-      }
+    .step.active {
+      display: block;
+    }
 
-      /* =========================================
+    /* =========================================
          MUSIC PLAYER
       ========================================= */
 
-      .music-toggle-btn {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        background: #fce4ec;
-        color: #d81b60;
-        border: none;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        font-size: 10px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 30;
-        transition: 0.2s;
+    .music-toggle-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: #fce4ec;
+      color: #d81b60;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      transition: 0.2s;
+    }
+
+    .music-toggle-btn:hover {
+      background: #e91e63;
+      color: white;
+    }
+
+    .music-player {
+      position: absolute;
+      top: 55px;
+      left: 15px;
+      width: calc(100% - 30px);
+      background: #fff;
+      border: 2px solid #f8bbd0;
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      z-index: 20;
+      display: none;
+      animation: musicPlayerIn 0.2s ease;
+    }
+
+    .music-player.active {
+      display: block;
+    }
+
+    @keyframes musicPlayerIn {
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
       }
 
-      .music-toggle-btn:hover {
-        background: #e91e63;
-        color: white;
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
+    }
 
-      .music-player {
-        position: absolute;
-        top: 55px;
-        left: 15px;
-        width: calc(100% - 30px);
-        background: #fff;
-        border: 2px solid #f8bbd0;
-        border-radius: 16px;
-        padding: 14px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-        z-index: 20;
-        display: none;
-        animation: musicPlayerIn 0.2s ease;
-      }
+    .music-player-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
 
-      .music-player.active {
-        display: block;
-      }
+    .music-player-title {
+      color: #d81b60;
+      font-size: 14px;
+      font-weight: 700;
+    }
 
-      @keyframes musicPlayerIn {
-        from {
-          opacity: 0;
-          transform: translateY(-5px);
-        }
+    .music-close-btn {
+      border: none;
+      background: #fce4ec;
+      color: #d81b60;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: 700;
+    }
 
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
+    .music-now-playing {
+      background: #fff0f5;
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 10px;
+      text-align: left;
+    }
 
-      .music-player-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 10px;
-      }
+    .music-now-playing-label {
+      font-size: 10px;
+      color: #999;
+      margin-bottom: 3px;
+    }
 
-      .music-player-title {
-        color: #d81b60;
-        font-size: 14px;
-        font-weight: 700;
-      }
+    .music-now-playing-title {
+      font-size: 13px;
+      color: #d81b60;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-      .music-close-btn {
-        border: none;
-        background: #fce4ec;
-        color: #d81b60;
-        width: 26px;
-        height: 26px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-weight: 700;
-      }
+    .music-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
 
-      .music-now-playing {
-        background: #fff0f5;
-        border-radius: 12px;
-        padding: 10px;
-        margin-bottom: 10px;
-        text-align: left;
-      }
+    .music-control-btn {
+      border: none;
+      background: #fce4ec;
+      color: #d81b60;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.2s;
+    }
 
-      .music-now-playing-label {
-        font-size: 10px;
-        color: #999;
-        margin-bottom: 3px;
-      }
+    .music-control-btn:hover {
+      background: #e91e63;
+      color: white;
+      transform: translateY(-1px);
+    }
 
-      .music-now-playing-title {
-        font-size: 13px;
-        color: #d81b60;
-        font-weight: 700;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+    .music-control-btn.play {
+      width: 42px;
+      height: 42px;
+      background: #e91e63;
+      color: white;
+      font-size: 17px;
+    }
 
-      .music-controls {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 10px;
-      }
+    .music-control-btn.play:hover {
+      background: #c2185b;
+    }
 
-      .music-control-btn {
-        border: none;
-        background: #fce4ec;
-        color: #d81b60;
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 15px;
-        transition: 0.2s;
-      }
+    .music-control-btn.mode-active {
+      background: #e91e63;
+      color: white;
+    }
 
-      .music-control-btn:hover {
-        background: #e91e63;
-        color: white;
-        transform: translateY(-1px);
-      }
+    .music-progress {
+      width: 100%;
+      accent-color: #e91e63;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
 
-      .music-control-btn.play {
-        width: 42px;
-        height: 42px;
-        background: #e91e63;
-        color: white;
-        font-size: 17px;
-      }
+    .music-time {
+      display: flex;
+      justify-content: space-between;
+      color: #999;
+      font-size: 10px;
+      margin-bottom: 10px;
+    }
 
-      .music-control-btn.play:hover {
-        background: #c2185b;
-      }
+    .playlist {
+      max-height: 160px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
 
-      .music-control-btn.mode-active {
-        background: #e91e63;
-        color: white;
-      }
+    .playlist-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: 0.2s;
+      text-align: left;
+    }
 
-      .music-progress {
-        width: 100%;
-        accent-color: #e91e63;
-        cursor: pointer;
-        margin-bottom: 8px;
-      }
+    .playlist-item:hover {
+      background: #fce4ec;
+    }
 
-      .music-time {
-        display: flex;
-        justify-content: space-between;
-        color: #999;
-        font-size: 10px;
-        margin-bottom: 10px;
-      }
+    .playlist-item.active {
+      background: #fce4ec;
+      color: #d81b60;
+    }
 
-      .playlist {
-        max-height: 160px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-      }
+    .playlist-number {
+      width: 20px;
+      text-align: center;
+      font-size: 11px;
+      color: #999;
+    }
 
-      .playlist-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px;
-        border-radius: 9px;
-        cursor: pointer;
-        transition: 0.2s;
-        text-align: left;
-      }
+    .playlist-item.active .playlist-number {
+      color: #d81b60;
+      font-weight: 700;
+    }
 
-      .playlist-item:hover {
-        background: #fce4ec;
-      }
+    .playlist-song-name {
+      font-size: 12px;
+      font-weight: 600;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-      .playlist-item.active {
-        background: #fce4ec;
-        color: #d81b60;
-      }
-
-      .playlist-number {
-        width: 20px;
-        text-align: center;
-        font-size: 11px;
-        color: #999;
-      }
-
-      .playlist-item.active .playlist-number {
-        color: #d81b60;
-        font-weight: 700;
-      }
-
-      .playlist-song-name {
-        font-size: 12px;
-        font-weight: 600;
-        flex: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      /* =========================================
+    /* =========================================
          TOP BACK BUTTON
       ========================================= */
 
-      .top-back-btn {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        width: 20px;
-        height: 20px;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        background: #fce4ec;
-        color: #d81b60;
-        border: none;
-        border-radius: 50%;
-        font-size: 20px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        z-index: 10;
-      }
+    .top-back-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 20px;
+      height: 20px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: #fce4ec;
+      color: #d81b60;
+      border: none;
+      border-radius: 50%;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
 
-      .top-back-btn:hover {
-        background: #e91e63;
-        color: white;
-        transform: translateX(-2px);
-      }
+    .top-back-btn:hover {
+      background: #e91e63;
+      color: white;
+      transform: translateX(-2px);
+    }
 
-      /* =========================================
+    /* =========================================
          BUTTONS
       ========================================= */
 
-      .btn {
-        background-color: #e91e63;
-        color: white;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 30px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
-        margin-top: 15px;
-        width: 100%;
-      }
+    .btn {
+      background-color: #e91e63;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+      margin-top: 15px;
+      width: 100%;
+    }
 
-      .btn:hover {
-        background-color: #c2185b;
-        transform: translateY(-2px);
-      }
+    .btn:hover {
+      background-color: #c2185b;
+      transform: translateY(-2px);
+    }
 
-      .btn:disabled {
-        background-color: #f8bbd0 !important;
-        cursor: not-allowed;
-        box-shadow: none;
-        transform: none !important;
-      }
+    .btn:disabled {
+      background-color: #f8bbd0 !important;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none !important;
+    }
 
-      /* =========================================
+    /* =========================================
          STEP 1
       ========================================= */
 
-      .btn-group {
-        position: relative;
-        height: 80px;
-        margin-top: 20px;
-        transition: height 0.35s ease;
-      }
+    .btn-group {
+      position: relative;
+      height: 80px;
+      margin-top: 20px;
+      transition: height 0.35s ease;
+    }
 
-      .btn-group.expanded {
-        height: 300px;
-      }
+    .btn-group.expanded {
+      height: 300px;
+    }
 
-      #yesBtn {
-        position: absolute;
-        left: 20px;
-        top: 10px;
-        width: 120px;
-      }
+    #yesBtn {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 120px;
+    }
 
-      #noBtn {
-        position: absolute;
-        left: auto;
-        right: 20px;
-        top: 10px;
-        width: 120px;
-        background-color: #b0bec5;
-        box-shadow: none;
-      }
+    #noBtn {
+      position: absolute;
+      left: auto;
+      right: 20px;
+      top: 10px;
+      width: 120px;
+      background-color: #b0bec5;
+      box-shadow: none;
+    }
 
-      #noBtn:hover {
-        background-color: #90a4ae;
-      }
+    #noBtn:hover {
+      background-color: #90a4ae;
+    }
 
-      /* =========================================
+    /* =========================================
          CALENDAR
       ========================================= */
 
-      .calendar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 12px;
-      }
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
 
-      .calendar-header button {
-        background: #fce4ec;
-        border: none;
-        color: #d81b60;
-        font-weight: 700;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: 0.2s;
-      }
+    .calendar-header button {
+      background: #fce4ec;
+      border: none;
+      color: #d81b60;
+      font-weight: 700;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: 0.2s;
+    }
 
-      .calendar-header button:hover {
-        background: #e91e63;
-        color: white;
-      }
+    .calendar-header button:hover {
+      background: #e91e63;
+      color: white;
+    }
 
-      #currentMonthYear {
-        font-weight: 700;
-        color: #d81b60;
-        font-size: 16px;
-      }
+    #currentMonthYear {
+      font-weight: 700;
+      color: #d81b60;
+      font-size: 16px;
+    }
 
-      .calendar-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 5px;
-        margin-bottom: 20px;
-      }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      margin-bottom: 20px;
+    }
 
-      .day-name {
-        font-size: 12px;
-        font-weight: 700;
-        color: #888;
-      }
+    .day-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #888;
+    }
 
-      .day {
-        padding: 8px 0;
-        font-size: 14px;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: 0.2s;
-      }
+    .day {
+      padding: 8px 0;
+      font-size: 14px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: 0.2s;
+    }
 
-      .day:hover {
-        background-color: #f8bbd0;
-      }
+    .day:hover {
+      background-color: #f8bbd0;
+    }
 
-      .day.selected {
-        background-color: #e91e63;
-        color: white;
-        font-weight: 700;
-      }
+    .day.selected {
+      background-color: #e91e63;
+      color: white;
+      font-weight: 700;
+    }
 
-      .day.disabled {
-        color: #ccc;
-        cursor: not-allowed;
-        background: transparent !important;
-      }
+    .day.disabled {
+      color: #ccc;
+      cursor: not-allowed;
+      background: transparent !important;
+    }
 
-      .day.empty {
-        cursor: default;
-      }
+    .day.empty {
+      cursor: default;
+    }
 
-      /* =========================================
+    /* =========================================
          TIME PICKER
       ========================================= */
 
-      .time-picker-section {
-        margin-bottom: 20px;
-      }
+    .time-picker-section {
+      margin-bottom: 20px;
+    }
 
-      .time-picker-label {
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #d81b60;
-        text-align: left;
-      }
+    .time-picker-label {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #d81b60;
+      text-align: left;
+    }
 
-      .time-picker-card {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 14px;
-        border: 2px solid #f8bbd0;
-        border-radius: 14px;
-        background: #fff;
-        transition: 0.2s;
-      }
+    .time-picker-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border: 2px solid #f8bbd0;
+      border-radius: 14px;
+      background: #fff;
+      transition: 0.2s;
+    }
 
-      .time-picker-card:focus-within {
-        border-color: #e91e63;
-        box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.08);
-      }
+    .time-picker-card:focus-within {
+      border-color: #e91e63;
+      box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.08);
+    }
 
-      .time-picker-icon {
-        width: 42px;
-        height: 42px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #fce4ec;
-        border-radius: 50%;
-        font-size: 22px;
-        flex-shrink: 0;
-      }
+    .time-picker-icon {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fce4ec;
+      border-radius: 50%;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
 
-      .time-picker-content {
-        flex: 1;
-        text-align: left;
-      }
+    .time-picker-content {
+      flex: 1;
+      text-align: left;
+    }
 
-      .time-picker-title {
-        font-size: 12px;
-        color: #888;
-        margin-bottom: 4px;
-      }
+    .time-picker-title {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 4px;
+    }
 
-      #timePicker {
-        width: 100%;
-        border: none;
-        outline: none;
-        background: transparent;
-        color: #d81b60;
-        font-family: "Quicksand", sans-serif;
-        font-size: 22px;
-        font-weight: 700;
-        cursor: pointer;
-      }
+    #timePicker {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #d81b60;
+      font-family: "Quicksand", sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      cursor: pointer;
+    }
 
-      .selected-time-preview {
-        margin-top: 8px;
-        font-size: 13px;
-        font-weight: 600;
-        color: #d81b60;
-        text-align: right;
-      }
+    .selected-time-preview {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #d81b60;
+      text-align: right;
+    }
 
-      /* =========================================
+    /* =========================================
          VIBE
       ========================================= */
 
-      .vibe-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin-bottom: 15px;
-        max-height: 450px;
-        overflow-y: auto;
-        padding-right: 5px;
-      }
+    .vibe-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+      max-height: 450px;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
 
-      .vibe-card {
-        border: 2px solid #f8bbd0;
-        border-radius: 12px;
-        padding: 10px 5px;
-        cursor: pointer;
-        transition: 0.2s;
-        text-align: center;
-        background: #fff;
-      }
+    .vibe-card {
+      border: 2px solid #f8bbd0;
+      border-radius: 12px;
+      padding: 10px 5px;
+      cursor: pointer;
+      transition: 0.2s;
+      text-align: center;
+      background: #fff;
+    }
 
-      .vibe-card:hover {
-        border-color: #e91e63;
-        transform: translateY(-2px);
-      }
+    .vibe-card:hover {
+      border-color: #e91e63;
+      transform: translateY(-2px);
+    }
 
-      .vibe-card.selected {
-        border-color: #e91e63;
-        background-color: #fce4ec;
-      }
+    .vibe-card.selected {
+      border-color: #e91e63;
+      background-color: #fce4ec;
+    }
 
-      .vibe-icon {
-        font-size: 24px;
-        margin-bottom: 3px;
-      }
+    .vibe-icon {
+      font-size: 24px;
+      margin-bottom: 3px;
+    }
 
-      .vibe-name {
-        font-size: 12px;
-        font-weight: 600;
-        color: #444;
-      }
+    .vibe-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #444;
+    }
 
-      .other-vibe-input {
-        display: none;
-        margin-bottom: 15px;
-      }
+    .other-vibe-input {
+      display: none;
+      margin-bottom: 15px;
+    }
 
-      .other-vibe-input.active {
-        display: block;
-      }
+    .other-vibe-input.active {
+      display: block;
+    }
 
-      .other-vibe-input input {
-        width: 100%;
-        padding: 12px 14px;
-        border: 2px solid #f8bbd0;
-        border-radius: 12px;
-        outline: none;
-        font-size: 14px;
-        color: #444;
-        transition: 0.2s;
-        background: #fff;
-      }
+    .other-vibe-input input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #f8bbd0;
+      border-radius: 12px;
+      outline: none;
+      font-size: 14px;
+      color: #444;
+      transition: 0.2s;
+      background: #fff;
+    }
 
-      .other-vibe-input input:focus {
-        border-color: #e91e63;
-        box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.08);
-      }
+    .other-vibe-input input:focus {
+      border-color: #e91e63;
+      box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.08);
+    }
 
-      /* =========================================
+    /* =========================================
          DRESS
       ========================================= */
 
-      .dress-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-bottom: 15px;
-      }
+    .dress-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
 
-      .dress-card {
-        border: 2px solid #f8bbd0;
-        border-radius: 12px;
-        padding: 12px 8px;
-        cursor: pointer;
-        transition: 0.2s;
-        text-align: center;
-        background: #fff;
-      }
+    .dress-card {
+      border: 2px solid #f8bbd0;
+      border-radius: 12px;
+      padding: 12px 8px;
+      cursor: pointer;
+      transition: 0.2s;
+      text-align: center;
+      background: #fff;
+    }
 
-      .dress-card:hover {
-        border-color: #e91e63;
-        transform: translateY(-2px);
-      }
+    .dress-card:hover {
+      border-color: #e91e63;
+      transform: translateY(-2px);
+    }
 
-      .dress-card.selected {
-        border-color: #e91e63;
-        background-color: #fce4ec;
-        box-shadow: 0 0 8px rgba(233, 30, 99, 0.3);
-      }
+    .dress-card.selected {
+      border-color: #e91e63;
+      background-color: #fce4ec;
+      box-shadow: 0 0 8px rgba(233, 30, 99, 0.3);
+    }
 
-      .dress-name {
-        font-size: 13px;
-        font-weight: 600;
-        color: #444;
-      }
+    .dress-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+    }
 
-      /* =========================================
+    /* =========================================
          TREND
       ========================================= */
 
-      .trend-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-        margin-bottom: 15px;
-      }
+    .trend-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 15px;
+    }
 
-      .trend-card {
-        border: 2px solid #f8bbd0;
-        border-radius: 12px;
-        overflow: hidden;
-        cursor: pointer;
-        transition: 0.2s;
-        background: #fff;
-        position: relative;
-      }
+    .trend-card {
+      border: 2px solid #f8bbd0;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: 0.2s;
+      background: #fff;
+      position: relative;
+    }
 
-      .trend-card:hover {
-        border-color: #e91e63;
-        transform: translateY(-2px);
-      }
+    .trend-card:hover {
+      border-color: #e91e63;
+      transform: translateY(-2px);
+    }
 
-      .trend-card.selected {
-        border-color: #e91e63;
-        box-shadow: 0 0 10px rgba(233, 30, 99, 0.4);
-        background-color: #fce4ec;
-      }
+    .trend-card.selected {
+      border-color: #e91e63;
+      box-shadow: 0 0 10px rgba(233, 30, 99, 0.4);
+      background-color: #fce4ec;
+    }
 
-      .trend-img {
-        width: 100%;
-        height: 110px;
-        object-fit: cover;
-      }
+    .trend-img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+    }
 
-      .trend-label {
-        font-size: 12px;
-        font-weight: 600;
-        color: #444;
-        padding: 6px;
-      }
+    .trend-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #444;
+      padding: 6px;
+    }
 
-      .upload-section {
-        border: 2px dashed #f8bbd0;
-        padding: 12px;
-        border-radius: 12px;
-        background: #fff0f5;
-        cursor: pointer;
-        text-align: center;
-        margin-top: 8px;
-        transition: 0.2s;
-      }
+    .upload-section {
+      border: 2px dashed #f8bbd0;
+      padding: 12px;
+      border-radius: 12px;
+      background: #fff0f5;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 8px;
+      transition: 0.2s;
+    }
 
-      .upload-section:hover {
-        border-color: #e91e63;
-      }
+    .upload-section:hover {
+      border-color: #e91e63;
+    }
 
-      /* =========================================
+    /* =========================================
          COUNTDOWN
       ========================================= */
 
-      .countdown-box {
-        font-weight: 600;
-        color: #d81b60;
-        font-size: 15px;
-        margin-top: 15px;
-        background: #fff0f5;
-        padding: 12px;
-        border-radius: 12px;
-        border: 1px dashed #e91e63;
-      }
-    </style>
-  </head>
+    .countdown-box {
+      font-weight: 600;
+      color: #d81b60;
+      font-size: 15px;
+      margin-top: 15px;
+      background: #fff0f5;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px dashed #e91e63;
+    }
+  </style>
+</head>
 
-  <body>
-    <!-- =========================================
+<body>
+  <!-- CONTAINER TRÁI TIM BAY NỀN ĐEN -->
+  <div class="hearts-container" id="heartsContainer"></div>
+
+  <!-- =========================================
          AUDIO
     ========================================= -->
 
-    <audio id="bgMusic" preload="auto"></audio>
+  <audio id="bgMusic" preload="auto"></audio>
 
-    <div class="card">
+  <div class="card">
 
-      <!-- MUSIC BUTTON -->
-      <button
-        type="button"
-        class="music-toggle-btn"
-        onclick="toggleMusicPlayer()"
-        aria-label="Toggle Music Player"
-      >
-        🎵
-      </button>
+    <!-- MUSIC BUTTON -->
+    <button type="button" class="music-toggle-btn" onclick="toggleMusicPlayer()" aria-label="Toggle Music Player">
+      🎵
+    </button>
 
-      <!-- MUSIC PLAYER -->
-      <div class="music-player" id="musicPlayer">
+    <!-- MUSIC PLAYER -->
+    <div class="music-player" id="musicPlayer">
 
-        <div class="music-player-header">
-          <div class="music-player-title">
-            🎵 Our Playlist
-          </div>
-
-          <button
-            type="button"
-            class="music-close-btn"
-            onclick="toggleMusicPlayer()"
-          >
-            ×
-          </button>
+      <div class="music-player-header">
+        <div class="music-player-title">
+          🎵 Our Playlist
         </div>
 
-        <div class="music-now-playing">
-          <div class="music-now-playing-label">
-            NOW PLAYING
-          </div>
-
-          <div
-            class="music-now-playing-title"
-            id="nowPlayingTitle"
-          >
-            Loading...
-          </div>
-        </div>
-
-        <input
-          type="range"
-          id="musicProgress"
-          class="music-progress"
-          min="0"
-          max="100"
-          value="0"
-          step="0.1"
-        />
-
-        <div class="music-time">
-          <span id="currentMusicTime">0:00</span>
-          <span id="totalMusicTime">0:00</span>
-        </div>
-
-        <div class="music-controls">
-
-          <button
-            type="button"
-            class="music-control-btn"
-            onclick="previousSong()"
-            title="Previous"
-          >
-            ⏮️
-          </button>
-
-          <button
-            type="button"
-            class="music-control-btn"
-            id="shuffleBtn"
-            onclick="toggleShuffle()"
-            title="Shuffle"
-          >
-            🔀
-          </button>
-
-          <button
-            type="button"
-            class="music-control-btn play"
-            id="musicPlayBtn"
-            onclick="toggleMusic()"
-            title="Play / Pause"
-          >
-            ▶️
-          </button>
-
-          <button
-            type="button"
-            class="music-control-btn"
-            onclick="nextSong()"
-            title="Next"
-          >
-            ⏭️
-          </button>
-
-          <button
-            type="button"
-            class="music-control-btn"
-            id="repeatBtn"
-            onclick="toggleRepeat()"
-            title="Repeat"
-          >
-            🔁
-          </button>
-
-        </div>
-
-        <div
-          class="playlist"
-          id="playlistContainer"
-        ></div>
+        <button type="button" class="music-close-btn" onclick="toggleMusicPlayer()">
+          ×
+        </button>
       </div>
 
-      <!-- TOP RIGHT BACK -->
-      <button
-        type="button"
-        class="top-back-btn"
-        id="topBackBtn"
-        onclick="goBack()"
-        aria-label="Go back"
-      >
-        ←
-      </button>
+      <div class="music-now-playing">
+        <div class="music-now-playing-label">
+          NOW PLAYING
+        </div>
 
-      <form
-        id="dateForm"
-        onsubmit="submitForm(event)"
-        action="https://formspree.io/f/myezjykp"
-        method="POST"
-      >
+        <div class="music-now-playing-title" id="nowPlayingTitle">
+          Loading...
+        </div>
+      </div>
 
-        <input
-          type="hidden"
-          name="selected_date"
-          id="inputDate"
-          value=""
-        />
+      <input type="range" id="musicProgress" class="music-progress" min="0" max="100" value="0" step="0.1" />
 
-        <input
-          type="hidden"
-          name="selected_time"
-          id="inputTime"
-          value="6:00 PM"
-        />
+      <div class="music-time">
+        <span id="currentMusicTime">0:00</span>
+        <span id="totalMusicTime">0:00</span>
+      </div>
 
-        <input
-          type="hidden"
-          name="selected_vibe"
-          id="inputVibe"
-          value=""
-        />
+      <div class="music-controls">
 
-        <input
-          type="hidden"
-          name="selected_dress"
-          id="inputDress"
-          value=""
-        />
+        <button type="button" class="music-control-btn" onclick="previousSong()" title="Previous">
+          ⏮️
+        </button>
 
-        <input
-          type="hidden"
-          name="selected_trend"
-          id="inputTrend"
-          value=""
-        />
+        <button type="button" class="music-control-btn" id="shuffleBtn" onclick="toggleShuffle()" title="Shuffle">
+          🔀
+        </button>
 
-        <!-- =========================================
+        <button type="button" class="music-control-btn play" id="musicPlayBtn" onclick="toggleMusic()"
+          title="Play / Pause">
+          ▶️
+        </button>
+
+        <button type="button" class="music-control-btn" onclick="nextSong()" title="Next">
+          ⏭️
+        </button>
+
+        <button type="button" class="music-control-btn" id="repeatBtn" onclick="toggleRepeat()" title="Repeat">
+          🔁
+        </button>
+
+      </div>
+
+      <div class="playlist" id="playlistContainer"></div>
+    </div>
+
+    <!-- TOP RIGHT BACK -->
+    <button type="button" class="top-back-btn" id="topBackBtn" onclick="goBack()" aria-label="Go back">
+      ←
+    </button>
+
+    <form id="dateForm" onsubmit="submitForm(event)" action="https://formspree.io/f/myezjykp" method="POST">
+
+      <input type="hidden" name="selected_date" id="inputDate" value="" />
+
+      <input type="hidden" name="selected_time" id="inputTime" value="6:00 PM" />
+
+      <input type="hidden" name="selected_vibe" id="inputVibe" value="" />
+
+      <input type="hidden" name="selected_dress" id="inputDress" value="" />
+
+      <input type="hidden" name="selected_trend" id="inputTrend" value="" />
+
+      <!-- =========================================
              STEP 1
         ========================================= -->
 
-        <div class="step active" id="step1">
+      <div class="step active" id="step1">
 
-          <div style="font-size: 40px; margin-bottom: 15px">
-            🌸💌
-          </div>
-
-          <h2>WILL YOU GO ON A DATE WITH ME?</h2>
-
-          <p>
-            Chỉ được chọn Yes thôi nha công chúa ✨
-          </p>
-
-          <div class="btn-group">
-
-            <button
-              type="button"
-              class="btn"
-              id="yesBtn"
-              onclick="nextStep(2)"
-            >
-              Yes
-            </button>
-
-            <button
-              type="button"
-              class="btn"
-              id="noBtn"
-              onmousemove="moveNoButton()"
-              ontouchstart="moveNoButton()"
-            >
-              No
-            </button>
-
-          </div>
+        <div style="font-size: 40px; margin-bottom: 15px">
+          🌸💌
         </div>
 
-        <!-- =========================================
+        <h2>WILL YOU GO ON A DATE WITH ME?</h2>
+
+        <p>
+          Chỉ được chọn Yes thôi nha công chúa ✨
+        </p>
+
+        <div class="btn-group">
+
+          <button type="button" class="btn" id="yesBtn" onclick="nextStep(2)">
+            Yes
+          </button>
+
+          <button type="button" class="btn" id="noBtn" onmousemove="moveNoButton()" ontouchstart="moveNoButton()">
+            No
+          </button>
+
+        </div>
+      </div>
+
+      <!-- =========================================
              STEP 2
         ========================================= -->
 
-        <div class="step" id="step2">
+      <div class="step" id="step2">
 
-          <h2>SO... WHEN ARE YOU FREE? 🗓️</h2>
+        <h2>SO... WHEN ARE YOU FREE? 🗓️</h2>
 
-          <p>
-            I knew you'd say yes! Pick a slot below 👇
-          </p>
+        <p>
+          I knew you'd say yes! Pick a slot below 👇
+        </p>
 
-          <div class="calendar-header">
+        <div class="calendar-header">
 
-            <button
-              type="button"
-              onclick="changeMonth(-1)"
-            >
-              ❮
-            </button>
+          <button type="button" onclick="changeMonth(-1)">
+            ❮
+          </button>
 
-            <div id="currentMonthYear">
-              September 2026
-            </div>
-
-            <button
-              type="button"
-              onclick="changeMonth(1)"
-            >
-              ❯
-            </button>
-
+          <div id="currentMonthYear">
+            September 2026
           </div>
 
-          <div class="calendar-grid">
-
-            <div class="day-name">Su</div>
-            <div class="day-name">Mo</div>
-            <div class="day-name">Tu</div>
-            <div class="day-name">We</div>
-            <div class="day-name">Th</div>
-            <div class="day-name">Fr</div>
-            <div class="day-name">Sa</div>
-
-          </div>
-
-          <div
-            class="calendar-grid"
-            id="calendarDaysContainer"
-          ></div>
-
-          <div class="time-picker-section">
-
-            <div class="time-picker-label">
-              What time? ⏰
-            </div>
-
-            <div class="time-picker-card">
-
-              <div class="time-picker-icon">
-                🕐
-              </div>
-
-              <div class="time-picker-content">
-
-                <div class="time-picker-title">
-                  Chọn giờ hẹn của chúng ta
-                </div>
-
-                <input
-                  type="time"
-                  id="timePicker"
-                  value="18:00"
-                  onchange="selectTime(this.value)"
-                />
-
-              </div>
-
-            </div>
-
-            <div
-              class="selected-time-preview"
-              id="selectedTimePreview"
-            >
-              6:00 PM 💖
-            </div>
-
-          </div>
-
-          <button
-            type="button"
-            class="btn"
-            id="btnStep2"
-            onclick="nextStep(3)"
-          >
-            Set the date 💖
+          <button type="button" onclick="changeMonth(1)">
+            ❯
           </button>
 
         </div>
 
-        <!-- =========================================
+        <div class="calendar-grid">
+
+          <div class="day-name">Su</div>
+          <div class="day-name">Mo</div>
+          <div class="day-name">Tu</div>
+          <div class="day-name">We</div>
+          <div class="day-name">Th</div>
+          <div class="day-name">Fr</div>
+          <div class="day-name">Sa</div>
+
+        </div>
+
+        <div class="calendar-grid" id="calendarDaysContainer"></div>
+
+        <div class="time-picker-section">
+
+          <div class="time-picker-label">
+            What time? ⏰
+          </div>
+
+          <div class="time-picker-card">
+
+            <div class="time-picker-icon">
+              🕐
+            </div>
+
+            <div class="time-picker-content">
+
+              <div class="time-picker-title">
+                Chọn giờ hẹn của chúng ta
+              </div>
+
+              <input type="time" id="timePicker" value="18:00" onchange="selectTime(this.value)" />
+
+            </div>
+
+          </div>
+
+          <div class="selected-time-preview" id="selectedTimePreview">
+            6:00 PM 💖
+          </div>
+
+        </div>
+
+        <button type="button" class="btn" id="btnStep2" onclick="nextStep(3)">
+          Set the date 💖
+        </button>
+
+      </div>
+
+      <!-- =========================================
              STEP 3
         ========================================= -->
 
-        <div class="step" id="step3">
+      <div class="step" id="step3">
 
-          <div
-            style="
+        <div style="
               font-size: 13px;
               color: #666;
               margin-bottom: 3px;
-            "
-          >
-            Yay! Our date has been successfully scheduled! ❤️
+            ">
+          Yay! Our date has been successfully scheduled! ❤️
+        </div>
+
+        <h2>
+          What are we feeling? (Chọn nhiều nha) ✨
+        </h2>
+
+        <div class="vibe-grid">
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Dotori Dining')">
+            <div class="vibe-icon">🍽️</div>
+            <div class="vibe-name">Dotori Dining</div>
           </div>
 
-          <h2>
-            What are we feeling? (Chọn nhiều nha) ✨
-          </h2>
-
-          <div class="vibe-grid">
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Matcha Latte 🍵')"
-            >
-              <div class="vibe-icon">🍵</div>
-              <div class="vibe-name">Matcha Latte</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Coffee / Milk Tea ☕')"
-            >
-              <div class="vibe-icon">☕ / 🥤</div>
-              <div class="vibe-name">Coffee / Milk Tea</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Mall 🛍️')"
-            >
-              <div class="vibe-icon">🛍️</div>
-              <div class="vibe-name">Mall</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Jollibee 🍗')"
-            >
-              <div class="vibe-icon">🍗</div>
-              <div class="vibe-name">Jollibee</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Hotpot 🍲')"
-            >
-              <div class="vibe-icon">🍲</div>
-              <div class="vibe-name">Hotpot</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Steak 🥩')"
-            >
-              <div class="vibe-icon">🥩</div>
-              <div class="vibe-name">Steak</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Thai Noodle 🍜')"
-            >
-              <div class="vibe-icon">🍜</div>
-              <div class="vibe-name">Thai Noodle</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Korea Food 🇰🇷')"
-            >
-              <div class="vibe-icon">🇰🇷</div>
-              <div class="vibe-name">Korea Food</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Pizza 🍕')"
-            >
-              <div class="vibe-icon">🍕</div>
-              <div class="vibe-name">Pizza</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Sushi 🍣')"
-            >
-              <div class="vibe-icon">🍣</div>
-              <div class="vibe-name">Sushi</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Burgers 🍔')"
-            >
-              <div class="vibe-icon">🍔</div>
-              <div class="vibe-name">Burgers</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Pasta 🍝')"
-            >
-              <div class="vibe-icon">🍝</div>
-              <div class="vibe-name">Pasta</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Tacos 🌮')"
-            >
-              <div class="vibe-icon">🌮</div>
-              <div class="vibe-name">Tacos</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Cinema 🎬')"
-            >
-              <div class="vibe-icon">🎬</div>
-              <div class="vibe-name">Cinema</div>
-            </div>
-
-            <div
-              class="vibe-card"
-              onclick="toggleVibe(this, 'Other 📝')"
-            >
-              <div class="vibe-icon">📝</div>
-              <div class="vibe-name">Other</div>
-            </div>
-
+          <div class="vibe-card" onclick="toggleVibe(this, 'I Hate Monday Dining')">
+            <div class="vibe-icon">🍽️</div>
+            <div class="vibe-name">I Hate Monday Dining</div>
           </div>
 
-          <div
-            class="other-vibe-input"
-            id="otherVibeInput"
-          >
-            <input
-              type="text"
-              id="otherVibeText"
-              placeholder="Em muốn ăn / làm gì khác nhỉ? 💭"
-              oninput="updateOtherVibe()"
-            />
+          <div class="vibe-card" onclick="toggleVibe(this, 'Sticky Rice (Thai Restaurant)')">
+            <div class="vibe-icon">🇹🇭</div>
+            <div class="vibe-name">Sticky Rice (Thai restaurant)</div>
           </div>
 
-          <button
-            type="button"
-            class="btn"
-            id="btnStep3"
-            disabled
-            onclick="nextStep(32)"
-          >
-            Next 💌
-          </button>
+          <div class="vibe-card" onclick="toggleVibe(this, 'Champong Restaurant')">
+            <div class="vibe-icon">🇰🇷</div>
+            <div class="vibe-name">Truyền thuyết Champong (Korea restaurant)</div>
+          </div>
+
+          <!-- <div class="vibe-card" onclick="toggleVibe(this, 'Coffee / Milk Tea ☕')">
+            <div class="vibe-icon">☕ / 🥤</div>
+            <div class="vibe-name">Coffee / Milk Tea</div>
+          </div>
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Mall 🛍️')">
+            <div class="vibe-icon">🛍️</div>
+            <div class="vibe-name">Mall</div>
+          </div>
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Jollibee 🍗')">
+            <div class="vibe-icon">🍗</div>
+            <div class="vibe-name">Jollibee</div>
+          </div>
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Hotpot 🍲')">
+            <div class="vibe-icon">🍲</div>
+            <div class="vibe-name">Hotpot</div>
+          </div>
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Steak 🥩')">
+            <div class="vibe-icon">🥩</div>
+            <div class="vibe-name">Steak</div>
+          </div>
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Thai Noodle 🍜')">
+            <div class="vibe-icon">🍜</div>
+            <div class="vibe-name">Thai Noodle</div>
+          </div>
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Korea Food 🇰🇷')">
+            <div class="vibe-icon">🇰🇷</div>
+            <div class="vibe-name">Korea Food</div>
+          </div>
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Pizza 🍕')">
+            <div class="vibe-icon">🍕</div>
+            <div class="vibe-name">Pizza</div>
+          </div>
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Sushi 🍣')">
+            <div class="vibe-icon">🍣</div>
+            <div class="vibe-name">Sushi</div>
+          </div>
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Burgers 🍔')">
+            <div class="vibe-icon">🍔</div>
+            <div class="vibe-name">Burgers</div>
+          </div>
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Pasta 🍝')">
+            <div class="vibe-icon">🍝</div>
+            <div class="vibe-name">Pasta</div>
+          </div>
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Tacos 🌮')">
+            <div class="vibe-icon">🌮</div>
+            <div class="vibe-name">Tacos</div>
+          </div> -->
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Cinema 🎬')">
+            <div class="vibe-icon">🎬</div>
+            <div class="vibe-name">Cinema</div>
+          </div>
+
+          <div class="vibe-card" onclick="toggleVibe(this, 'Other 📝')">
+            <div class="vibe-icon">📝</div>
+            <div class="vibe-name">Other</div>
+          </div>
 
         </div>
 
-        <!-- =========================================
-             STEP 3.2
+        <div class="other-vibe-input" id="otherVibeInput">
+          <input type="text" id="otherVibeText" placeholder="Em muốn ăn / làm gì khác nhỉ? 💭"
+            oninput="updateOtherVibe()" />
+        </div>
+
+        <button type="button" class="btn" id="btnStep3" disabled onclick="nextStep(32)">
+          Next 💌
+        </button>
+
+      </div>
+
+      <!-- =========================================
+             STEP 3.2 (DRESS CODE - OPTIONAL)
         ========================================= -->
 
-        <div class="step" id="step32">
+      <div class="step" id="step32">
 
-          <h2>Dress Code 👗✨</h2>
+        <h2>Dress Code (Optional) 👗✨</h2>
 
-          <p
-            style="
+        <p style="
               font-size: 13px;
               margin-bottom: 12px;
-            "
-          >
-            Hôm đó công chúa mặc gì thế nhỉ?
-          </p>
+            ">
+          Hôm đó công chúa mặc gì thế nhỉ? (Có thể bỏ qua)
+        </p>
 
-          <div class="dress-grid">
+        <div class="dress-grid">
 
-            <div
-              class="dress-card"
-              id="dress1"
-              onclick="selectDress(this, 'White & Pastel 🤍')"
-            >
-              <div class="dress-name">
-                White & Pastel 🤍
-              </div>
+          <div class="dress-card" id="dress1" onclick="selectDress(this, 'White & Pastel 🤍')">
+            <div class="dress-name">
+              White & Pastel 🤍
             </div>
-
-            <div
-              class="dress-card"
-              id="dress2"
-              onclick="selectDress(this, 'All Black Chic 🖤')"
-            >
-              <div class="dress-name">
-                All Black Chic 🖤
-              </div>
-            </div>
-
-            <div
-              class="dress-card"
-              id="dress3"
-              onclick="selectDress(this, 'Sweet & Elegant 🌸')"
-            >
-              <div class="dress-name">
-                Sweet & Elegant 🌸
-              </div>
-            </div>
-
-            <div
-              class="dress-card"
-              id="dress4"
-              onclick="selectDress(this, 'Casual & Comfy 🧢')"
-            >
-              <div class="dress-name">
-                Casual & Comfy 🧢
-              </div>
-            </div>
-
           </div>
 
-          <div
-            class="upload-section"
-            onclick="document.getElementById('dressImageInput').click()"
-          >
-            <div
-              style="
+          <div class="dress-card" id="dress2" onclick="selectDress(this, 'All Black Chic 🖤')">
+            <div class="dress-name">
+              All Black Chic 🖤
+            </div>
+          </div>
+
+          <div class="dress-card" id="dress3" onclick="selectDress(this, 'Sweet & Elegant 🌸')">
+            <div class="dress-name">
+              Sweet & Elegant 🌸
+            </div>
+          </div>
+
+          <div class="dress-card" id="dress4" onclick="selectDress(this, 'Casual & Comfy 🧢')">
+            <div class="dress-name">
+              Casual & Comfy 🧢
+            </div>
+          </div>
+
+        </div>
+
+        <div class="upload-section" onclick="document.getElementById('dressImageInput').click()">
+          <div style="
                 font-size: 18px;
                 margin-bottom: 2px;
-              "
-            >
-              📸
-            </div>
+              ">
+            📸
+          </div>
 
-            <div
-              style="
+          <div style="
                 font-size: 12px;
                 font-weight: 600;
                 color: #d81b60;
-              "
-              id="dressUploadText"
-            >
-              Hoặc tải ảnh outfit của em lên đây
-            </div>
-
-            <input
-              type="file"
-              id="dressImageInput"
-              accept="image/*"
-              style="display: none"
-              onchange="handleDressUpload(event)"
-            />
-
+              " id="dressUploadText">
+            Hoặc tải ảnh outfit của em lên đây
           </div>
 
-          <button
-            type="button"
-            class="btn"
-            id="btnStep32"
-            disabled
-            onclick="nextStep(35)"
-          >
-            Next 💌
-          </button>
+          <input type="file" id="dressImageInput" accept="image/*" style="display: none"
+            onchange="handleDressUpload(event)" />
 
         </div>
 
-        <!-- =========================================
-             STEP 3.5
+        <!-- Đã bỏ disabled -->
+        <button type="button" class="btn" id="btnStep32" onclick="nextStep(35)">
+          Next 💌
+        </button>
+
+      </div>
+
+      <!-- =========================================
+             STEP 3.5 (TRENDING - OPTIONAL)
         ========================================= -->
 
-        <div class="step" id="step35">
+      <div class="step" id="step35">
 
-          <h2>Pick a Trend! 🌟</h2>
+        <h2>Pick a Trend! (Optional) 🌟</h2>
 
-          <p
-            style="
+        <p style="
               font-size: 13px;
               margin-bottom: 12px;
-            "
-          >
-            Chọn một trong hai trend dưới đây em muốn làm cùng anh ✨
-          </p>
+            ">
+          Chọn một trong hai trend dưới đây em muốn làm cùng anh ✨ (Có thể bỏ qua)
+        </p>
 
-          <div class="trend-grid">
+        <div class="trend-grid">
 
-            <div
-              class="trend-card"
-              id="trend1Card"
-              onclick="selectTrend(this, 'McDonald Cat 🐱')"
-            >
-              <img
-                src="https://i.ibb.co/zWWSX1KX/images.jpg"
-                alt="Cat McDonald"
-                class="trend-img"
-              />
+          <div class="trend-card" id="trend1Card" onclick="selectTrend(this, 'McDonald Cat 🐱')">
+            <img src="https://i.ibb.co/zWWSX1KX/images.jpg" alt="Cat McDonald" class="trend-img" />
 
-              <div class="trend-label">
-                Cat McDonald 🍟
-              </div>
+            <div class="trend-label">
+              Cat McDonald 🍟
             </div>
-
-            <div
-              class="trend-card"
-              id="trend2Card"
-              onclick="selectTrend(this, 'Heart Nail 💅')"
-            >
-              <img
-                src="https://i.ibb.co/214dJS4v/2b348513-43bc-4b11-ac44-ed4b0bacb914.jpg"
-                alt="Heart Nail"
-                class="trend-img"
-              />
-
-              <div class="trend-label">
-                Heart Nail 💅
-              </div>
-            </div>
-
-            <div
-              class="trend-card"
-              id="trend3Card"
-              onclick="selectTrend(this, 'Flower Bouquet 💐')"
-            >
-              <img
-                src="https://i.ibb.co/kVZM5RJM/image.png"
-                alt="Flower Bouquet"
-                class="trend-img"
-              />
-
-              <div class="trend-label">
-                Flower Bouquet 💐
-              </div>
-            </div>
-
-            <div
-              class="trend-card"
-              id="trend4Card"
-              onclick="selectTrend(this, 'Zootopia 🦊')"
-            >
-              <img
-                src="https://i.ibb.co/B5DMrMs0/image-2.png"
-                alt="Zootopia"
-                class="trend-img"
-              />
-
-              <div class="trend-label">
-                Zootopia 🦊
-              </div>
-            </div>
-
           </div>
 
-          <div
-            class="upload-section"
-            onclick="document.getElementById('customImageInput').click()"
-          >
+          <div class="trend-card" id="trend2Card" onclick="selectTrend(this, 'Heart Nail 💅')">
+            <img src="https://i.ibb.co/214dJS4v/2b348513-43bc-4b11-ac44-ed4b0bacb914.jpg" alt="Heart Nail"
+              class="trend-img" />
 
-            <div
-              style="
+            <div class="trend-label">
+              Heart Nail 💅
+            </div>
+          </div>
+
+          <div class="trend-card" id="trend3Card" onclick="selectTrend(this, 'Flower Bouquet 💐')">
+            <img src="https://i.ibb.co/kVZM5RJM/image.png" alt="Flower Bouquet" class="trend-img" />
+
+            <div class="trend-label">
+              Flower Bouquet 💐
+            </div>
+          </div>
+
+          <div class="trend-card" id="trend4Card" onclick="selectTrend(this, 'Zootopia 🦊')">
+            <img src="https://i.ibb.co/B5DMrMs0/image-2.png" alt="Zootopia" class="trend-img" />
+
+            <div class="trend-label">
+              Zootopia 🦊
+            </div>
+          </div>
+
+        </div>
+
+        <div class="upload-section" onclick="document.getElementById('customImageInput').click()">
+
+          <div style="
                 font-size: 18px;
                 margin-bottom: 2px;
-              "
-            >
-              📤
-            </div>
+              ">
+            📤
+          </div>
 
-            <div
-              style="
+          <div style="
                 font-size: 12px;
                 font-weight: 600;
                 color: #d81b60;
-              "
-              id="uploadText"
-            >
-              Hoặc cho anh biết em thích trend nào khác nhé công chúa, em có thể upload nhiều hình!
-            </div>
-
-            <input
-              type="file"
-              id="customImageInput"
-              accept="image/*"
-              multiple
-              style="display: none"
-              onchange="handleMultipleImagesUpload(event)"
-            />
-
+              " id="uploadText">
+            Hoặc cho anh biết em thích trend nào khác nhé công chúa, em có thể upload nhiều hình!
           </div>
 
-          <button
-            type="button"
-            class="btn"
-            id="btnStep35"
-            disabled
-            onclick="nextStep(4)"
-          >
-            Next 💌
-          </button>
+          <input type="file" id="customImageInput" accept="image/*" multiple style="display: none"
+            onchange="handleMultipleImagesUpload(event)" />
 
         </div>
 
-        <!-- =========================================
+        <!-- Đã bỏ disabled -->
+        <button type="button" class="btn" id="btnStep35" onclick="nextStep(4)">
+          Next 💌
+        </button>
+
+      </div>
+
+      <!-- =========================================
              STEP 4
         ========================================= -->
 
-        <div class="step" id="step4">
+      <div class="step" id="step4">
 
-          <h2>YAY!! 💖</h2>
+        <h2>YAY!! 💖</h2>
 
-          <div
-            style="
+        <div style="
               background: #fff0f5;
               padding: 10px 12px;
               border-radius: 12px;
@@ -1462,1066 +1246,675 @@
               font-size: 12px;
               color: #444;
               border: 1px dashed #e91e63;
-            "
-          >
+            ">
 
-            <p style="margin-bottom: 4px">
-              🗓️ <b>Ngày:</b>
-              <span id="sumDate">
-                September 6
-              </span>
-            </p>
+          <p style="margin-bottom: 4px">
+            🗓️ <b>Ngày:</b>
+            <span id="sumDate">
+              September 6
+            </span>
+          </p>
 
-            <p style="margin-bottom: 4px">
-              ⏰ <b>Giờ:</b>
-              <span id="sumTime">
-                6:00 PM
-              </span>
-            </p>
+          <p style="margin-bottom: 4px">
+            ⏰ <b>Giờ:</b>
+            <span id="sumTime">
+              6:00 PM
+            </span>
+          </p>
 
-            <p style="margin-bottom: 4px">
-              ✨ <b>Hoạt động & Ẩm thực:</b>
-              <span id="sumVibe">
-                Chưa chọn
-              </span>
-            </p>
+          <p style="margin-bottom: 4px">
+            ✨ <b>Hoạt động & Ẩm thực:</b>
+            <span id="sumVibe">
+              Chưa chọn
+            </span>
+          </p>
 
-            <p style="margin-bottom: 4px">
-              👗 <b>Dress Code:</b>
-              <span id="sumDress">
-                Chưa chọn
-              </span>
-            </p>
+          <p style="margin-bottom: 4px">
+            👗 <b>Dress Code:</b>
+            <span id="sumDress">
+              Chưa chọn
+            </span>
+          </p>
 
-            <p style="margin-bottom: 0">
-              📸 <b>Trend:</b>
-              <span id="sumTrend">
-                Chưa chọn
-              </span>
-            </p>
+          <p style="margin-bottom: 0">
+            📸 <b>Trend:</b>
+            <span id="sumTrend">
+              Chưa chọn
+            </span>
+          </p>
 
-          </div>
+        </div>
 
-          <p
-            style="
+        <p style="
               font-weight: 600;
               color: #d81b60;
               margin-top: 5px;
-            "
-          >
-            I can't wait to see you! 🥀✨
-          </p>
+            ">
+          I can't wait to see you! 🥀✨
+        </p>
 
-          <p
-            style="
+        <p style="
               font-weight: 600;
               color: #d81b60;
-            "
-          >
-            Thanks for spending time with me 🥰❤️
-          </p>
+            ">
+          Thanks for spending time with me 🥰❤️
+        </p>
 
-          <button
-            type="submit"
-            class="btn"
-            style="background-color: #2e7d32"
-            id="submitBtn"
-          >
-            Gửi lịch hẹn cho anh nhé! 💌
-          </button>
+        <button type="submit" class="btn" style="background-color: #2e7d32" id="submitBtn">
+          Gửi lịch hẹn cho anh nhé! 💌
+        </button>
 
-        </div>
+      </div>
 
-        <!-- =========================================
+      <!-- =========================================
              STEP 5
         ========================================= -->
 
-        <div class="step" id="step5">
+      <div class="step" id="step5">
 
-          <div
-            style="
+        <div style="
               font-size: 50px;
               margin-bottom: 10px;
-            "
-          >
-            ❤️‍🔥
-          </div>
+            ">
+          ❤️‍🔥
+        </div>
 
-          <h2>Our Date Countdown</h2>
+        <h2>Our Date Countdown</h2>
 
-          <p>
-            Buổi hẹn hò của chúng ta sẽ diễn ra sau:
-          </p>
+        <p>
+          Buổi hẹn hò của chúng ta sẽ diễn ra sau:
+        </p>
 
-          <div
-            class="countdown-box"
-            id="countdownTimer"
-          >
-            Đang tính thời gian...
-          </div>
+        <div class="countdown-box" id="countdownTimer">
+          Đang tính thời gian...
+        </div>
 
-          <p
-            style="
+        <p style="
               font-size: 13px;
               color: #888;
               margin-top: 20px;
-            "
-          >
-            Lịch hẹn đã được gửi thành công cho anh rồi nhé công chúa! 🥰
-          </p>
+            ">
+          Lịch hẹn đã được gửi thành công cho anh rồi nhé công chúa! 🥰
+        </p>
 
-        </div>
+      </div>
 
-      </form>
-    </div>
+    </form>
+  </div>
 
-    <!-- =========================================
+  <!-- =========================================
          JAVASCRIPT
     ========================================= -->
-    <script src="./music/playlist.js"></script>
-    <script>
-      /* =========================================
-         DATE FORM
-      ========================================= */
+  <script src="./music/playlist.js"></script>
+  <script>
+    /* =========================================
+       FLOATING HEARTS GENERATOR
+    ========================================= */
+    function createFloatingHearts() {
+      const container = document.getElementById("heartsContainer");
+      if (!container) return;
+      const heartIcons = ["💖", "💗", "💓", "❤️", "🌸", "✨"];
 
-      const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart-bg");
+        heart.innerText =
+          heartIcons[Math.floor(Math.random() * heartIcons.length)];
 
-      let today = new Date();
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = Math.random() * 4 + 6 + "s";
+        heart.style.fontSize = Math.random() * 15 + 15 + "px";
 
-      let currentYear =
-        today.getFullYear();
+        container.appendChild(heart);
 
-      let currentMonth =
-        today.getMonth();
+        setTimeout(() => {
+          heart.remove();
+        }, 10000);
+      }, 400);
+    }
 
-      let chosenDate =
-        `${monthNames[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
+    window.addEventListener("DOMContentLoaded", createFloatingHearts);
 
-      let chosenTime = "6:00 PM";
+    /* =========================================
+       DATE FORM
+    ========================================= */
 
-      let chosenTimeValue = "18:00";
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
 
-      let chosenVibes = [];
+    let today = new Date();
 
-      let otherVibe = "";
+    let currentYear = today.getFullYear();
 
-      let chosenDress = "";
+    let currentMonth = today.getMonth();
 
-      let chosenTrend = "";
+    let chosenDate = `${monthNames[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
+
+    let chosenTime = "6:00 PM";
+
+    let chosenTimeValue = "18:00";
+
+    let chosenVibes = [];
+
+    let otherVibe = "";
+
+    let chosenDress = "";
+
+    let chosenTrend = "";
+
+    document.getElementById("inputDate").value = chosenDate;
+
+    function nextStep(stepNumber) {
+      document.querySelectorAll(".step").forEach((el) => {
+        el.classList.remove("active");
+      });
+
+      document.getElementById("step" + stepNumber).classList.add("active");
+
+      updateBackButton(stepNumber);
+
+      if (stepNumber === 2) {
+        renderCalendar(currentMonth, currentYear);
+      }
+
+      if (stepNumber === 3) {
+        restoreVibeSelections();
+      }
+
+      if (stepNumber === 32) {
+        restoreDressSelection();
+      }
+
+      if (stepNumber === 35) {
+        restoreTrendSelection();
+      }
+
+      if (stepNumber === 4) {
+        document.getElementById("sumDate").innerText = chosenDate;
+
+        document.getElementById("sumTime").innerText = chosenTime;
+
+        const vibeText = getVibeText();
+
+        document.getElementById("sumVibe").innerText =
+          vibeText || "Chưa chọn";
+
+        document.getElementById("inputVibe").value = vibeText;
+
+        // Hiển thị giá trị kể cả khi không chọn
+        document.getElementById("sumDress").innerText =
+          chosenDress || "Chưa chọn (Bỏ qua)";
+
+        document.getElementById("inputDress").value =
+          chosenDress || "Bỏ qua";
+
+        document.getElementById("sumTrend").innerText =
+          chosenTrend || "Chưa chọn (Bỏ qua)";
+
+        document.getElementById("inputTrend").value =
+          chosenTrend || "Bỏ qua";
+      }
+    }
+
+    function updateBackButton(stepNumber) {
+      const backButton = document.getElementById("topBackBtn");
+
+      if ([2, 3, 32, 35, 4].includes(stepNumber)) {
+        backButton.style.display = "flex";
+      } else {
+        backButton.style.display = "none";
+      }
+    }
+
+    function goBack() {
+      const activeStep = document.querySelector(".step.active");
+
+      if (!activeStep) return;
+
+      switch (activeStep.id) {
+        case "step2":
+          nextStep(1);
+          break;
+
+        case "step3":
+          nextStep(2);
+          break;
+
+        case "step32":
+          nextStep(3);
+          break;
+
+        case "step35":
+          nextStep(32);
+          break;
+
+        case "step4":
+          nextStep(35);
+          break;
+      }
+    }
+
+    function moveNoButton() {
+      const noBtn = document.getElementById("noBtn");
+
+      const yesBtn = document.getElementById("yesBtn");
+
+      const container = document.querySelector(".btn-group");
+
+      if (!container.classList.contains("expanded")) {
+        container.classList.add("expanded");
+      }
+
+      yesBtn.innerText = "Yes 😭";
+
+      noBtn.innerText = "No 🥺";
+
+      const containerWidth = container.clientWidth;
+
+      const containerHeight = container.clientHeight;
+
+      const noWidth = noBtn.offsetWidth;
+
+      const noHeight = noBtn.offsetHeight;
+
+      const yesLeft = yesBtn.offsetLeft;
+
+      const yesTop = yesBtn.offsetTop;
+
+      const yesRight = yesLeft + yesBtn.offsetWidth;
+
+      const yesBottom = yesTop + yesBtn.offsetHeight;
+
+      const gap = 10;
+
+      let randomX = 0;
+
+      let randomY = 0;
+
+      let validPosition = false;
+
+      for (let attempts = 0; attempts < 200; attempts++) {
+        randomX = Math.random() * (containerWidth - noWidth);
+
+        randomY = Math.random() * (containerHeight - noHeight);
+
+        const noLeft = randomX;
+
+        const noTop = randomY;
+
+        const noRight = noLeft + noWidth;
+
+        const noBottom = noTop + noHeight;
+
+        const overlapsYes =
+          noLeft < yesRight + gap &&
+          noRight > yesLeft - gap &&
+          noTop < yesBottom + gap &&
+          noBottom > yesTop - gap;
+
+        if (!overlapsYes) {
+          validPosition = true;
+          break;
+        }
+      }
+
+      if (!validPosition) {
+        randomX = containerWidth - noWidth;
+
+        randomY = containerHeight - noHeight;
+      }
+
+      noBtn.style.left = `${randomX}px`;
+
+      noBtn.style.top = `${randomY}px`;
+
+      noBtn.style.right = "auto";
+
+      noBtn.style.transform = "none";
+
+      noBtn.style.transition = "all 0.12s ease-out";
+    }
+
+    /* =========================================
+       CALENDAR
+    ========================================= */
+
+    function renderCalendar(month, year) {
+      const container = document.getElementById("calendarDaysContainer");
+
+      container.innerHTML = "";
+
+      document.getElementById("currentMonthYear").innerText =
+        `${monthNames[month]} ${year}`;
+
+      const firstDayIndex = new Date(year, month, 1).getDay();
+
+      const totalDays = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 0; i < firstDayIndex; i++) {
+        const emptyDiv = document.createElement("div");
+
+        emptyDiv.classList.add("day", "empty");
+
+        container.appendChild(emptyDiv);
+      }
+
+      for (let day = 1; day <= totalDays; day++) {
+        const dayDiv = document.createElement("div");
+
+        dayDiv.classList.add("day");
+
+        dayDiv.innerText = day;
+
+        const thisDate = new Date(year, month, day);
+
+        const compareToday = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate()
+        );
+
+        if (thisDate < compareToday) {
+          dayDiv.classList.add("disabled");
+        } else {
+          dayDiv.onclick = function () {
+            selectDate(this, month, day, year);
+          };
+
+          if (
+            month === today.getMonth() &&
+            day === today.getDate() &&
+            year === today.getFullYear()
+          ) {
+            dayDiv.classList.add("selected");
+          }
+        }
+
+        container.appendChild(dayDiv);
+      }
+    }
+
+    function changeMonth(direction) {
+      currentMonth += direction;
+
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      } else if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+
+      renderCalendar(currentMonth, currentYear);
+    }
+
+    function selectDate(element, month, day, year) {
+      document
+        .querySelectorAll(".calendar-grid .day")
+        .forEach((el) => el.classList.remove("selected"));
+
+      element.classList.add("selected");
+
+      chosenDate = `${monthNames[month]} ${day}, ${year}`;
+
+      document.getElementById("inputDate").value = chosenDate;
+    }
+
+    function selectTime(timeStr) {
+      if (!timeStr) return;
+
+      chosenTimeValue = timeStr;
+
+      let [hours, minutes] = timeStr.split(":");
+
+      hours = parseInt(hours, 10);
+
+      const ampm = hours >= 12 ? "PM" : "AM";
+
+      hours = hours % 12 || 12;
+
+      chosenTime = `${hours}:${minutes} ${ampm} 💖`;
+
+      document.getElementById("selectedTimePreview").innerText = chosenTime;
 
       document.getElementById(
-        "inputDate"
-      ).value = chosenDate;
+        "inputTime"
+      ).value = `${hours}:${minutes} ${ampm}`;
+    }
 
-      function nextStep(stepNumber) {
-        document
-          .querySelectorAll(".step")
-          .forEach((el) => {
-            el.classList.remove(
-              "active"
-            );
-          });
+    /* =========================================
+       VIBE
+    ========================================= */
 
-        document
-          .getElementById(
-            "step" + stepNumber
-          )
-          .classList.add("active");
+    function toggleVibe(element, vibeName) {
+      element.classList.toggle("selected");
 
-        updateBackButton(
-          stepNumber
-        );
+      if (vibeName === "Other 📝") {
+        const otherInput = document.getElementById("otherVibeInput");
 
-        if (stepNumber === 2) {
-          renderCalendar(
-            currentMonth,
-            currentYear
-          );
-        }
-
-        if (stepNumber === 3) {
-          restoreVibeSelections();
-        }
-
-        if (stepNumber === 32) {
-          restoreDressSelection();
-        }
-
-        if (stepNumber === 35) {
-          restoreTrendSelection();
-        }
-
-        if (stepNumber === 4) {
-          document.getElementById(
-            "sumDate"
-          ).innerText = chosenDate;
-
-          document.getElementById(
-            "sumTime"
-          ).innerText = chosenTime;
-
-          const vibeText =
-            getVibeText();
-
-          document.getElementById(
-            "sumVibe"
-          ).innerText =
-            vibeText || "Chưa chọn";
-
-          document.getElementById(
-            "inputVibe"
-          ).value = vibeText;
-
-          document.getElementById(
-            "sumDress"
-          ).innerText =
-            chosenDress ||
-            "Chưa chọn";
-
-          document.getElementById(
-            "inputDress"
-          ).value = chosenDress;
-
-          document.getElementById(
-            "sumTrend"
-          ).innerText =
-            chosenTrend ||
-            "Chưa chọn";
-
-          document.getElementById(
-            "inputTrend"
-          ).value = chosenTrend;
-        }
-      }
-
-      function updateBackButton(
-        stepNumber
-      ) {
-        const backButton =
-          document.getElementById(
-            "topBackBtn"
-          );
-
-        if (
-          [2, 3, 32, 35, 4].includes(
-            stepNumber
-          )
-        ) {
-          backButton.style.display =
-            "flex";
+        if (element.classList.contains("selected")) {
+          otherInput.classList.add("active");
         } else {
-          backButton.style.display =
-            "none";
+          otherInput.classList.remove("active");
+
+          document.getElementById("otherVibeText").value = "";
+
+          otherVibe = "";
         }
       }
 
-      function goBack() {
-        const activeStep =
-          document.querySelector(
-            ".step.active"
-          );
+      updateChosenVibes();
+    }
 
-        if (!activeStep) return;
+    function updateOtherVibe() {
+      otherVibe = document.getElementById("otherVibeText").value.trim();
 
-        switch (activeStep.id) {
-          case "step2":
-            nextStep(1);
-            break;
+      updateChosenVibes();
+    }
 
-          case "step3":
-            nextStep(2);
-            break;
+    function updateChosenVibes() {
+      chosenVibes = [];
 
-          case "step32":
-            nextStep(3);
-            break;
+      document.querySelectorAll(".vibe-card.selected").forEach((card) => {
+        const name = card.querySelector(".vibe-name").innerText;
 
-          case "step35":
-            nextStep(32);
-            break;
-
-          case "step4":
-            nextStep(35);
-            break;
+        if (name !== "Other") {
+          chosenVibes.push(card.innerText.trim().replace(/\n/g, " "));
         }
+      });
+
+      const otherCard = document.querySelector(".vibe-card:last-child");
+
+      if (otherCard && otherCard.classList.contains("selected") && otherVibe) {
+        chosenVibes.push(`Other: ${otherVibe}`);
       }
 
-      function moveNoButton() {
-        const noBtn =
-          document.getElementById(
-            "noBtn"
-          );
+      document.getElementById("btnStep3").disabled =
+        chosenVibes.length === 0;
+    }
 
-        const yesBtn =
-          document.getElementById(
-            "yesBtn"
-          );
+    function restoreVibeSelections() {
+      const cards = document.querySelectorAll(".vibe-card");
 
-        const container =
-          document.querySelector(
-            ".btn-group"
-          );
+      cards.forEach((card) => {
+        const name = card.querySelector(".vibe-name").innerText;
 
-        if (
-          !container.classList.contains(
-            "expanded"
-          )
-        ) {
-          container.classList.add(
-            "expanded"
-          );
-        }
-
-        yesBtn.innerText =
-          "Yes 😭";
-
-        noBtn.innerText =
-          "No 🥺";
-
-        const containerWidth =
-          container.clientWidth;
-
-        const containerHeight =
-          container.clientHeight;
-
-        const noWidth =
-          noBtn.offsetWidth;
-
-        const noHeight =
-          noBtn.offsetHeight;
-
-        const yesLeft =
-          yesBtn.offsetLeft;
-
-        const yesTop =
-          yesBtn.offsetTop;
-
-        const yesRight =
-          yesLeft +
-          yesBtn.offsetWidth;
-
-        const yesBottom =
-          yesTop +
-          yesBtn.offsetHeight;
-
-        const gap = 10;
-
-        let randomX = 0;
-
-        let randomY = 0;
-
-        let validPosition = false;
-
-        for (
-          let attempts = 0;
-          attempts < 200;
-          attempts++
-        ) {
-          randomX =
-            Math.random() *
-            (containerWidth -
-              noWidth);
-
-          randomY =
-            Math.random() *
-            (containerHeight -
-              noHeight);
-
-          const noLeft =
-            randomX;
-
-          const noTop =
-            randomY;
-
-          const noRight =
-            noLeft + noWidth;
-
-          const noBottom =
-            noTop + noHeight;
-
-          const overlapsYes =
-            noLeft <
-              yesRight + gap &&
-            noRight >
-              yesLeft - gap &&
-            noTop <
-              yesBottom + gap &&
-            noBottom >
-              yesTop - gap;
-
-          if (!overlapsYes) {
-            validPosition = true;
-            break;
-          }
-        }
-
-        if (!validPosition) {
-          randomX =
-            containerWidth -
-            noWidth;
-
-          randomY =
-            containerHeight -
-            noHeight;
-        }
-
-        noBtn.style.left =
-          `${randomX}px`;
-
-        noBtn.style.top =
-          `${randomY}px`;
-
-        noBtn.style.right =
-          "auto";
-
-        noBtn.style.transform =
-          "none";
-
-        noBtn.style.transition =
-          "all 0.12s ease-out";
-      }
-
-      /* =========================================
-         CALENDAR
-      ========================================= */
-
-      function renderCalendar(
-        month,
-        year
-      ) {
-        const container =
-          document.getElementById(
-            "calendarDaysContainer"
-          );
-
-        container.innerHTML = "";
-
-        document.getElementById(
-          "currentMonthYear"
-        ).innerText =
-          `${monthNames[month]} ${year}`;
-
-        const firstDayIndex =
-          new Date(
-            year,
-            month,
-            1
-          ).getDay();
-
-        const totalDays =
-          new Date(
-            year,
-            month + 1,
-            0
-          ).getDate();
-
-        for (
-          let i = 0;
-          i < firstDayIndex;
-          i++
-        ) {
-          const emptyDiv =
-            document.createElement(
-              "div"
-            );
-
-          emptyDiv.classList.add(
-            "day",
-            "empty"
-          );
-
-          container.appendChild(
-            emptyDiv
-          );
-        }
-
-        for (
-          let day = 1;
-          day <= totalDays;
-          day++
-        ) {
-          const dayDiv =
-            document.createElement(
-              "div"
-            );
-
-          dayDiv.classList.add(
-            "day"
-          );
-
-          dayDiv.innerText = day;
-
-          const thisDate =
-            new Date(
-              year,
-              month,
-              day
-            );
-
-          const compareToday =
-            new Date(
-              today.getFullYear(),
-              today.getMonth(),
-              today.getDate()
-            );
-
-          if (
-            thisDate < compareToday
-          ) {
-            dayDiv.classList.add(
-              "disabled"
-            );
-          } else {
-            dayDiv.onclick =
-              function () {
-                selectDate(
-                  this,
-                  month,
-                  day,
-                  year
-                );
-              };
-
-            if (
-              month ===
-                today.getMonth() &&
-              day ===
-                today.getDate() &&
-              year ===
-                today.getFullYear()
-            ) {
-              dayDiv.classList.add(
-                "selected"
-              );
-            }
-          }
-
-          container.appendChild(
-            dayDiv
-          );
-        }
-      }
-
-      function changeMonth(
-        direction
-      ) {
-        currentMonth +=
-          direction;
-
-        if (
-          currentMonth > 11
-        ) {
-          currentMonth = 0;
-          currentYear++;
-        } else if (
-          currentMonth < 0
-        ) {
-          currentMonth = 11;
-          currentYear--;
-        }
-
-        renderCalendar(
-          currentMonth,
-          currentYear
+        const isSelected = chosenVibes.some((vibe) =>
+          vibe.startsWith(name)
         );
-      }
 
-      function selectDate(
-        element,
-        month,
-        day,
-        year
-      ) {
+        card.classList.toggle("selected", isSelected);
+      });
+
+      const otherCard = document.querySelector(".vibe-card:last-child");
+
+      if (otherCard && otherCard.classList.contains("selected")) {
+        document.getElementById("otherVibeInput").classList.add("active");
+
+        document.getElementById("otherVibeText").value = otherVibe;
+      }
+    }
+
+    function getVibeText() {
+      return chosenVibes.join(", ");
+    }
+
+    /* =========================================
+       DRESS
+    ========================================= */
+
+    function selectDress(element, dressName) {
+      if (element.classList.contains("selected")) {
+        element.classList.remove("selected");
+        chosenDress = "";
+      } else {
         document
-          .querySelectorAll(
-            ".calendar-grid .day"
-          )
-          .forEach((el) =>
-            el.classList.remove(
-              "selected"
-            )
-          );
+          .querySelectorAll(".dress-card")
+          .forEach((el) => el.classList.remove("selected"));
 
-        element.classList.add(
-          "selected"
-        );
+        element.classList.add("selected");
+        chosenDress = dressName;
+      }
+    }
 
-        chosenDate =
-          `${monthNames[month]} ${day}, ${year}`;
+    function handleDressUpload(event) {
+      const file = event.target.files[0];
+
+      if (file) {
+        chosenDress = `Uploaded Outfit: ${file.name}`;
 
         document.getElementById(
-          "inputDate"
-        ).value =
-          chosenDate;
-      }
-
-      function selectTime(
-        timeStr
-      ) {
-        if (!timeStr) return;
-
-        chosenTimeValue =
-          timeStr;
-
-        let [hours, minutes] =
-          timeStr.split(":");
-
-        hours = parseInt(
-          hours,
-          10
-        );
-
-        const ampm =
-          hours >= 12
-            ? "PM"
-            : "AM";
-
-        hours =
-          hours % 12 || 12;
-
-        chosenTime =
-          `${hours}:${minutes} ${ampm} 💖`;
-
-        document.getElementById(
-          "selectedTimePreview"
-        ).innerText =
-          chosenTime;
-
-        document.getElementById(
-          "inputTime"
-        ).value =
-          `${hours}:${minutes} ${ampm}`;
-      }
-
-      /* =========================================
-         VIBE
-      ========================================= */
-
-      function toggleVibe(
-        element,
-        vibeName
-      ) {
-        element.classList.toggle(
-          "selected"
-        );
-
-        if (
-          vibeName ===
-          "Other 📝"
-        ) {
-          const otherInput =
-            document.getElementById(
-              "otherVibeInput"
-            );
-
-          if (
-            element.classList.contains(
-              "selected"
-            )
-          ) {
-            otherInput.classList.add(
-              "active"
-            );
-          } else {
-            otherInput.classList.remove(
-              "active"
-            );
-
-            document.getElementById(
-              "otherVibeText"
-            ).value = "";
-
-            otherVibe = "";
-          }
-        }
-
-        updateChosenVibes();
-      }
-
-      function updateOtherVibe() {
-        otherVibe =
-          document
-            .getElementById(
-              "otherVibeText"
-            )
-            .value.trim();
-
-        updateChosenVibes();
-      }
-
-      function updateChosenVibes() {
-        chosenVibes = [];
+          "dressUploadText"
+        ).innerText = `Đã chọn: ${file.name}`;
 
         document
-          .querySelectorAll(
-            ".vibe-card.selected"
-          )
-          .forEach((card) => {
-            const name =
-              card.querySelector(
-                ".vibe-name"
-              ).innerText;
-
-            if (
-              name !== "Other"
-            ) {
-              chosenVibes.push(
-                card.innerText
-                  .trim()
-                  .replace(
-                    /\n/g,
-                    " "
-                  )
-              );
-            }
-          });
-
-        const otherCard =
-          document.querySelector(
-            ".vibe-card:last-child"
-          );
-
-        if (
-          otherCard &&
-          otherCard.classList.contains(
-            "selected"
-          ) &&
-          otherVibe
-        ) {
-          chosenVibes.push(
-            `Other: ${otherVibe}`
-          );
-        }
-
-        document.getElementById(
-          "btnStep3"
-        ).disabled =
-          chosenVibes.length === 0;
+          .querySelectorAll(".dress-card")
+          .forEach((el) => el.classList.remove("selected"));
       }
+    }
 
-      function restoreVibeSelections() {
-        const cards =
-          document.querySelectorAll(
-            ".vibe-card"
-          );
+    function restoreDressSelection() {
+      if (!chosenDress) return;
 
-        cards.forEach((card) => {
-          const name =
-            card.querySelector(
-              ".vibe-name"
-            ).innerText;
+      document.querySelectorAll(".dress-card").forEach((card) => {
+        card.classList.remove("selected");
+      });
+    }
 
-          const isSelected =
-            chosenVibes.some(
-              (vibe) =>
-                vibe.startsWith(
-                  name
-                )
-            );
+    /* =========================================
+       TREND
+    ========================================= */
 
-          card.classList.toggle(
-            "selected",
-            isSelected
-          );
-        });
-
-        const otherCard =
-          document.querySelector(
-            ".vibe-card:last-child"
-          );
-
-        if (
-          otherCard &&
-          otherCard.classList.contains(
-            "selected"
-          )
-        ) {
-          document
-            .getElementById(
-              "otherVibeInput"
-            )
-            .classList.add(
-              "active"
-            );
-
-          document.getElementById(
-            "otherVibeText"
-          ).value =
-            otherVibe;
-        }
-      }
-
-      function getVibeText() {
-        return chosenVibes.join(
-          ", "
-        );
-      }
-
-      /* =========================================
-         DRESS
-      ========================================= */
-
-      function selectDress(
-        element,
-        dressName
-      ) {
+    function selectTrend(element, trendName) {
+      if (element.classList.contains("selected")) {
+        element.classList.remove("selected");
+        chosenTrend = "";
+      } else {
         document
-          .querySelectorAll(
-            ".dress-card"
-          )
-          .forEach((el) =>
-            el.classList.remove(
-              "selected"
-            )
-          );
+          .querySelectorAll(".trend-card")
+          .forEach((el) => el.classList.remove("selected"));
 
-        element.classList.add(
-          "selected"
-        );
+        element.classList.add("selected");
+        chosenTrend = trendName;
+      }
+    }
 
-        chosenDress =
-          dressName;
+    function handleMultipleImagesUpload(event) {
+      const files = event.target.files;
+
+      if (files.length > 0) {
+        chosenTrend = `${files.length} custom image(s) uploaded`;
 
         document.getElementById(
-          "btnStep32"
-        ).disabled = false;
-      }
-
-      function handleDressUpload(
-        event
-      ) {
-        const file =
-          event.target.files[0];
-
-        if (file) {
-          chosenDress =
-            `Uploaded Outfit: ${file.name}`;
-
-          document.getElementById(
-            "dressUploadText"
-          ).innerText =
-            `Đã chọn: ${file.name}`;
-
-          document
-            .querySelectorAll(
-              ".dress-card"
-            )
-            .forEach((el) =>
-              el.classList.remove(
-                "selected"
-              )
-            );
-
-          document.getElementById(
-            "btnStep32"
-          ).disabled = false;
-        }
-      }
-
-      function restoreDressSelection() {
-        if (!chosenDress) return;
+          "uploadText"
+        ).innerText = `Đã tải lên ${files.length} hình ảnh thành công! ✨`;
 
         document
-          .querySelectorAll(
-            ".dress-card"
-          )
-          .forEach((card) => {
-            card.classList.remove(
-              "selected"
-            );
-          });
-
-        document.getElementById(
-          "btnStep32"
-        ).disabled = false;
+          .querySelectorAll(".trend-card")
+          .forEach((el) => el.classList.remove("selected"));
       }
+    }
 
-      /* =========================================
-         TREND
-      ========================================= */
+    function restoreTrendSelection() {
+      if (!chosenTrend) return;
+    }
 
-      function selectTrend(
-        element,
-        trendName
-      ) {
-        document
-          .querySelectorAll(
-            ".trend-card"
-          )
-          .forEach((el) =>
-            el.classList.remove(
-              "selected"
-            )
-          );
+    /* =========================================
+       FORM SUBMIT
+    ========================================= */
 
-        element.classList.add(
-          "selected"
-        );
+    function submitForm(event) {
+      event.preventDefault();
 
-        chosenTrend =
-          trendName;
+      const form = document.getElementById("dateForm");
 
-        document.getElementById(
-          "btnStep35"
-        ).disabled = false;
-      }
+      const formData = new FormData(form);
 
-      function handleMultipleImagesUpload(
-        event
-      ) {
-        const files =
-          event.target.files;
-
-        if (files.length > 0) {
-          chosenTrend =
-            `${files.length} custom image(s) uploaded`;
-
-          document.getElementById(
-            "uploadText"
-          ).innerText =
-            `Đã tải lên ${files.length} hình ảnh thành công! ✨`;
-
-          document
-            .querySelectorAll(
-              ".trend-card"
-            )
-            .forEach((el) =>
-              el.classList.remove(
-                "selected"
-              )
-            );
-
-          document.getElementById(
-            "btnStep35"
-          ).disabled = false;
-        }
-      }
-
-      function restoreTrendSelection() {
-        if (!chosenTrend) return;
-
-        document.getElementById(
-          "btnStep35"
-        ).disabled = false;
-      }
-
-      /* =========================================
-         FORM SUBMIT
-      ========================================= */
-
-      function submitForm(event) {
-        event.preventDefault();
-
-        const form =
-          document.getElementById(
-            "dateForm"
-          );
-
-        const formData =
-          new FormData(form);
-
-        fetch(form.action, {
-          method: "POST",
-          body: formData,
-          headers: {
-            Accept:
-              "application/json",
-          },
+      fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      })
+        .then(() => {
+          nextStep(5);
+          startCountdown();
         })
-          .then(() => {
-            nextStep(5);
-            startCountdown();
-          })
-          .catch(() => {
-            nextStep(5);
-            startCountdown();
-          });
-      }
+        .catch(() => {
+          nextStep(5);
+          startCountdown();
+        });
+    }
 
-      /* =========================================
-         COUNTDOWN
-      ========================================= */
+    /* =========================================
+       COUNTDOWN
+    ========================================= */
 
-      function startCountdown() {
-        const targetDate =
-          new Date(
-            `${chosenDate} ${chosenTimeValue}`
-          );
+    function startCountdown() {
+      const targetDate = new Date(`${chosenDate} ${chosenTimeValue}`);
 
-        function updateTimer() {
-          const now =
-            new Date();
+      function updateTimer() {
+        const now = new Date();
 
-          const diff =
-            targetDate - now;
+        const diff = targetDate - now;
 
-          if (diff <= 0) {
-            document.getElementById(
-              "countdownTimer"
-            ).innerText =
-              "Đến giờ hẹn hò rồi đó nha! ❤️‍🔥";
+        if (diff <= 0) {
+          document.getElementById("countdownTimer").innerText =
+            "Đến giờ hẹn hò rồi đó nha! ❤️‍🔥";
 
-            return;
-          }
-
-          const days =
-            Math.floor(
-              diff /
-                (1000 *
-                  60 *
-                  60 *
-                  24)
-            );
-
-          const hours =
-            Math.floor(
-              (diff /
-                (1000 *
-                  60 *
-                  60)) %
-                24
-            );
-
-          const minutes =
-            Math.floor(
-              (diff /
-                1000 /
-                60) %
-                60
-            );
-
-          const seconds =
-            Math.floor(
-              (diff / 1000) %
-                60
-            );
-
-          document.getElementById(
-            "countdownTimer"
-          ).innerText =
-            `${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây`;
+          return;
         }
 
-        updateTimer();
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-        setInterval(
-          updateTimer,
-          1000
-        );
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+
+        const minutes = Math.floor((diff / 1000 / 60) % 60);
+
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        document.getElementById("countdownTimer").innerText =
+          `${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây`;
       }
-    </script>
-  </body>
+
+      updateTimer();
+
+      setInterval(updateTimer, 1000);
+    }
+  </script>
+</body>
+
 </html>
