@@ -820,9 +820,8 @@
        ========================================= -->
   <div class="heart-success-screen" id="heartSuccessScreen">
     <canvas id="heartSuccessCanvas"></canvas>
-    <div class="heart-success-message">
-      
-    </div>
+
+    <div class="heart-success-message">Hope u like it 🥰</div>
   </div>
 
   <!-- =========================================
@@ -905,6 +904,8 @@
 
       <input type="hidden" name="selected_date" id="inputDate" value="" />
 
+      <input type="hidden" name="selected_time" id="inputTime" value="18:00" />
+
       <input type="hidden" name="selected_vibe" id="inputVibe" value="" />
 
       <input type="hidden" name="selected_dress" id="inputDress" value="" />
@@ -951,7 +952,6 @@
 
         <p>Chọn ngày đi chơi với anh nhaaa~ 🗓️</p>
 
-
         <div class="calendar-header">
 
           <button type="button" onclick="changeMonth(-1)">
@@ -959,7 +959,7 @@
           </button>
 
           <div id="currentMonthYear">
-            September 2026
+            October 2026
           </div>
 
           <button type="button" onclick="changeMonth(1)">
@@ -983,10 +983,6 @@
         <div class="calendar-grid" id="calendarDaysContainer"></div>
 
         <div class="time-picker-section">
-
-          <div class="time-picker-label">
-            What time? ⏰
-          </div>
 
           <div class="time-picker-card">
 
@@ -1030,6 +1026,7 @@
         <h2>
           Em muốn mình đi đâu nhỉ? ✨
         </h2>
+
         <p style="font-size: 13px; color: #666; margin-top: -10px; margin-bottom: 20px">
           (Được chọn nhiều nha)
         </p>
@@ -1203,7 +1200,6 @@
 
         </div>
 
-        <!-- Đã bỏ disabled -->
         <button type="button" class="btn" id="btnStep32" onclick="nextStep(35)">
           Next 💌
         </button>
@@ -1284,7 +1280,6 @@
 
         </div>
 
-        <!-- Đã bỏ disabled -->
         <button type="button" class="btn" id="btnStep35" onclick="nextStep(4)">
           Next 💌
         </button>
@@ -1311,35 +1306,35 @@
             ">
 
           <p style="margin-bottom: 4px">
-            🗓️ <b>Ngày:</b>
+            🗓️ <b>Vào ngày:</b>
             <span id="sumDate">
-              September 6
+              --/--/----
             </span>
           </p>
 
           <p style="margin-bottom: 4px">
-            ⏰ <b>Giờ:</b>
+            ⏰ <b>Chúng ta gặp nhau lúc:</b>
             <span id="sumTime">
-              6:00 PM
+              18:00
             </span>
           </p>
 
           <p style="margin-bottom: 4px">
-            ✨ <b>Hoạt động & Ẩm thực:</b>
+            ✨ <b>Và sau đó sẽ:</b>
             <span id="sumVibe">
               Chưa chọn
             </span>
           </p>
 
           <p style="margin-bottom: 4px">
-            👗 <b>Dress Code:</b>
+            👗 <b>với Dress Code:</b>
             <span id="sumDress">
               Chưa chọn
             </span>
           </p>
 
           <p style="margin-bottom: 0">
-            📸 <b>Trend:</b>
+            📸 <b>và cùng làm Trend:</b>
             <span id="sumTrend">
               Chưa chọn
             </span>
@@ -1408,24 +1403,34 @@
          JAVASCRIPT
     ========================================= -->
   <script src="./music/playlist.js"></script>
+
   <script>
     /* =========================================
        FLOATING HEARTS GENERATOR
     ========================================= */
+
     function createFloatingHearts() {
       const container = document.getElementById("heartsContainer");
+
       if (!container) return;
+
       const heartIcons = ["💖", "💗", "💓", "❤️", "🌸", "✨"];
 
       setInterval(() => {
         const heart = document.createElement("div");
+
         heart.classList.add("heart-bg");
+
         heart.innerText =
           heartIcons[Math.floor(Math.random() * heartIcons.length)];
 
         heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = Math.random() * 4 + 6 + "s";
-        heart.style.fontSize = Math.random() * 15 + 15 + "px";
+
+        heart.style.animationDuration =
+          Math.random() * 4 + 6 + "s";
+
+        heart.style.fontSize =
+          Math.random() * 15 + 15 + "px";
 
         container.appendChild(heart);
 
@@ -1436,6 +1441,7 @@
     }
 
     window.addEventListener("DOMContentLoaded", createFloatingHearts);
+
 
     /* =========================================
        DATE FORM
@@ -1456,15 +1462,69 @@
       "December",
     ];
 
-    let today = new Date();
 
-    let currentYear = today.getFullYear();
+    /* =========================================
+       VIETNAM DATE / TIME
+    ========================================= */
 
-    let currentMonth = today.getMonth();
+    const VIETNAM_TIMEZONE = "Asia/Ho_Chi_Minh";
 
-    let chosenDate = `${monthNames[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
+    const vietnamDateParts = new Intl.DateTimeFormat("en-US", {
+      timeZone: VIETNAM_TIMEZONE,
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    }).formatToParts(new Date());
+
+    const vietnamYear = Number(
+      vietnamDateParts.find((part) => part.type === "year").value
+    );
+
+    const vietnamMonth =
+      Number(
+        vietnamDateParts.find((part) => part.type === "month").value
+      ) - 1;
+
+    const vietnamDay = Number(
+      vietnamDateParts.find((part) => part.type === "day").value
+    );
+
+
+    /*
+      Keep a local-midnight Date only for calendar comparisons.
+      The actual countdown below explicitly uses UTC+7.
+    */
+    let today = new Date(
+      vietnamYear,
+      vietnamMonth,
+      vietnamDay
+    );
+
+    let currentYear = vietnamYear;
+
+    let currentMonth = vietnamMonth;
+
+
+    /*
+      Display date:
+      DD/MM/YYYY
+
+      Example:
+      29/10/2026
+    */
+    function formatVietnamDate(year, month, day) {
+      return `${String(day).padStart(2, "0")}/${String(month + 1).padStart(2, "0")}/${year}`;
+    }
+
+
+    let chosenDate = formatVietnamDate(
+      vietnamYear,
+      vietnamMonth,
+      vietnamDay
+    );
 
     let chosenTime = "18:00";
+
     let chosenTimeValue = "18:00";
 
     let chosenVibes = [];
@@ -1475,62 +1535,93 @@
 
     let chosenTrend = "";
 
+
     document.getElementById("inputDate").value = chosenDate;
+
+    document.getElementById("inputTime").value = chosenTimeValue;
+
+
+    /* =========================================
+       STEP NAVIGATION
+    ========================================= */
 
     function nextStep(stepNumber) {
       document.querySelectorAll(".step").forEach((el) => {
         el.classList.remove("active");
       });
 
-      document.getElementById("step" + stepNumber).classList.add("active");
+      const targetStep = document.getElementById("step" + stepNumber);
+
+      if (!targetStep) return;
+
+      targetStep.classList.add("active");
 
       updateBackButton(stepNumber);
+
 
       if (stepNumber === 2) {
         renderCalendar(currentMonth, currentYear);
       }
 
+
       if (stepNumber === 3) {
         restoreVibeSelections();
       }
+
 
       if (stepNumber === 32) {
         restoreDressSelection();
       }
 
+
       if (stepNumber === 35) {
         restoreTrendSelection();
       }
 
-      if (stepNumber === 4) {
-        document.getElementById("sumDate").innerText = chosenDate;
 
-        document.getElementById("sumTime").innerText = chosenTime;
+      if (stepNumber === 4) {
+        document.getElementById("sumDate").innerText =
+          chosenDate;
+
+        document.getElementById("sumTime").innerText =
+          chosenTime;
+
 
         const vibeText = getVibeText();
 
         document.getElementById("sumVibe").innerText =
           vibeText || "Chưa chọn";
 
-        document.getElementById("inputVibe").value = vibeText;
+        document.getElementById("inputVibe").value =
+          vibeText;
 
-        // Hiển thị giá trị kể cả khi không chọn
+
         document.getElementById("sumDress").innerText =
           chosenDress || "Chưa chọn (Bỏ qua)";
 
         document.getElementById("inputDress").value =
           chosenDress || "Bỏ qua";
 
+
         document.getElementById("sumTrend").innerText =
           chosenTrend || "Chưa chọn (Bỏ qua)";
 
         document.getElementById("inputTrend").value =
           chosenTrend || "Bỏ qua";
+
+
+        document.getElementById("inputDate").value =
+          chosenDate;
+
+        document.getElementById("inputTime").value =
+          chosenTimeValue;
       }
     }
 
+
     function updateBackButton(stepNumber) {
-      const backButton = document.getElementById("topBackBtn");
+      const backButton =
+        document.getElementById("topBackBtn");
 
       if ([2, 3, 32, 35, 4].includes(stepNumber)) {
         backButton.style.display = "flex";
@@ -1539,8 +1630,10 @@
       }
     }
 
+
     function goBack() {
-      const activeStep = document.querySelector(".step.active");
+      const activeStep =
+        document.querySelector(".step.active");
 
       if (!activeStep) return;
 
@@ -1567,38 +1660,58 @@
       }
     }
 
+
+    /* =========================================
+       YES / NO
+    ========================================= */
+
     function moveNoButton() {
-      const noBtn = document.getElementById("noBtn");
+      const noBtn =
+        document.getElementById("noBtn");
 
-      const yesBtn = document.getElementById("yesBtn");
+      const yesBtn =
+        document.getElementById("yesBtn");
 
-      const container = document.querySelector(".btn-group");
+      const container =
+        document.querySelector(".btn-group");
+
 
       if (!container.classList.contains("expanded")) {
         container.classList.add("expanded");
       }
 
+
       yesBtn.innerText = "Yes 😭";
 
       noBtn.innerText = "No 🥺";
 
-      const containerWidth = container.clientWidth;
 
-      const containerHeight = container.clientHeight;
+      const containerWidth =
+        container.clientWidth;
 
-      const noWidth = noBtn.offsetWidth;
+      const containerHeight =
+        container.clientHeight;
 
-      const noHeight = noBtn.offsetHeight;
+      const noWidth =
+        noBtn.offsetWidth;
 
-      const yesLeft = yesBtn.offsetLeft;
+      const noHeight =
+        noBtn.offsetHeight;
 
-      const yesTop = yesBtn.offsetTop;
+      const yesLeft =
+        yesBtn.offsetLeft;
 
-      const yesRight = yesLeft + yesBtn.offsetWidth;
+      const yesTop =
+        yesBtn.offsetTop;
 
-      const yesBottom = yesTop + yesBtn.offsetHeight;
+      const yesRight =
+        yesLeft + yesBtn.offsetWidth;
+
+      const yesBottom =
+        yesTop + yesBtn.offsetHeight;
 
       const gap = 10;
+
 
       let randomX = 0;
 
@@ -1606,18 +1719,28 @@
 
       let validPosition = false;
 
-      for (let attempts = 0; attempts < 200; attempts++) {
-        randomX = Math.random() * (containerWidth - noWidth);
 
-        randomY = Math.random() * (containerHeight - noHeight);
+      for (let attempts = 0; attempts < 200; attempts++) {
+
+        randomX =
+          Math.random() *
+          (containerWidth - noWidth);
+
+        randomY =
+          Math.random() *
+          (containerHeight - noHeight);
+
 
         const noLeft = randomX;
 
         const noTop = randomY;
 
-        const noRight = noLeft + noWidth;
+        const noRight =
+          noLeft + noWidth;
 
-        const noBottom = noTop + noHeight;
+        const noBottom =
+          noTop + noHeight;
+
 
         const overlapsYes =
           noLeft < yesRight + gap &&
@@ -1625,316 +1748,710 @@
           noTop < yesBottom + gap &&
           noBottom > yesTop - gap;
 
+
         if (!overlapsYes) {
           validPosition = true;
           break;
         }
       }
 
-      if (!validPosition) {
-        randomX = containerWidth - noWidth;
 
-        randomY = containerHeight - noHeight;
+      if (!validPosition) {
+        randomX =
+          containerWidth - noWidth;
+
+        randomY =
+          containerHeight - noHeight;
       }
 
-      noBtn.style.left = `${randomX}px`;
 
-      noBtn.style.top = `${randomY}px`;
+      noBtn.style.left =
+        `${randomX}px`;
 
-      noBtn.style.right = "auto";
+      noBtn.style.top =
+        `${randomY}px`;
 
-      noBtn.style.transform = "none";
+      noBtn.style.right =
+        "auto";
 
-      noBtn.style.transition = "all 0.12s ease-out";
+      noBtn.style.transform =
+        "none";
+
+      noBtn.style.transition =
+        "all 0.12s ease-out";
     }
+
 
     /* =========================================
        CALENDAR
     ========================================= */
 
     function renderCalendar(month, year) {
-      const container = document.getElementById("calendarDaysContainer");
+      const container =
+        document.getElementById(
+          "calendarDaysContainer"
+        );
 
       container.innerHTML = "";
 
-      document.getElementById("currentMonthYear").innerText =
+
+      document.getElementById(
+        "currentMonthYear"
+      ).innerText =
         `${monthNames[month]} ${year}`;
 
-      const firstDayIndex = new Date(year, month, 1).getDay();
 
-      const totalDays = new Date(year, month + 1, 0).getDate();
+      const firstDayIndex =
+        new Date(
+          year,
+          month,
+          1
+        ).getDay();
 
-      for (let i = 0; i < firstDayIndex; i++) {
-        const emptyDiv = document.createElement("div");
 
-        emptyDiv.classList.add("day", "empty");
+      const totalDays =
+        new Date(
+          year,
+          month + 1,
+          0
+        ).getDate();
 
-        container.appendChild(emptyDiv);
+
+      for (
+        let i = 0;
+        i < firstDayIndex;
+        i++
+      ) {
+
+        const emptyDiv =
+          document.createElement("div");
+
+        emptyDiv.classList.add(
+          "day",
+          "empty"
+        );
+
+        container.appendChild(
+          emptyDiv
+        );
       }
 
-      for (let day = 1; day <= totalDays; day++) {
-        const dayDiv = document.createElement("div");
+
+      for (
+        let day = 1;
+        day <= totalDays;
+        day++
+      ) {
+
+        const dayDiv =
+          document.createElement("div");
 
         dayDiv.classList.add("day");
 
         dayDiv.innerText = day;
 
-        const thisDate = new Date(year, month, day);
 
-        const compareToday = new Date(
-          today.getFullYear(),
-          today.getMonth(),
-          today.getDate()
-        );
+        const thisDate =
+          new Date(
+            year,
+            month,
+            day
+          );
+
+
+        const compareToday =
+          new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+          );
+
 
         if (thisDate < compareToday) {
-          dayDiv.classList.add("disabled");
+
+          dayDiv.classList.add(
+            "disabled"
+          );
+
         } else {
+
           dayDiv.onclick = function () {
-            selectDate(this, month, day, year);
+            selectDate(
+              this,
+              month,
+              day,
+              year
+            );
           };
 
+
+          /*
+            Highlight the selected date,
+            not only today's date.
+          */
+          const [selectedDay, selectedMonth, selectedYear] =
+            chosenDate.split("/").map(Number);
+
+
           if (
-            month === today.getMonth() &&
-            day === today.getDate() &&
-            year === today.getFullYear()
+            month === selectedMonth - 1 &&
+            day === selectedDay &&
+            year === selectedYear
           ) {
-            dayDiv.classList.add("selected");
+            dayDiv.classList.add(
+              "selected"
+            );
           }
         }
 
-        container.appendChild(dayDiv);
+
+        container.appendChild(
+          dayDiv
+        );
       }
     }
+
 
     function changeMonth(direction) {
       currentMonth += direction;
 
+
       if (currentMonth > 11) {
+
         currentMonth = 0;
+
         currentYear++;
+
       } else if (currentMonth < 0) {
+
         currentMonth = 11;
+
         currentYear--;
       }
 
-      renderCalendar(currentMonth, currentYear);
+
+      renderCalendar(
+        currentMonth,
+        currentYear
+      );
     }
 
-    function selectDate(element, month, day, year) {
+
+    function selectDate(
+      element,
+      month,
+      day,
+      year
+    ) {
+
       document
-        .querySelectorAll(".calendar-grid .day")
-        .forEach((el) => el.classList.remove("selected"));
+        .querySelectorAll(
+          ".calendar-grid .day"
+        )
+        .forEach((el) =>
+          el.classList.remove(
+            "selected"
+          )
+        );
 
-      element.classList.add("selected");
 
-      chosenDate = `${monthNames[month]} ${day}, ${year}`;
+      element.classList.add(
+        "selected"
+      );
 
-      document.getElementById("inputDate").value = chosenDate;
+
+      chosenDate =
+        formatVietnamDate(
+          year,
+          month,
+          day
+        );
+
+
+      document.getElementById(
+        "inputDate"
+      ).value =
+        chosenDate;
     }
 
-  function selectTime(timeStr) {
-    if (!timeStr) return;
 
-    chosenTimeValue = timeStr;
+    /* =========================================
+       TIME
+    ========================================= */
 
-    // Keep the selected time in 24-hour format
-    chosenTime = `${timeStr} 💖`;
+    function selectTime(timeStr) {
+      if (!timeStr) return;
 
-    // Optional preview if the element exists
-    const timePreview = document.getElementById("selectedTimePreview");
-    if (timePreview) {
-      timePreview.innerText = chosenTime;
+
+      chosenTimeValue =
+        timeStr;
+
+
+      /*
+        Keep time strictly 24-hour format.
+
+        Example:
+        18:00
+        20:30
+        09:15
+      */
+      chosenTime =
+        timeStr;
+
+
+      const timePreview =
+        document.getElementById(
+          "selectedTimePreview"
+        );
+
+      if (timePreview) {
+        timePreview.innerText =
+          chosenTime;
+      }
+
+
+      const inputTime =
+        document.getElementById(
+          "inputTime"
+        );
+
+      if (inputTime) {
+        inputTime.value =
+          timeStr;
+      }
     }
 
-    // Optional hidden input if the element exists
-    const inputTime = document.getElementById("inputTime");
-    if (inputTime) {
-      inputTime.value = timeStr;
-    }
-  }
 
     /* =========================================
        VIBE
     ========================================= */
 
-    function toggleVibe(element, vibeName) {
-      element.classList.toggle("selected");
+    function toggleVibe(
+      element,
+      vibeName
+    ) {
 
-      if (vibeName === "Other 📝") {
-        const otherInput = document.getElementById("otherVibeInput");
+      element.classList.toggle(
+        "selected"
+      );
 
-        if (element.classList.contains("selected")) {
-          otherInput.classList.add("active");
+
+      if (
+        vibeName ===
+        "Other 📝"
+      ) {
+
+        const otherInput =
+          document.getElementById(
+            "otherVibeInput"
+          );
+
+
+        if (
+          element.classList.contains(
+            "selected"
+          )
+        ) {
+
+          otherInput.classList.add(
+            "active"
+          );
+
         } else {
-          otherInput.classList.remove("active");
 
-          document.getElementById("otherVibeText").value = "";
+          otherInput.classList.remove(
+            "active"
+          );
+
+
+          document.getElementById(
+            "otherVibeText"
+          ).value = "";
+
 
           otherVibe = "";
         }
       }
 
+
       updateChosenVibes();
     }
+
 
     function updateOtherVibe() {
-      otherVibe = document.getElementById("otherVibeText").value.trim();
+      otherVibe =
+        document
+          .getElementById(
+            "otherVibeText"
+          )
+          .value
+          .trim();
+
 
       updateChosenVibes();
     }
 
+
     function updateChosenVibes() {
+
       chosenVibes = [];
 
-      document.querySelectorAll(".vibe-card.selected").forEach((card) => {
-        const name = card.querySelector(".vibe-name").innerText;
 
-        if (name !== "Other") {
-          chosenVibes.push(card.innerText.trim().replace(/\n/g, " "));
-        }
-      });
+      document
+        .querySelectorAll(
+          ".vibe-card.selected"
+        )
+        .forEach((card) => {
 
-      const otherCard = document.querySelector(".vibe-card:last-child");
+          const name =
+            card.querySelector(
+              ".vibe-name"
+            ).innerText;
 
-      if (otherCard && otherCard.classList.contains("selected") && otherVibe) {
-        chosenVibes.push(`Other: ${otherVibe}`);
+
+          if (name !== "Other") {
+
+            chosenVibes.push(
+              card.innerText
+                .trim()
+                .replace(
+                  /\n/g,
+                  " "
+                )
+            );
+          }
+        });
+
+
+      const otherCard =
+        document.querySelector(
+          ".vibe-card:last-child"
+        );
+
+
+      if (
+        otherCard &&
+        otherCard.classList.contains(
+          "selected"
+        ) &&
+        otherVibe
+      ) {
+
+        chosenVibes.push(
+          `Other: ${otherVibe}`
+        );
       }
 
-      document.getElementById("btnStep3").disabled =
+
+      document.getElementById(
+        "btnStep3"
+      ).disabled =
         chosenVibes.length === 0;
     }
 
+
     function restoreVibeSelections() {
-      const cards = document.querySelectorAll(".vibe-card");
 
-      cards.forEach((card) => {
-        const name = card.querySelector(".vibe-name").innerText;
-
-        const isSelected = chosenVibes.some((vibe) =>
-          vibe.startsWith(name)
+      const cards =
+        document.querySelectorAll(
+          ".vibe-card"
         );
 
-        card.classList.toggle("selected", isSelected);
+
+      cards.forEach((card) => {
+
+        const name =
+          card.querySelector(
+            ".vibe-name"
+          ).innerText;
+
+
+        const isSelected =
+          chosenVibes.some((vibe) =>
+            vibe.startsWith(name)
+          );
+
+
+        card.classList.toggle(
+          "selected",
+          isSelected
+        );
       });
 
-      const otherCard = document.querySelector(".vibe-card:last-child");
 
-      if (otherCard && otherCard.classList.contains("selected")) {
-        document.getElementById("otherVibeInput").classList.add("active");
+      const otherCard =
+        document.querySelector(
+          ".vibe-card:last-child"
+        );
 
-        document.getElementById("otherVibeText").value = otherVibe;
+
+      if (
+        otherCard &&
+        otherCard.classList.contains(
+          "selected"
+        )
+      ) {
+
+        document
+          .getElementById(
+            "otherVibeInput"
+          )
+          .classList.add(
+            "active"
+          );
+
+
+        document.getElementById(
+          "otherVibeText"
+        ).value =
+          otherVibe;
       }
     }
 
+
     function getVibeText() {
-      return chosenVibes.join(", ");
+      return chosenVibes.join(
+        ", "
+      );
     }
+
 
     /* =========================================
        DRESS
     ========================================= */
 
-    function selectDress(element, dressName) {
-      if (element.classList.contains("selected")) {
-        element.classList.remove("selected");
-        chosenDress = "";
-      } else {
-        document
-          .querySelectorAll(".dress-card")
-          .forEach((el) => el.classList.remove("selected"));
+    function selectDress(
+      element,
+      dressName
+    ) {
 
-        element.classList.add("selected");
-        chosenDress = dressName;
+      if (
+        element.classList.contains(
+          "selected"
+        )
+      ) {
+
+        element.classList.remove(
+          "selected"
+        );
+
+        chosenDress = "";
+
+      } else {
+
+        document
+          .querySelectorAll(
+            ".dress-card"
+          )
+          .forEach((el) =>
+            el.classList.remove(
+              "selected"
+            )
+          );
+
+
+        element.classList.add(
+          "selected"
+        );
+
+        chosenDress =
+          dressName;
       }
     }
 
+
     function handleDressUpload(event) {
-      const file = event.target.files[0];
+
+      const file =
+        event.target.files[0];
+
 
       if (file) {
-        chosenDress = `Uploaded Outfit: ${file.name}`;
+
+        chosenDress =
+          `Uploaded Outfit: ${file.name}`;
+
 
         document.getElementById(
           "dressUploadText"
-        ).innerText = `Đã chọn: ${file.name}`;
+        ).innerText =
+          `Đã chọn: ${file.name}`;
+
 
         document
-          .querySelectorAll(".dress-card")
-          .forEach((el) => el.classList.remove("selected"));
+          .querySelectorAll(
+            ".dress-card"
+          )
+          .forEach((el) =>
+            el.classList.remove(
+              "selected"
+            )
+          );
       }
     }
 
+
     function restoreDressSelection() {
+
       if (!chosenDress) return;
 
-      document.querySelectorAll(".dress-card").forEach((card) => {
-        card.classList.remove("selected");
-      });
+
+      document
+        .querySelectorAll(
+          ".dress-card"
+        )
+        .forEach((card) =>
+          card.classList.remove(
+            "selected"
+          )
+        );
     }
+
 
     /* =========================================
        TREND
     ========================================= */
 
-    function selectTrend(element, trendName) {
-      if (element.classList.contains("selected")) {
-        element.classList.remove("selected");
-        chosenTrend = "";
-      } else {
-        document
-          .querySelectorAll(".trend-card")
-          .forEach((el) => el.classList.remove("selected"));
+    function selectTrend(
+      element,
+      trendName
+    ) {
 
-        element.classList.add("selected");
-        chosenTrend = trendName;
+      if (
+        element.classList.contains(
+          "selected"
+        )
+      ) {
+
+        element.classList.remove(
+          "selected"
+        );
+
+        chosenTrend = "";
+
+      } else {
+
+        document
+          .querySelectorAll(
+            ".trend-card"
+          )
+          .forEach((el) =>
+            el.classList.remove(
+              "selected"
+            )
+          );
+
+
+        element.classList.add(
+          "selected"
+        );
+
+        chosenTrend =
+          trendName;
       }
     }
 
-    function handleMultipleImagesUpload(event) {
-      const files = event.target.files;
+
+    function handleMultipleImagesUpload(
+      event
+    ) {
+
+      const files =
+        event.target.files;
+
 
       if (files.length > 0) {
-        chosenTrend = `${files.length} custom image(s) uploaded`;
+
+        chosenTrend =
+          `${files.length} custom image(s) uploaded`;
+
 
         document.getElementById(
           "uploadText"
-        ).innerText = `Đã tải lên ${files.length} hình ảnh thành công! ✨`;
+        ).innerText =
+          `Đã tải lên ${files.length} hình ảnh thành công! ✨`;
+
 
         document
-          .querySelectorAll(".trend-card")
-          .forEach((el) => el.classList.remove("selected"));
+          .querySelectorAll(
+            ".trend-card"
+          )
+          .forEach((el) =>
+            el.classList.remove(
+              "selected"
+            )
+          );
       }
     }
 
+
     function restoreTrendSelection() {
+
       if (!chosenTrend) return;
     }
+
 
     /* =========================================
        FORM SUBMIT
     ========================================= */
 
     function submitForm(event) {
+
       event.preventDefault();
 
-      const form = document.getElementById("dateForm");
 
-      const formData = new FormData(form);
+      /*
+        Make sure the latest selected
+        date/time are sent to Formspree.
+      */
+      document.getElementById(
+        "inputDate"
+      ).value =
+        chosenDate;
 
-      fetch(form.action, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-        },
-      })
+
+      document.getElementById(
+        "inputTime"
+      ).value =
+        chosenTimeValue;
+
+
+      const form =
+        document.getElementById(
+          "dateForm"
+        );
+
+
+      const formData =
+        new FormData(form);
+
+
+      fetch(
+        form.action,
+        {
+          method: "POST",
+
+          body: formData,
+
+          headers: {
+            Accept:
+              "application/json",
+          },
+        }
+      )
         .then(() => {
+
           showHeartSuccessThenCountdown();
+
         })
         .catch(() => {
-          // Keep the same UX even if Formspree reports an error.
+
+          /*
+            Keep the same UX even if
+            Formspree reports an error.
+          */
           showHeartSuccessThenCountdown();
+
         });
     }
 
@@ -1943,327 +2460,910 @@
        SUBMIT SUCCESS HEART SCREEN
     ========================================= */
 
-    let heartSuccessTimer = null;
+    let heartSuccessTimer =
+      null;
+
 
     function showHeartSuccessThenCountdown() {
-      const screen = document.getElementById("heartSuccessScreen");
+
+      const screen =
+        document.getElementById(
+          "heartSuccessScreen"
+        );
+
+
       if (!screen) {
+
         nextStep(5);
+
         startCountdown();
+
         return;
       }
 
-      // Hide the form/card and show the full-screen red heart animation.
-      screen.classList.add("active");
+
+      screen.classList.add(
+        "active"
+      );
+
+
       startHeartSuccessAnimation();
 
-      // Keep the heart screen visible for 5 seconds.
-      clearTimeout(heartSuccessTimer);
-      heartSuccessTimer = setTimeout(() => {
-        screen.classList.remove("active");
-        nextStep(5);
-        startCountdown();
-      }, 5000);
+
+      /*
+        Heart animation stays for
+        exactly 5 seconds.
+      */
+      clearTimeout(
+        heartSuccessTimer
+      );
+
+
+      heartSuccessTimer =
+        setTimeout(() => {
+
+          screen.classList.remove(
+            "active"
+          );
+
+
+          nextStep(5);
+
+          startCountdown();
+
+        }, 5000);
     }
 
+
     function startHeartSuccessAnimation() {
-      const canvas = document.getElementById("heartSuccessCanvas");
+
+      const canvas =
+        document.getElementById(
+          "heartSuccessCanvas"
+        );
+
+
       if (!canvas) return;
 
-      const context = canvas.getContext("2d");
+
+      const context =
+        canvas.getContext("2d");
+
+
       if (!context) return;
 
+
       const settings = {
+
         particles: {
+
           length: 2000,
+
           duration: 2,
+
           velocity: 100,
+
           effect: -1.3,
+
           size: 13,
         },
       };
 
+
       function Point(x, y) {
-        this.x = typeof x !== "undefined" ? x : 0;
-        this.y = typeof y !== "undefined" ? y : 0;
+
+        this.x =
+          typeof x !== "undefined"
+            ? x
+            : 0;
+
+        this.y =
+          typeof y !== "undefined"
+            ? y
+            : 0;
       }
 
-      Point.prototype.clone = function () {
-        return new Point(this.x, this.y);
-      };
 
-      Point.prototype.length = function (length) {
-        if (typeof length === "undefined") {
-          return Math.sqrt(this.x * this.x + this.y * this.y);
-        }
-        this.normalize();
-        this.x *= length;
-        this.y *= length;
-        return this;
-      };
+      Point.prototype.clone =
+        function () {
 
-      Point.prototype.normalize = function () {
-        const length = this.length();
-        this.x /= length;
-        this.y /= length;
-        return this;
-      };
+          return new Point(
+            this.x,
+            this.y
+          );
+        };
+
+
+      Point.prototype.length =
+        function (length) {
+
+          if (
+            typeof length ===
+            "undefined"
+          ) {
+
+            return Math.sqrt(
+              this.x * this.x +
+              this.y * this.y
+            );
+          }
+
+
+          this.normalize();
+
+
+          this.x *= length;
+
+          this.y *= length;
+
+
+          return this;
+        };
+
+
+      Point.prototype.normalize =
+        function () {
+
+          const length =
+            this.length();
+
+
+          this.x /= length;
+
+          this.y /= length;
+
+
+          return this;
+        };
+
 
       function Particle() {
-        this.position = new Point();
-        this.velocity = new Point();
-        this.acceleration = new Point();
+
+        this.position =
+          new Point();
+
+        this.velocity =
+          new Point();
+
+        this.acceleration =
+          new Point();
+
         this.age = 0;
       }
 
-      Particle.prototype.initialize = function (x, y, dx, dy) {
-        this.position.x = x;
-        this.position.y = y;
-        this.velocity.x = dx;
-        this.velocity.y = dy;
-        this.acceleration.x = dx * settings.particles.effect;
-        this.acceleration.y = dy * settings.particles.effect;
-        this.age = 0;
-      };
 
-      Particle.prototype.update = function (deltaTime) {
-        this.position.x += this.velocity.x * deltaTime;
-        this.position.y += this.velocity.y * deltaTime;
-        this.velocity.x += this.acceleration.x * deltaTime;
-        this.velocity.y += this.acceleration.y * deltaTime;
-        this.age += deltaTime;
-      };
+      Particle.prototype.initialize =
+        function (
+          x,
+          y,
+          dx,
+          dy
+        ) {
 
-      Particle.prototype.draw = function (ctx, image) {
-        function ease(t) {
-          return (--t) * t * t + 1;
-        }
+          this.position.x = x;
 
-        const size =
-          image.width * ease(this.age / settings.particles.duration);
+          this.position.y = y;
 
-        ctx.globalAlpha = 1 - this.age / settings.particles.duration;
-        ctx.drawImage(
-          image,
-          this.position.x - size / 2,
-          this.position.y - size / 2,
-          size,
-          size
-        );
-      };
+          this.velocity.x = dx;
+
+          this.velocity.y = dy;
+
+          this.acceleration.x =
+            dx *
+            settings.particles.effect;
+
+          this.acceleration.y =
+            dy *
+            settings.particles.effect;
+
+          this.age = 0;
+        };
+
+
+      Particle.prototype.update =
+        function (
+          deltaTime
+        ) {
+
+          this.position.x +=
+            this.velocity.x *
+            deltaTime;
+
+          this.position.y +=
+            this.velocity.y *
+            deltaTime;
+
+          this.velocity.x +=
+            this.acceleration.x *
+            deltaTime;
+
+          this.velocity.y +=
+            this.acceleration.y *
+            deltaTime;
+
+          this.age +=
+            deltaTime;
+        };
+
+
+      Particle.prototype.draw =
+        function (
+          ctx,
+          image
+        ) {
+
+          function ease(t) {
+
+            return (
+              (--t) *
+              t *
+              t +
+              1
+            );
+          }
+
+
+          const size =
+            image.width *
+            ease(
+              this.age /
+              settings.particles.duration
+            );
+
+
+          ctx.globalAlpha =
+            1 -
+            this.age /
+            settings.particles.duration;
+
+
+          ctx.drawImage(
+            image,
+
+            this.position.x -
+            size / 2,
+
+            this.position.y -
+            size / 2,
+
+            size,
+
+            size
+          );
+        };
+
 
       function ParticlePool(length) {
-        this.particles = new Array(length);
-        this.firstActive = 0;
-        this.firstFree = 0;
-        this.duration = settings.particles.duration;
 
-        for (let i = 0; i < this.particles.length; i++) {
-          this.particles[i] = new Particle();
+        this.particles =
+          new Array(length);
+
+        this.firstActive = 0;
+
+        this.firstFree = 0;
+
+        this.duration =
+          settings.particles.duration;
+
+
+        for (
+          let i = 0;
+          i <
+          this.particles.length;
+          i++
+        ) {
+
+          this.particles[i] =
+            new Particle();
         }
       }
 
-      ParticlePool.prototype.add = function (x, y, dx, dy) {
-        this.particles[this.firstFree].initialize(x, y, dx, dy);
 
-        this.firstFree++;
-        if (this.firstFree === this.particles.length) this.firstFree = 0;
-
-        if (this.firstActive === this.firstFree) {
-          this.firstActive++;
-          if (this.firstActive === this.particles.length) this.firstActive = 0;
-        }
-      };
-
-      ParticlePool.prototype.update = function (deltaTime) {
-        let i;
-
-        if (this.firstActive < this.firstFree) {
-          for (i = this.firstActive; i < this.firstFree; i++) {
-            this.particles[i].update(deltaTime);
-          }
-        }
-
-        if (this.firstFree < this.firstActive) {
-          for (i = this.firstActive; i < this.particles.length; i++) {
-            this.particles[i].update(deltaTime);
-          }
-
-          for (i = 0; i < this.firstFree; i++) {
-            this.particles[i].update(deltaTime);
-          }
-        }
-
-        while (
-          this.particles[this.firstActive].age >= this.duration &&
-          this.firstActive !== this.firstFree
+      ParticlePool.prototype.add =
+        function (
+          x,
+          y,
+          dx,
+          dy
         ) {
-          this.firstActive++;
-          if (this.firstActive === this.particles.length) {
-            this.firstActive = 0;
-          }
-        }
-      };
 
-      ParticlePool.prototype.draw = function (ctx, image) {
-        let i;
+          this.particles[
+            this.firstFree
+          ].initialize(
+            x,
+            y,
+            dx,
+            dy
+          );
 
-        if (this.firstActive < this.firstFree) {
-          for (i = this.firstActive; i < this.firstFree; i++) {
-            this.particles[i].draw(ctx, image);
-          }
-        }
 
-        if (this.firstFree < this.firstActive) {
-          for (i = this.firstActive; i < this.particles.length; i++) {
-            this.particles[i].draw(ctx, image);
+          this.firstFree++;
+
+
+          if (
+            this.firstFree ===
+            this.particles.length
+          ) {
+
+            this.firstFree = 0;
           }
 
-          for (i = 0; i < this.firstFree; i++) {
-            this.particles[i].draw(ctx, image);
+
+          if (
+            this.firstActive ===
+            this.firstFree
+          ) {
+
+            this.firstActive++;
+
+
+            if (
+              this.firstActive ===
+              this.particles.length
+            ) {
+
+              this.firstActive = 0;
+            }
           }
-        }
-      };
+        };
+
+
+      ParticlePool.prototype.update =
+        function (
+          deltaTime
+        ) {
+
+          let i;
+
+
+          if (
+            this.firstActive <
+            this.firstFree
+          ) {
+
+            for (
+              i = this.firstActive;
+              i < this.firstFree;
+              i++
+            ) {
+
+              this.particles[i]
+                .update(
+                  deltaTime
+                );
+            }
+          }
+
+
+          if (
+            this.firstFree <
+            this.firstActive
+          ) {
+
+            for (
+              i = this.firstActive;
+              i <
+              this.particles.length;
+              i++
+            ) {
+
+              this.particles[i]
+                .update(
+                  deltaTime
+                );
+            }
+
+
+            for (
+              i = 0;
+              i < this.firstFree;
+              i++
+            ) {
+
+              this.particles[i]
+                .update(
+                  deltaTime
+                );
+            }
+          }
+
+
+          while (
+            this.particles[
+              this.firstActive
+            ].age >=
+            this.duration &&
+            this.firstActive !==
+            this.firstFree
+          ) {
+
+            this.firstActive++;
+
+
+            if (
+              this.firstActive ===
+              this.particles.length
+            ) {
+
+              this.firstActive = 0;
+            }
+          }
+        };
+
+
+      ParticlePool.prototype.draw =
+        function (
+          ctx,
+          image
+        ) {
+
+          let i;
+
+
+          if (
+            this.firstActive <
+            this.firstFree
+          ) {
+
+            for (
+              i = this.firstActive;
+              i < this.firstFree;
+              i++
+            ) {
+
+              this.particles[i]
+                .draw(
+                  ctx,
+                  image
+                );
+            }
+          }
+
+
+          if (
+            this.firstFree <
+            this.firstActive
+          ) {
+
+            for (
+              i = this.firstActive;
+              i <
+              this.particles.length;
+              i++
+            ) {
+
+              this.particles[i]
+                .draw(
+                  ctx,
+                  image
+                );
+            }
+
+
+            for (
+              i = 0;
+              i < this.firstFree;
+              i++
+            ) {
+
+              this.particles[i]
+                .draw(
+                  ctx,
+                  image
+                );
+            }
+          }
+        };
+
 
       function pointOnHeart(t) {
+
         return new Point(
-          160 * Math.pow(Math.sin(t), 3),
-          130 * Math.cos(t) -
-          50 * Math.cos(2 * t) -
-          20 * Math.cos(3 * t) -
-          10 * Math.cos(4 * t) +
+
+          160 *
+          Math.pow(
+            Math.sin(t),
+            3
+          ),
+
+          130 *
+          Math.cos(t) -
+          50 *
+          Math.cos(
+            2 * t
+          ) -
+          20 *
+          Math.cos(
+            3 * t
+          ) -
+          10 *
+          Math.cos(
+            4 * t
+          ) +
           25
         );
       }
 
-      const image = (() => {
-        const particleCanvas = document.createElement("canvas");
-        const particleContext = particleCanvas.getContext("2d");
 
-        particleCanvas.width = settings.particles.size;
-        particleCanvas.height = settings.particles.size;
+      const image =
+        (() => {
 
-        function to(t) {
-          const point = pointOnHeart(t);
-          point.x =
-            settings.particles.size / 2 +
-            (point.x * settings.particles.size) / 350;
-          point.y =
-            settings.particles.size / 2 -
-            (point.y * settings.particles.size) / 350;
-          return point;
-        }
+          const particleCanvas =
+            document.createElement(
+              "canvas"
+            );
 
-        particleContext.beginPath();
 
-        let t = -Math.PI;
-        let point = to(t);
-        particleContext.moveTo(point.x, point.y);
+          const particleContext =
+            particleCanvas.getContext(
+              "2d"
+            );
 
-        while (t < Math.PI) {
-          t += 0.01;
-          point = to(t);
-          particleContext.lineTo(point.x, point.y);
-        }
 
-        particleContext.closePath();
+          particleCanvas.width =
+            settings.particles.size;
 
-        // Changed from the original pink to a vivid red.
-        particleContext.fillStyle = "#ff1744";
-        particleContext.fill();
+          particleCanvas.height =
+            settings.particles.size;
 
-        const particleImage = new Image();
-        particleImage.src = particleCanvas.toDataURL();
-        return particleImage;
-      })();
 
-      const particles = new ParticlePool(settings.particles.length);
+          function to(t) {
+
+            const point =
+              pointOnHeart(t);
+
+
+            point.x =
+              settings.particles.size /
+              2 +
+              (point.x *
+                settings.particles.size) /
+              350;
+
+
+            point.y =
+              settings.particles.size /
+              2 -
+              (point.y *
+                settings.particles.size) /
+              350;
+
+
+            return point;
+          }
+
+
+          particleContext.beginPath();
+
+
+          let t = -Math.PI;
+
+          let point = to(t);
+
+
+          particleContext.moveTo(
+            point.x,
+            point.y
+          );
+
+
+          while (
+            t < Math.PI
+          ) {
+
+            t += 0.01;
+
+            point = to(t);
+
+            particleContext.lineTo(
+              point.x,
+              point.y
+            );
+          }
+
+
+          particleContext.closePath();
+
+
+          particleContext.fillStyle =
+            "#ff1744";
+
+          particleContext.fill();
+
+
+          const particleImage =
+            new Image();
+
+
+          particleImage.src =
+            particleCanvas.toDataURL();
+
+
+          return particleImage;
+
+        })();
+
+
+      const particles =
+        new ParticlePool(
+          settings.particles.length
+        );
+
+
       const particleRate =
-        settings.particles.length / settings.particles.duration;
+        settings.particles.length /
+        settings.particles.duration;
+
 
       let time;
+
       let animationId;
 
+
       function render() {
-        // Stop the animation once the screen is hidden.
-        if (!canvas.isConnected || !document.getElementById("heartSuccessScreen").classList.contains("active")) {
-          if (animationId) cancelAnimationFrame(animationId);
+
+        const successScreen =
+          document.getElementById(
+            "heartSuccessScreen"
+          );
+
+
+        if (
+          !canvas.isConnected ||
+          !successScreen ||
+          !successScreen.classList.contains(
+            "active"
+          )
+        ) {
+
+          if (animationId) {
+            cancelAnimationFrame(
+              animationId
+            );
+          }
+
           return;
         }
 
-        animationId = requestAnimationFrame(render);
 
-        const newTime = new Date().getTime() / 1000;
-        const deltaTime = newTime - (time || newTime);
-        time = newTime;
-
-        context.clearRect(0, 0, canvas.width, canvas.height);
-
-        const amount = particleRate * deltaTime;
-
-        for (let i = 0; i < amount; i++) {
-          const pos = pointOnHeart(
-            Math.PI - 2 * Math.PI * Math.random()
+        animationId =
+          requestAnimationFrame(
+            render
           );
 
-          const dir = pos.clone().length(settings.particles.velocity);
+
+        const newTime =
+          new Date().getTime() /
+          1000;
+
+
+        const deltaTime =
+          newTime -
+          (time || newTime);
+
+
+        time = newTime;
+
+
+        context.clearRect(
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        );
+
+
+        const amount =
+          particleRate *
+          deltaTime;
+
+
+        for (
+          let i = 0;
+          i < amount;
+          i++
+        ) {
+
+          const pos =
+            pointOnHeart(
+              Math.PI -
+              2 *
+              Math.PI *
+              Math.random()
+            );
+
+
+          const dir =
+            pos
+              .clone()
+              .length(
+                settings.particles.velocity
+              );
+
 
           particles.add(
-            canvas.width / 2 + pos.x,
-            canvas.height / 2 - pos.y,
+
+            canvas.width / 2 +
+            pos.x,
+
+            canvas.height / 2 -
+            pos.y,
+
             dir.x,
+
             -dir.y
           );
         }
 
-        particles.update(deltaTime);
-        particles.draw(context, image);
+
+        particles.update(
+          deltaTime
+        );
+
+
+        particles.draw(
+          context,
+          image
+        );
       }
+
 
       function onResize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+
+        canvas.width =
+          window.innerWidth;
+
+        canvas.height =
+          window.innerHeight;
       }
 
+
       onResize();
-      window.addEventListener("resize", onResize, { once: false });
+
+
+      window.addEventListener(
+        "resize",
+        onResize
+      );
+
+
       render();
     }
 
+
     /* =========================================
        COUNTDOWN
+       VIETNAM UTC+7
     ========================================= */
 
     function startCountdown() {
-      const targetDate = new Date(`${chosenDate} ${chosenTimeValue}`);
+
+      /*
+        chosenDate format:
+        DD/MM/YYYY
+
+        chosenTimeValue format:
+        HH:mm
+
+        Example:
+        29/10/2026
+        18:00
+      */
+
+      const [
+        day,
+        month,
+        year
+      ] =
+        chosenDate
+          .split("/")
+          .map(Number);
+
+
+      const [
+        hours,
+        minutes
+      ] =
+        chosenTimeValue
+          .split(":")
+          .map(Number);
+
+
+      /*
+        Explicitly create the target
+        in Vietnam timezone (UTC+7).
+
+        This avoids browser locale parsing
+        such as:
+        "October 29, 2026 18:00"
+      */
+
+      const targetDate =
+        new Date(
+          `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00+07:00`
+        );
+
 
       function updateTimer() {
-        const now = new Date();
 
-        const diff = targetDate - now;
+        const now =
+          new Date();
+
+
+        const diff =
+          targetDate - now;
+
 
         if (diff <= 0) {
-          document.getElementById("countdownTimer").innerText =
+
+          document.getElementById(
+            "countdownTimer"
+          ).innerText =
             "Đến giờ hẹn hò rồi đó nha! ❤️‍🔥";
+
 
           return;
         }
 
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const days =
+          Math.floor(
+            diff /
+            (1000 * 60 * 60 * 24)
+          );
 
-        const minutes = Math.floor((diff / 1000 / 60) % 60);
 
-        const seconds = Math.floor((diff / 1000) % 60);
+        const hours =
+          Math.floor(
+            (diff /
+              (1000 * 60 * 60)) %
+            24
+          );
 
-        document.getElementById("countdownTimer").innerText =
+
+        const minutes =
+          Math.floor(
+            (diff /
+              (1000 * 60)) %
+            60
+          );
+
+
+        const seconds =
+          Math.floor(
+            (diff / 1000) %
+            60
+          );
+
+
+        document.getElementById(
+          "countdownTimer"
+        ).innerText =
           `${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây`;
       }
 
+
       updateTimer();
 
-      setInterval(updateTimer, 1000);
+
+      /*
+        Prevent creating multiple
+        countdown intervals if the user
+        somehow reaches step 5 more than once.
+      */
+
+      if (window.dateCountdownInterval) {
+        clearInterval(
+          window.dateCountdownInterval
+        );
+      }
+
+
+      window.dateCountdownInterval =
+        setInterval(
+          updateTimer,
+          1000
+        );
     }
   </script>
 </body>
