@@ -1054,66 +1054,6 @@
             <div class="vibe-name">Truyền thuyết Champong (Korea restaurant)</div>
           </div>
 
-          <!-- <div class="vibe-card" onclick="toggleVibe(this, 'Coffee / Milk Tea ☕')">
-            <div class="vibe-icon">☕ / 🥤</div>
-            <div class="vibe-name">Coffee / Milk Tea</div>
-          </div>
-
-          <div class="vibe-card" onclick="toggleVibe(this, 'Mall 🛍️')">
-            <div class="vibe-icon">🛍️</div>
-            <div class="vibe-name">Mall</div>
-          </div>
-
-          <div class="vibe-card" onclick="toggleVibe(this, 'Jollibee 🍗')">
-            <div class="vibe-icon">🍗</div>
-            <div class="vibe-name">Jollibee</div>
-          </div>
-
-          <div class="vibe-card" onclick="toggleVibe(this, 'Hotpot 🍲')">
-            <div class="vibe-icon">🍲</div>
-            <div class="vibe-name">Hotpot</div>
-          </div>
-
-          <div class="vibe-card" onclick="toggleVibe(this, 'Steak 🥩')">
-            <div class="vibe-icon">🥩</div>
-            <div class="vibe-name">Steak</div>
-          </div>
-
-          <div class="vibe-card" onclick="toggleVibe(this, 'Thai Noodle 🍜')">
-            <div class="vibe-icon">🍜</div>
-            <div class="vibe-name">Thai Noodle</div>
-          </div>
-
-          <div class="vibe-card" onclick="toggleVibe(this, 'Korea Food 🇰🇷')">
-            <div class="vibe-icon">🇰🇷</div>
-            <div class="vibe-name">Korea Food</div>
-          </div>
-
-          <div class="vibe-card" onclick="toggleVibe(this, 'Pizza 🍕')">
-            <div class="vibe-icon">🍕</div>
-            <div class="vibe-name">Pizza</div>
-          </div>
-
-          <div class="vibe-card" onclick="toggleVibe(this, 'Sushi 🍣')">
-            <div class="vibe-icon">🍣</div>
-            <div class="vibe-name">Sushi</div>
-          </div>
-
-          <div class="vibe-card" onclick="toggleVibe(this, 'Burgers 🍔')">
-            <div class="vibe-icon">🍔</div>
-            <div class="vibe-name">Burgers</div>
-          </div>
-
-          <div class="vibe-card" onclick="toggleVibe(this, 'Pasta 🍝')">
-            <div class="vibe-icon">🍝</div>
-            <div class="vibe-name">Pasta</div>
-          </div>
-
-          <div class="vibe-card" onclick="toggleVibe(this, 'Tacos 🌮')">
-            <div class="vibe-icon">🌮</div>
-            <div class="vibe-name">Tacos</div>
-          </div> -->
-
           <div class="vibe-card" onclick="toggleVibe(this, 'Cinema 🎬')">
             <div class="vibe-icon">🎬</div>
             <div class="vibe-name">Cinema</div>
@@ -1407,6 +1347,33 @@
 
   <script>
     /* =========================================
+       IMGBB CONFIGURATION
+    ========================================= */
+    const IMGBB_API_KEY = "9fb1f74567151384e2ef3cd647bc6d22";
+
+    async function uploadToImgBB(file) {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+          method: "POST",
+          body: formData,
+        });
+        const data = await response.json();
+        if (data.success) {
+          return data.data.url;
+        } else {
+          console.error("Upload ImgBB lỗi:", data);
+          return null;
+        }
+      } catch (error) {
+        console.error("Lỗi kết nối ImgBB:", error);
+        return null;
+      }
+    }
+
+    /* =========================================
        FLOATING HEARTS GENERATOR
     ========================================= */
 
@@ -1490,11 +1457,6 @@
       vietnamDateParts.find((part) => part.type === "day").value
     );
 
-
-    /*
-      Keep a local-midnight Date only for calendar comparisons.
-      The actual countdown below explicitly uses UTC+7.
-    */
     let today = new Date(
       vietnamYear,
       vietnamMonth,
@@ -1505,18 +1467,9 @@
 
     let currentMonth = vietnamMonth;
 
-
-    /*
-      Display date:
-      DD/MM/YYYY
-
-      Example:
-      29/10/2026
-    */
     function formatVietnamDate(year, month, day) {
       return `${String(day).padStart(2, "0")}/${String(month + 1).padStart(2, "0")}/${year}`;
     }
-
 
     let chosenDate = formatVietnamDate(
       vietnamYear,
@@ -1535,7 +1488,6 @@
     let chosenDress = "";
 
     let chosenTrend = "";
-
 
     document.getElementById("inputDate").value = chosenDate;
 
@@ -1559,26 +1511,21 @@
 
       updateBackButton(stepNumber);
 
-
       if (stepNumber === 2) {
         renderCalendar(currentMonth, currentYear);
       }
-
 
       if (stepNumber === 3) {
         restoreVibeSelections();
       }
 
-
       if (stepNumber === 32) {
         restoreDressSelection();
       }
 
-
       if (stepNumber === 35) {
         restoreTrendSelection();
       }
-
 
       if (stepNumber === 4) {
         document.getElementById("sumDate").innerText =
@@ -1586,7 +1533,6 @@
 
         document.getElementById("sumTime").innerText =
           chosenTime;
-
 
         const vibeText = getVibeText();
 
@@ -1596,20 +1542,17 @@
         document.getElementById("inputVibe").value =
           vibeText;
 
-
         document.getElementById("sumDress").innerText =
           chosenDress || "Chưa chọn (Bỏ qua)";
 
         document.getElementById("inputDress").value =
           chosenDress || "Bỏ qua";
 
-
         document.getElementById("sumTrend").innerText =
           chosenTrend || "Chưa chọn (Bỏ qua)";
 
         document.getElementById("inputTrend").value =
           chosenTrend || "Bỏ qua";
-
 
         document.getElementById("inputDate").value =
           chosenDate;
@@ -1676,16 +1619,13 @@
       const container =
         document.querySelector(".btn-group");
 
-
       if (!container.classList.contains("expanded")) {
         container.classList.add("expanded");
       }
 
-
       yesBtn.innerText = "Yes 😭";
 
       noBtn.innerText = "No 🥺";
-
 
       const containerWidth =
         container.clientWidth;
@@ -1713,13 +1653,11 @@
 
       const gap = 10;
 
-
       let randomX = 0;
 
       let randomY = 0;
 
       let validPosition = false;
-
 
       for (let attempts = 0; attempts < 200; attempts++) {
 
@@ -1731,7 +1669,6 @@
           Math.random() *
           (containerHeight - noHeight);
 
-
         const noLeft = randomX;
 
         const noTop = randomY;
@@ -1742,20 +1679,17 @@
         const noBottom =
           noTop + noHeight;
 
-
         const overlapsYes =
           noLeft < yesRight + gap &&
           noRight > yesLeft - gap &&
           noTop < yesBottom + gap &&
           noBottom > yesTop - gap;
 
-
         if (!overlapsYes) {
           validPosition = true;
           break;
         }
       }
-
 
       if (!validPosition) {
         randomX =
@@ -1764,7 +1698,6 @@
         randomY =
           containerHeight - noHeight;
       }
-
 
       noBtn.style.left =
         `${randomX}px`;
@@ -1795,12 +1728,10 @@
 
       container.innerHTML = "";
 
-
       document.getElementById(
         "currentMonthYear"
       ).innerText =
         `${monthNames[month]} ${year}`;
-
 
       const firstDayIndex =
         new Date(
@@ -1809,14 +1740,12 @@
           1
         ).getDay();
 
-
       const totalDays =
         new Date(
           year,
           month + 1,
           0
         ).getDate();
-
 
       for (
         let i = 0;
@@ -1837,7 +1766,6 @@
         );
       }
 
-
       for (
         let day = 1;
         day <= totalDays;
@@ -1851,7 +1779,6 @@
 
         dayDiv.innerText = day;
 
-
         const thisDate =
           new Date(
             year,
@@ -1859,14 +1786,12 @@
             day
           );
 
-
         const compareToday =
           new Date(
             today.getFullYear(),
             today.getMonth(),
             today.getDate()
           );
-
 
         if (thisDate < compareToday) {
 
@@ -1885,14 +1810,8 @@
             );
           };
 
-
-          /*
-            Highlight the selected date,
-            not only today's date.
-          */
           const [selectedDay, selectedMonth, selectedYear] =
             chosenDate.split("/").map(Number);
-
 
           if (
             month === selectedMonth - 1 &&
@@ -1905,7 +1824,6 @@
           }
         }
 
-
         container.appendChild(
           dayDiv
         );
@@ -1915,7 +1833,6 @@
 
     function changeMonth(direction) {
       currentMonth += direction;
-
 
       if (currentMonth > 11) {
 
@@ -1929,7 +1846,6 @@
 
         currentYear--;
       }
-
 
       renderCalendar(
         currentMonth,
@@ -1955,11 +1871,9 @@
           )
         );
 
-
       element.classList.add(
         "selected"
       );
-
 
       chosenDate =
         formatVietnamDate(
@@ -1967,7 +1881,6 @@
           month,
           day
         );
-
 
       document.getElementById(
         "inputDate"
@@ -1983,22 +1896,11 @@
     function selectTime(timeStr) {
       if (!timeStr) return;
 
-
       chosenTimeValue =
         timeStr;
 
-
-      /*
-        Keep time strictly 24-hour format.
-
-        Example:
-        18:00
-        20:30
-        09:15
-      */
       chosenTime =
         timeStr;
-
 
       const timePreview =
         document.getElementById(
@@ -2009,7 +1911,6 @@
         timePreview.innerText =
           chosenTime;
       }
-
 
       const inputTime =
         document.getElementById(
@@ -2036,7 +1937,6 @@
         "selected"
       );
 
-
       if (
         vibeName ===
         "Other 📝"
@@ -2046,7 +1946,6 @@
           document.getElementById(
             "otherVibeInput"
           );
-
 
         if (
           element.classList.contains(
@@ -2064,16 +1963,13 @@
             "active"
           );
 
-
           document.getElementById(
             "otherVibeText"
           ).value = "";
 
-
           otherVibe = "";
         }
       }
-
 
       updateChosenVibes();
     }
@@ -2088,7 +1984,6 @@
           .value
           .trim();
 
-
       updateChosenVibes();
     }
 
@@ -2096,7 +1991,6 @@
     function updateChosenVibes() {
 
       chosenVibes = [];
-
 
       document
         .querySelectorAll(
@@ -2108,7 +2002,6 @@
             card.querySelector(
               ".vibe-name"
             ).innerText;
-
 
           if (name !== "Other") {
 
@@ -2123,12 +2016,10 @@
           }
         });
 
-
       const otherCard =
         document.querySelector(
           ".vibe-card:last-child"
         );
-
 
       if (
         otherCard &&
@@ -2142,7 +2033,6 @@
           `Other: ${otherVibe}`
         );
       }
-
 
       document.getElementById(
         "btnStep3"
@@ -2158,7 +2048,6 @@
           ".vibe-card"
         );
 
-
       cards.forEach((card) => {
 
         const name =
@@ -2166,12 +2055,10 @@
             ".vibe-name"
           ).innerText;
 
-
         const isSelected =
           chosenVibes.some((vibe) =>
             vibe.startsWith(name)
           );
-
 
         card.classList.toggle(
           "selected",
@@ -2179,12 +2066,10 @@
         );
       });
 
-
       const otherCard =
         document.querySelector(
           ".vibe-card:last-child"
         );
-
 
       if (
         otherCard &&
@@ -2200,7 +2085,6 @@
           .classList.add(
             "active"
           );
-
 
         document.getElementById(
           "otherVibeText"
@@ -2218,7 +2102,7 @@
 
 
     /* =========================================
-       DRESS
+       DRESS CODE (WITH IMGBB)
     ========================================= */
 
     function selectDress(
@@ -2250,7 +2134,6 @@
             )
           );
 
-
         element.classList.add(
           "selected"
         );
@@ -2261,41 +2144,30 @@
     }
 
 
-    function handleDressUpload(event) {
+    async function handleDressUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
 
-      const file =
-        event.target.files[0];
+      const uploadText = document.getElementById("dressUploadText");
+      uploadText.innerText = "⏳ Đang tải ảnh lên...";
 
+      const imageUrl = await uploadToImgBB(file);
 
-      if (file) {
+      if (imageUrl) {
+        chosenDress = `Ảnh Outfit: ${imageUrl}`;
+        uploadText.innerText = `✅ Đã tải ảnh xong!`;
 
-        chosenDress =
-          `Uploaded Outfit: ${file.name}`;
-
-
-        document.getElementById(
-          "dressUploadText"
-        ).innerText =
-          `Đã chọn: ${file.name}`;
-
-
-        document
-          .querySelectorAll(
-            ".dress-card"
-          )
-          .forEach((el) =>
-            el.classList.remove(
-              "selected"
-            )
-          );
+        document.querySelectorAll(".dress-card").forEach((el) =>
+          el.classList.remove("selected")
+        );
+      } else {
+        uploadText.innerText = "❌ Tải ảnh thất bại, vui lòng thử lại!";
       }
     }
 
 
     function restoreDressSelection() {
-
       if (!chosenDress) return;
-
 
       document
         .querySelectorAll(
@@ -2310,7 +2182,7 @@
 
 
     /* =========================================
-       TREND
+       TREND (WITH IMGBB)
     ========================================= */
 
     function selectTrend(
@@ -2342,7 +2214,6 @@
             )
           );
 
-
         element.classList.add(
           "selected"
         );
@@ -2353,41 +2224,32 @@
     }
 
 
-    function handleMultipleImagesUpload(
-      event
-    ) {
+    async function handleMultipleImagesUpload(event) {
+      const files = Array.from(event.target.files);
+      if (files.length === 0) return;
 
-      const files =
-        event.target.files;
+      const uploadText = document.getElementById("uploadText");
+      uploadText.innerText = `⏳ Đang tải ${files.length} ảnh lên...`;
 
+      const uploadPromises = files.map((file) => uploadToImgBB(file));
+      const uploadedUrls = await Promise.all(uploadPromises);
 
-      if (files.length > 0) {
+      const validUrls = uploadedUrls.filter((url) => url !== null);
 
-        chosenTrend =
-          `${files.length} custom image(s) uploaded`;
+      if (validUrls.length > 0) {
+        chosenTrend = `Custom Trends: ${validUrls.join(" | ")}`;
+        uploadText.innerText = `✅ Đã tải lên ${validUrls.length} ảnh thành công! ✨`;
 
-
-        document.getElementById(
-          "uploadText"
-        ).innerText =
-          `Đã tải lên ${files.length} hình ảnh thành công! ✨`;
-
-
-        document
-          .querySelectorAll(
-            ".trend-card"
-          )
-          .forEach((el) =>
-            el.classList.remove(
-              "selected"
-            )
-          );
+        document.querySelectorAll(".trend-card").forEach((el) =>
+          el.classList.remove("selected")
+        );
+      } else {
+        uploadText.innerText = "❌ Tải ảnh thất bại, vui lòng thử lại!";
       }
     }
 
 
     function restoreTrendSelection() {
-
       if (!chosenTrend) return;
     }
 
@@ -2400,32 +2262,23 @@
 
       event.preventDefault();
 
-
-      /*
-        Make sure the latest selected
-        date/time are sent to Formspree.
-      */
       document.getElementById(
         "inputDate"
       ).value =
         chosenDate;
-
 
       document.getElementById(
         "inputTime"
       ).value =
         chosenTimeValue;
 
-
       const form =
         document.getElementById(
           "dateForm"
         );
 
-
       const formData =
         new FormData(form);
-
 
       fetch(
         form.action,
@@ -2447,10 +2300,6 @@
         })
         .catch(() => {
 
-          /*
-            Keep the same UX even if
-            Formspree reports an error.
-          */
           showHeartSuccessThenCountdown();
 
         });
@@ -2461,9 +2310,7 @@
        SUBMIT SUCCESS HEART SCREEN
     ========================================= */
 
-    let heartSuccessTimer =
-      null;
-
+    let heartSuccessTimer = null;
 
     function showHeartSuccessThenCountdown() {
 
@@ -2471,7 +2318,6 @@
         document.getElementById(
           "heartSuccessScreen"
         );
-
 
       if (!screen) {
 
@@ -2482,23 +2328,15 @@
         return;
       }
 
-
       screen.classList.add(
         "active"
       );
 
-
       startHeartSuccessAnimation();
 
-
-      /*
-        Heart animation stays for
-        exactly 5 seconds.
-      */
       clearTimeout(
         heartSuccessTimer
       );
-
 
       heartSuccessTimer =
         setTimeout(() => {
@@ -2506,7 +2344,6 @@
           screen.classList.remove(
             "active"
           );
-
 
           nextStep(5);
 
@@ -2523,16 +2360,12 @@
           "heartSuccessCanvas"
         );
 
-
       if (!canvas) return;
-
 
       const context =
         canvas.getContext("2d");
 
-
       if (!context) return;
-
 
       const settings = {
 
@@ -2589,14 +2422,11 @@
             );
           }
 
-
           this.normalize();
-
 
           this.x *= length;
 
           this.y *= length;
-
 
           return this;
         };
@@ -2608,11 +2438,9 @@
           const length =
             this.length();
 
-
           this.x /= length;
 
           this.y /= length;
-
 
           return this;
         };
@@ -2703,7 +2531,6 @@
             );
           }
 
-
           const size =
             image.width *
             ease(
@@ -2711,12 +2538,10 @@
               settings.particles.duration
             );
 
-
           ctx.globalAlpha =
             1 -
             this.age /
             settings.particles.duration;
-
 
           ctx.drawImage(
             image,
@@ -2745,7 +2570,6 @@
 
         this.duration =
           settings.particles.duration;
-
 
         for (
           let i = 0;
@@ -2777,9 +2601,7 @@
             dy
           );
 
-
           this.firstFree++;
-
 
           if (
             this.firstFree ===
@@ -2789,14 +2611,12 @@
             this.firstFree = 0;
           }
 
-
           if (
             this.firstActive ===
             this.firstFree
           ) {
 
             this.firstActive++;
-
 
             if (
               this.firstActive ===
@@ -2816,7 +2636,6 @@
 
           let i;
 
-
           if (
             this.firstActive <
             this.firstFree
@@ -2834,7 +2653,6 @@
                 );
             }
           }
-
 
           if (
             this.firstFree <
@@ -2854,7 +2672,6 @@
                 );
             }
 
-
             for (
               i = 0;
               i < this.firstFree;
@@ -2868,7 +2685,6 @@
             }
           }
 
-
           while (
             this.particles[
               this.firstActive
@@ -2879,7 +2695,6 @@
           ) {
 
             this.firstActive++;
-
 
             if (
               this.firstActive ===
@@ -2900,7 +2715,6 @@
 
           let i;
 
-
           if (
             this.firstActive <
             this.firstFree
@@ -2920,7 +2734,6 @@
             }
           }
 
-
           if (
             this.firstFree <
             this.firstActive
@@ -2939,7 +2752,6 @@
                   image
                 );
             }
-
 
             for (
               i = 0;
@@ -2994,12 +2806,10 @@
               "canvas"
             );
 
-
           const particleContext =
             particleCanvas.getContext(
               "2d"
             );
-
 
           particleCanvas.width =
             settings.particles.size;
@@ -3007,12 +2817,10 @@
           particleCanvas.height =
             settings.particles.size;
 
-
           function to(t) {
 
             const point =
               pointOnHeart(t);
-
 
             point.x =
               settings.particles.size /
@@ -3021,7 +2829,6 @@
                 settings.particles.size) /
               350;
 
-
             point.y =
               settings.particles.size /
               2 -
@@ -3029,24 +2836,19 @@
                 settings.particles.size) /
               350;
 
-
             return point;
           }
 
-
           particleContext.beginPath();
-
 
           let t = -Math.PI;
 
           let point = to(t);
 
-
           particleContext.moveTo(
             point.x,
             point.y
           );
-
 
           while (
             t < Math.PI
@@ -3062,23 +2864,18 @@
             );
           }
 
-
           particleContext.closePath();
-
 
           particleContext.fillStyle =
             "#ff1744";
 
           particleContext.fill();
 
-
           const particleImage =
             new Image();
 
-
           particleImage.src =
             particleCanvas.toDataURL();
-
 
           return particleImage;
 
@@ -3090,16 +2887,13 @@
           settings.particles.length
         );
 
-
       const particleRate =
         settings.particles.length /
         settings.particles.duration;
 
-
       let time;
 
       let animationId;
-
 
       function render() {
 
@@ -3107,7 +2901,6 @@
           document.getElementById(
             "heartSuccessScreen"
           );
-
 
         if (
           !canvas.isConnected ||
@@ -3126,25 +2919,20 @@
           return;
         }
 
-
         animationId =
           requestAnimationFrame(
             render
           );
 
-
         const newTime =
           new Date().getTime() /
           1000;
-
 
         const deltaTime =
           newTime -
           (time || newTime);
 
-
         time = newTime;
-
 
         context.clearRect(
           0,
@@ -3153,11 +2941,9 @@
           canvas.height
         );
 
-
         const amount =
           particleRate *
           deltaTime;
-
 
         for (
           let i = 0;
@@ -3173,14 +2959,12 @@
               Math.random()
             );
 
-
           const dir =
             pos
               .clone()
               .length(
                 settings.particles.velocity
               );
-
 
           particles.add(
 
@@ -3196,18 +2980,15 @@
           );
         }
 
-
         particles.update(
           deltaTime
         );
-
 
         particles.draw(
           context,
           image
         );
       }
-
 
       function onResize() {
 
@@ -3218,15 +2999,12 @@
           window.innerHeight;
       }
 
-
       onResize();
-
 
       window.addEventListener(
         "resize",
         onResize
       );
-
 
       render();
     }
@@ -3239,18 +3017,6 @@
 
     function startCountdown() {
 
-      /*
-        chosenDate format:
-        DD/MM/YYYY
-
-        chosenTimeValue format:
-        HH:mm
-
-        Example:
-        29/10/2026
-        18:00
-      */
-
       const [
         day,
         month,
@@ -3260,7 +3026,6 @@
           .split("/")
           .map(Number);
 
-
       const [
         hours,
         minutes
@@ -3269,31 +3034,18 @@
           .split(":")
           .map(Number);
 
-
-      /*
-        Explicitly create the target
-        in Vietnam timezone (UTC+7).
-
-        This avoids browser locale parsing
-        such as:
-        "October 29, 2026 18:00"
-      */
-
       const targetDate =
         new Date(
           `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00+07:00`
         );
-
 
       function updateTimer() {
 
         const now =
           new Date();
 
-
         const diff =
           targetDate - now;
-
 
         if (diff <= 0) {
 
@@ -3302,17 +3054,14 @@
           ).innerText =
             "Đến giờ hẹn hò rồi đó nha! ❤️‍🔥";
 
-
           return;
         }
-
 
         const days =
           Math.floor(
             diff /
             (1000 * 60 * 60 * 24)
           );
-
 
         const hours =
           Math.floor(
@@ -3321,7 +3070,6 @@
             24
           );
 
-
         const minutes =
           Math.floor(
             (diff /
@@ -3329,13 +3077,11 @@
             60
           );
 
-
         const seconds =
           Math.floor(
             (diff / 1000) %
             60
           );
-
 
         document.getElementById(
           "countdownTimer"
@@ -3343,22 +3089,13 @@
           `${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây`;
       }
 
-
       updateTimer();
-
-
-      /*
-        Prevent creating multiple
-        countdown intervals if the user
-        somehow reaches step 5 more than once.
-      */
 
       if (window.dateCountdownInterval) {
         clearInterval(
           window.dateCountdownInterval
         );
       }
-
 
       window.dateCountdownInterval =
         setInterval(
